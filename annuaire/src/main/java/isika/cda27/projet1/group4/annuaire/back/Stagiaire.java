@@ -4,13 +4,13 @@ public class Stagiaire {
 
 	private String name;
 	private String firstName; 
-	private int postalCode;
+	private String postalCode;
 	private String promo;
 	private int year;
 	
 	
 	
-	public Stagiaire(String name, String firstName, int postalCode, String promo, int year) {
+	public Stagiaire(String name, String firstName, String postalCode, String promo, int year) {
 		super();
 		this.name = name;
 		this.firstName = firstName;
@@ -53,13 +53,13 @@ public class Stagiaire {
 
 
 
-	public int getPostalCode() {
+	public String getPostalCode() {
 		return postalCode;
 	}
 
 
 
-	public void setPostalCode(int postalCode) {
+	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
 
