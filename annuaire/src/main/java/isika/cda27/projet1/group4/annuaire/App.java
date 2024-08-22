@@ -1,6 +1,7 @@
 package isika.cda27.projet1.group4.annuaire;
 
 import isika.cda27.projet1.group4.annuaire.back.Annuaire;
+import isika.cda27.projet1.group4.annuaire.back.BinaryFileManager;
 import isika.cda27.projet1.group4.annuaire.back.BinarySearchTree;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,9 +18,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
     	
-    	
         Annuaire annuaire = new Annuaire();
-        annuaire.lireFichier("src/main/resources/STAGIAIRES.DON");
+        annuaire.lireFichier("src/main/resources/test.txt");
         annuaire.afficherStagiaires();
         
         // on créé une listView pour afficher la liste de stagiaire présent dans l'annuaire
@@ -35,6 +35,10 @@ public class App extends Application {
         }
         
         searchTree.affichage();
+        
+        //ecriture du fichier binaire pour sauvegarde
+        BinaryFileManager bfm = new BinaryFileManager();
+        //bfm.binaryFileWriter(annuaire);
         
         Scene scene = new Scene(new StackPane(listView), 640, 480);
         stage.setScene(scene);
