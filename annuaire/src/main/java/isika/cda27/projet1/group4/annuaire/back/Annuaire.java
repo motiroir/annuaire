@@ -28,7 +28,6 @@ public class Annuaire {
                 int annee = Integer.parseInt(br.readLine());
 
                 Stagiaire stagiaire = new Stagiaire(nom, prenom, departement, promotion, annee);
-//                System.out.println(stagiaire);
                 stagiaires.add(stagiaire);
             }
         } catch (IOException e) {
@@ -42,9 +41,13 @@ public class Annuaire {
         }
     }
 
-    public static void main(String[] args) {
-        Annuaire annuaire = new Annuaire();
-        annuaire.lireFichier("src/main/resources/test.txt");
-        annuaire.afficherStagiaires();
-    }
+	public List<Stagiaire> getStagiaires() {
+		return stagiaires;
+	}
+
+	public void setStagiaires(List<Stagiaire> stagiaires) {
+		this.stagiaires = stagiaires;
+	}
+
+
 }
