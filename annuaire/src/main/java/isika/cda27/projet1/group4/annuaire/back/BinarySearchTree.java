@@ -41,4 +41,23 @@ public class BinarySearchTree {
 			this.root.read();
 		}
 	}
+
+	//recherche d'un element dans l'arbre
+	public Stagiaire searchStagiaireInTree(Stagiaire searchedStagiaire) {
+		if(isEmpty()) {
+			System.out.println("L'arbre est vide");
+			return null;
+		} else {
+			return this.root.searchStagiaire(searchedStagiaire);
+		}
+	}
+	
+	//suppression d'un element de l'arbre
+	public void deleteInTree (Stagiaire stagiaire) {
+		if(isEmpty()) {
+			System.out.println("l'arbre est vide");
+		} else {
+			this.root.delete(stagiaire);
+		}
+	}
 }
