@@ -7,7 +7,8 @@ public class Stagiaire {
 	public static final int POSTALCODE_SIZE = 2;
 	public static final int PROMO_SIZE = 10;
 	public static final int YEAR_SIZE = 1;
-	public static final int STAGIAIRE_SIZE_OCTET = NAME_SIZE*2 + FIRSTNAME_SIZE*2 + POSTALCODE_SIZE*2 + PROMO_SIZE*2 + YEAR_SIZE*4;
+	public static final int STAGIAIRE_SIZE_OCTET = NAME_SIZE * 2 + FIRSTNAME_SIZE * 2 + POSTALCODE_SIZE * 2
+			+ PROMO_SIZE * 2 + YEAR_SIZE * 4;
 
 	private String name;
 	private String firstName;

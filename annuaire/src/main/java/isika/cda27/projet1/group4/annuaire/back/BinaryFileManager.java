@@ -1,28 +1,9 @@
 package isika.cda27.projet1.group4.annuaire.back;
 
-import java.io.IOException;
-import java.io.RandomAccessFile;
 
 public class BinaryFileManager {
 
-	public void objectBinaryFileWriter(Node noeud) {
-		try {
-			RandomAccessFile raf = new RandomAccessFile("src/main/resources/save/stagiairesDataBase.bin", "rw");
-			//pos 0
-			raf.writeChars(noeud.getKey().getNameLong());
-			raf.writeChars(noeud.getKey().getFirstNameLong());
-			raf.writeChars(noeud.getKey().getPostalCodeLong());
-			raf.writeChars(noeud.getKey().getPromoLong());
-			raf.writeInt(noeud.getKey().getYear());
-			raf.writeInt(-1);
-			raf.writeInt(-1);
-			raf.writeInt(-1);
-			//pos 120
-			raf.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 //	//méthode ecriture fichier binaire sur l'objet lol
 //	public void binaryFileWriter(Annuaire annuaire) {

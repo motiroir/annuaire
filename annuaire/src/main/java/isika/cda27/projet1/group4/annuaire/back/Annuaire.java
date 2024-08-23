@@ -7,39 +7,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Annuaire {
-    private List<Stagiaire> stagiaires;
+	private List<Stagiaire> stagiaires;
 
-    public Annuaire() {
-        this.stagiaires = new ArrayList<>();
-    }
+	public Annuaire() {
+		this.stagiaires = new ArrayList<>();
+	}
 
-    public void lireFichier(String filePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String ligne;
-            while ((ligne = br.readLine()) != null) {
-                if (ligne.equals("*")) {
-                    continue; // Passer la ligne contenant "*"
-                }
+	public void lireFichier(String filePath) {
+		try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+			String ligne;
+			while ((ligne = br.readLine()) != null) {
+				if (ligne.equals("*")) {
+					continue; // Passer la ligne contenant "*"
+				}
 
-                String nom = ligne;
-                String prenom = br.readLine();
-                String departement = br.readLine();
-                String promotion = br.readLine();
-                int annee = Integer.parseInt(br.readLine());
+				String nom = ligne;
+				String prenom = br.readLine();
+				String departement = br.readLine();
+				String promotion = br.readLine();
+				int annee = Integer.parseInt(br.readLine());
 
-                Stagiaire stagiaire = new Stagiaire(nom, prenom, departement, promotion, annee);
-                stagiaires.add(stagiaire);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+				Stagiaire stagiaire = new Stagiaire(nom, prenom, departement, promotion, annee);
+				stagiaires.add(stagiaire);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void afficherStagiaires() {
-        for (Stagiaire stagiaire : stagiaires) {
-            System.out.println(stagiaire);
-        }
-    }
+	public void afficherStagiaires() {
+		for (Stagiaire stagiaire : stagiaires) {
+			System.out.println(stagiaire);
+		}
+	}
 
 	public List<Stagiaire> getStagiaires() {
 		return stagiaires;
@@ -48,6 +48,5 @@ public class Annuaire {
 	public void setStagiaires(List<Stagiaire> stagiaires) {
 		this.stagiaires = stagiaires;
 	}
-
 
 }
