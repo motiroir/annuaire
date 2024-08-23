@@ -101,8 +101,16 @@ public class Node {
 	// premiere etape recherche du noeud a supprimer
 	public Node delete(Stagiaire stagiaire) {
 		if (this.key.getName().compareTo(stagiaire.getName()) == 0) {
-			// TODO : gérer les doublons
+		
+			if (this.doublon != null) {
+	            // Promouvoir le doublon pour remplacer le nœud actuel
+	            this.key = this.doublon.getKey();
+	            this.doublon = this.doublon.getDoublon();
+			
+			} else {
+	        // Si pas de doublon, on procède à la suppression normale
 			return this.deleteRoot();
+	            }
 		} else if (this.key.getName().compareTo(stagiaire.getName()) > 0) {
 			this.leftChild = this.leftChild.delete(stagiaire);
 		} else {
@@ -115,6 +123,8 @@ public class Node {
 	// deuxieme etape suppression du noeud une fois trouve
 	// le noeud a supprimer a ete trouve c'est "this"
 	private Node deleteRoot() {
+		
+		
 		// si le fils gauche est nul on retourne le fils droit
 		// si le fils droit est aussi null le noeud a supprimer sera remplace par null,
 		// sinon le noeud a supprimer sera remplace par le fils droit
