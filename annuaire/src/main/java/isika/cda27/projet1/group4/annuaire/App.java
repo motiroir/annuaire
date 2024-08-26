@@ -26,46 +26,19 @@ public class App extends Application {
 
 		Annuaire annuaire = new Annuaire();
 		annuaire.lireFichier("src/main/resources/test.txt");
-//		annuaire.afficherStagiaires();
-
-		// on créé une listView pour afficher la liste de stagiaire présent dans
-		// l'annuaire
-//		ListView<String> listView = new ListView<>();
-//		for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
-//			listView.getItems().add(annuaire.getStagiaires().get(i).toString());
-//		}
-//		// on créé un nouvel arbre
+		
+		// on créé un nouvel arbre
 		BinarySearchTree searchTree = new BinarySearchTree();
 
 //		for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
 //			searchTree.ajouter(annuaire.getStagiaires().get(i));
 //		}
 		
-//		try {
-//			RandomAccessFile test = new RandomAccessFile("src/main/resources/save/stagiairesDataBase.bin", "r");
-//			Node testNode = new Node(null);
-//			for (int i = 0; i < test.length()/Node.NODE_SIZE_OCTET; i++) {
-//				System.out.println(testNode.nodeReader(test, i*Node.NODE_SIZE_OCTET));
-//			}
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		ListView<Stagiaire> listView = new ListView<Stagiaire>();
 		List<Stagiaire> stagiaires = searchTree.affichage();
 		for (Stagiaire stag : stagiaires) {
 			listView.getItems().add(stag);
 		}
-		// ecriture du fichier binaire pour sauvegarde
- //       BinaryFileManager bfm = new BinaryFileManager();
- //       bfm.nodeReader("src/main/resources/save/stagiairesDataBase.bin", 0);
-		// bfm.binaryFileWriter(annuaire);
-
-//		// test écriture noeud
-//		Stagiaire stagiaire = new Stagiaire("Potin", "Hervé", "44", "CDA27", 2017);
-//		Node noeudTest = new Node(stagiaire);
-//
-//		noeudTest.newNodeWriter();
 
 		Scene scene = new Scene(new StackPane(listView), 640, 480);
 		stage.setScene(scene);

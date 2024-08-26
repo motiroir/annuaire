@@ -7,8 +7,8 @@ import java.util.List;
 public class Node {
 
 	private Stagiaire key;
-	private int rightChild;
 	private int leftChild;
+	private int rightChild;
 	private int doublon;
 	public static final int NODE_SIZE_OCTET = Stagiaire.STAGIAIRE_SIZE_OCTET + 12;
 	public static final int LEFT_CHILD_POSITION = 12;
@@ -102,7 +102,6 @@ public class Node {
 	// le parcours infixe Gauche Node Droit
 	public void read(RandomAccessFile raf, List<Stagiaire> stagiaires) {
 		if (this.leftChild != -1) {
-		//	System.out.println("gauche");
 			Node leftNode = nodeReader(raf, this.leftChild * NODE_SIZE_OCTET);
 			if (leftNode != null) {
 				leftNode.read(raf, stagiaires);
@@ -112,14 +111,12 @@ public class Node {
 				+ this.doublon);
 		stagiaires.add(this.key);
 		if (this.doublon != -1) {
-		//	System.out.println("doublon");
 			Node doublonNode = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
 			if (doublonNode != null) {
 				doublonNode.read(raf, stagiaires);
 			}
 		}
 		if (this.rightChild != -1) {
-		//	System.out.println("droite");
 			Node rightNode = nodeReader(raf, this.rightChild * NODE_SIZE_OCTET);
 			if (rightNode != null) {
 				rightNode.read(raf, stagiaires);
@@ -200,7 +197,7 @@ public class Node {
 	public void newNodeWriter(RandomAccessFile raf, Stagiaire stagiaire) {
 		try {
 
-			// se mettre à la fin du fichier = pos
+			// se mettre à la fin du fichier
 			raf.seek(raf.length());
 
 			raf.writeChars(stagiaire.getNameLong());
@@ -211,16 +208,14 @@ public class Node {
 			raf.writeInt(-1);
 			raf.writeInt(-1);
 			raf.writeInt(-1);
-			// pos + 120
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public Node nodeReader(RandomAccessFile raf, int position) {
-		// notes : remplacer position par un int que l'on multiplie par taille objet
-		// pour ne tomber que sur des débuts d'objets
-		// attention getFilePointer() retourne un long
+		
 		Node newNode = null;
 
 		try {
@@ -255,10 +250,6 @@ public class Node {
 			leftChild = raf.readInt();
 			rightChild = raf.readInt();
 			doublon = raf.readInt();
-
-			// affichage en console
-			// System.out.println(name + firstName + postalCode + promo + year + leftChild +
-			// rightChild + doublon);
 
 			Stagiaire stagiaire = new Stagiaire(name.trim(), firstName.trim(), postalCode.trim(), promo.trim(), year);
 			newNode = new Node(stagiaire, leftChild, rightChild, doublon);
