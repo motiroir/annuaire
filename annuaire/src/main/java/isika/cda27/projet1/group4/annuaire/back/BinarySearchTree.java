@@ -1,10 +1,20 @@
 package isika.cda27.projet1.group4.annuaire.back;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
 public class BinarySearchTree {
 	Node root;
+	RandomAccessFile raf;  
 
 	public BinarySearchTree() {
-		root = null;
+		root = new Node(null);
+		try {
+			raf = new RandomAccessFile("src/main/resources/save/stagiairesDataBase.bin", "rw");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public BinarySearchTree(Node root) {
@@ -25,39 +35,53 @@ public class BinarySearchTree {
 	}
 
 	// ajouter un element
+	//on utilise cette fonction pour créer l'arbre à l'aide d'une boucle sur une liste de stagiaires
+	//annuaire dans le main à partir d'un fichier texte
 	public void ajouter(Stagiaire stagiaire) {
-		if (isEmpty()) {
-			this.root = new Node(stagiaire);
-		} else {
-			this.root.addNode(stagiaire);
+		try {
+			if (raf.length()==0) {
+				this.root = new Node(stagiaire);
+				this.root.newNodeWriter(raf, stagiaire);
+			} else {
+				this.root = this.root.nodeReader(raf, 0);
+				this.root.addNode(raf, stagiaire);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
+	
 
 	// affichage par ordre alphabetique
 	public void affichage() {
-		if (isEmpty()) {
-			System.out.println("L'arbre est vide");
-		} else {
-			this.root.read();
+		try {
+			if (raf.length()==0) {
+				System.out.println("L'arbre est vide");
+			} else {
+				this.root.read(raf);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
-	// recherche d'un element dans l'arbre
-	public Stagiaire searchStagiaireInTree(Stagiaire searchedStagiaire) {
-		if (isEmpty()) {
-			System.out.println("L'arbre est vide");
-			return null;
-		} else {
-			return this.root.searchStagiaire(searchedStagiaire);
-		}
-	}
-
-	// suppression d'un element de l'arbre
-	public void deleteInTree(Stagiaire stagiaire) {
-		if (isEmpty()) {
-			System.out.println("l'arbre est vide");
-		} else {
-			this.root.delete(stagiaire);
-		}
-	}
+//	// recherche d'un element dans l'arbre
+//	public Stagiaire searchStagiaireInTree(Stagiaire searchedStagiaire) {
+//		if (isEmpty()) {
+//			System.out.println("L'arbre est vide");
+//			return null;
+//		} else {
+//			return this.root.searchStagiaire(searchedStagiaire);
+//		}
+//	}
+//
+//	// suppression d'un element de l'arbre
+//	public void deleteInTree(Stagiaire stagiaire) {
+//		if (isEmpty()) {
+//			System.out.println("l'arbre est vide");
+//		} else {
+//			this.root.delete(stagiaire);
+//		}
+//	}
 }
