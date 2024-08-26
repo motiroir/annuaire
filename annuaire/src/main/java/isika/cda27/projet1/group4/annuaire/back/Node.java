@@ -2,6 +2,7 @@ package isika.cda27.projet1.group4.annuaire.back;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.List;
 
 public class Node {
 
@@ -21,7 +22,7 @@ public class Node {
 		this.doublon = -1;
 	}
 
-	public Node(Stagiaire key, int rightChild, int leftChild, int doublon) {
+	public Node(Stagiaire key, int leftChild, int rightChild, int doublon) {
 		super();
 		this.key = key;
 		this.rightChild = rightChild;
@@ -63,20 +64,12 @@ public class Node {
 
 	// Ajout d'un noeud
 	public void addNode(RandomAccessFile raf, Stagiaire stagiaire) {
-		// ici on veut lire dans le fichier binaire l'objet au lieu de travailler
-		// avec l'objet "virtuel"
 		try {
 			if (this.key.getName().compareToIgnoreCase(stagiaire.getName()) > 0) {
 				if (this.leftChild == -1) {
-					// ici écrire la position de l'enfant gauche dans la case enfant gauche du
-					// parent
 					raf.seek(raf.getFilePointer() - LEFT_CHILD_POSITION);
 					raf.writeInt((int) (raf.length() / NODE_SIZE_OCTET));
-
-					// créer (écrire dans le fichier binaire) l'enfant gauche de this à la fin du
-					// fichier
 					newNodeWriter(raf, stagiaire);
-
 				} else {
 					Node leftNode = nodeReader(raf, this.leftChild * NODE_SIZE_OCTET);
 					leftNode.addNode(raf, stagiaire);
@@ -85,6 +78,7 @@ public class Node {
 				if (this.rightChild == -1) {
 					raf.seek(raf.getFilePointer() - RIGHT_CHILD_POSITION);
 					raf.writeInt((int) (raf.length() / NODE_SIZE_OCTET));
+					newNodeWriter(raf, stagiaire);
 				} else {
 					Node rightNode = nodeReader(raf, this.rightChild * NODE_SIZE_OCTET);
 					rightNode.addNode(raf, stagiaire);
@@ -93,6 +87,7 @@ public class Node {
 				if (doublon == -1) {
 					raf.seek(raf.getFilePointer() - DOUBLON_POSITION);
 					raf.writeInt((int) (raf.length() / NODE_SIZE_OCTET));
+					newNodeWriter(raf, stagiaire);
 				} else {
 					Node doublonNode = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
 					doublonNode.addNode(raf, stagiaire);
@@ -105,25 +100,30 @@ public class Node {
 
 	// parcours infixe (affichage par ordre alphabetique)
 	// le parcours infixe Gauche Node Droit
-	public void read(RandomAccessFile raf) {
-		try {
+	public void read(RandomAccessFile raf, List<Stagiaire> stagiaires) {
 		if (this.leftChild != -1) {
-			raf.seek(raf.getFilePointer() - LEFT_CHILD_POSITION);
-			nodeReader(raf, raf.readInt()* NODE_SIZE_OCTET).read(raf);
+		//	System.out.println("gauche");
+			Node leftNode = nodeReader(raf, this.leftChild * NODE_SIZE_OCTET);
+			if (leftNode != null) {
+				leftNode.read(raf, stagiaires);
+			}
 		}
-		System.out.println(this.key.toString());
+		System.out.println(this.key.toString() + ", LC : " + this.leftChild + ", RC : " + this.rightChild + ", D : "
+				+ this.doublon);
+		stagiaires.add(this.key);
 		if (this.doublon != -1) {
-			raf.seek(raf.getFilePointer() - DOUBLON_POSITION);
-			nodeReader(raf, raf.readInt()* NODE_SIZE_OCTET).read(raf);
-			System.out.println(this.key.toString());
+		//	System.out.println("doublon");
+			Node doublonNode = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
+			if (doublonNode != null) {
+				doublonNode.read(raf, stagiaires);
+			}
 		}
-		
 		if (this.rightChild != -1) {
-			raf.seek(raf.getFilePointer() - RIGHT_CHILD_POSITION);
-			nodeReader(raf, raf.readInt()* NODE_SIZE_OCTET).read(raf);
-		}
-		} catch(IOException e) {
-			e.printStackTrace();
+		//	System.out.println("droite");
+			Node rightNode = nodeReader(raf, this.rightChild * NODE_SIZE_OCTET);
+			if (rightNode != null) {
+				rightNode.read(raf, stagiaires);
+			}
 		}
 	}
 
@@ -257,9 +257,10 @@ public class Node {
 			doublon = raf.readInt();
 
 			// affichage en console
-			//System.out.println(name + firstName + postalCode + promo + year + leftChild + rightChild + doublon);
+			// System.out.println(name + firstName + postalCode + promo + year + leftChild +
+			// rightChild + doublon);
 
-			Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+			Stagiaire stagiaire = new Stagiaire(name.trim(), firstName.trim(), postalCode.trim(), promo.trim(), year);
 			newNode = new Node(stagiaire, leftChild, rightChild, doublon);
 
 		} catch (IOException e) {
@@ -267,6 +268,12 @@ public class Node {
 		}
 
 		return newNode;
+	}
+
+	@Override
+	public String toString() {
+		return "Node [key=" + key + ", leftChild=" + leftChild + ", rightChild=" + rightChild + ", doublon=" + doublon
+				+ "]";
 	}
 
 }

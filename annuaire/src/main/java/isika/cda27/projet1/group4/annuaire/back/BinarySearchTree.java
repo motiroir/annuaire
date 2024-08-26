@@ -3,6 +3,8 @@ package isika.cda27.projet1.group4.annuaire.back;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BinarySearchTree {
 	Node root;
@@ -39,11 +41,13 @@ public class BinarySearchTree {
 	//annuaire dans le main à partir d'un fichier texte
 	public void ajouter(Stagiaire stagiaire) {
 		try {
-			if (raf.length()==0) {
+			//System.out.println("dbt : taille fichier = " + raf.length());
+			if (raf.length()== 0) {
 				this.root = new Node(stagiaire);
 				this.root.newNodeWriter(raf, stagiaire);
 			} else {
 				this.root = this.root.nodeReader(raf, 0);
+				//System.out.println("racine :" + this.root);
 				this.root.addNode(raf, stagiaire);
 			}
 		} catch (IOException e) {
@@ -53,17 +57,20 @@ public class BinarySearchTree {
 	
 
 	// affichage par ordre alphabetique
-	public void affichage() {
+	public List<Stagiaire> affichage() {
+		List<Stagiaire> stagiaires = new ArrayList<>();
 		try {
-			if (raf.length()==0) {
+			if (raf.length()== 0) {
 				System.out.println("L'arbre est vide");
 			} else {
-				this.root.read(raf);
+				this.root = this.root.nodeReader(raf, 0);
+				this.root.read(raf, stagiaires);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return stagiaires;
 	}
 
 //	// recherche d'un element dans l'arbre
