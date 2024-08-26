@@ -125,37 +125,48 @@ public class Node {
 	}
 
 	// recherche d'un noeud par sa cle
-	public Stagiaire searchStagiaire(Stagiaire searchedStagiaire) {
+	public Stagiaire searchStagiaire(RandomAccessFile raf, Stagiaire searchedStagiaire) {
 		if (this.key.getName().compareTo(searchedStagiaire.getName()) == 0) {
+			System.out.println("trouve");
 			return this.key;
 		} else if (this.key.getName().compareTo(searchedStagiaire.getName()) > 0) {
-			return this.leftChild.searchStagiaire(searchedStagiaire);
-		} else {
-			return this.rightChild.searchStagiaire(searchedStagiaire);
-		}
-	}
-
-	// suppression d'un noeud à partir de sa cle
-	// premiere etape recherche du noeud a supprimer
-	public Node delete(Stagiaire stagiaire) {
-		if (this.key.getName().compareTo(stagiaire.getName()) == 0) {
-
-			if (this.doublon != null) {
-				// Promouvoir le doublon pour remplacer le nœud actuel
-				this.key = this.doublon.getKey();
-				this.doublon = this.doublon.getDoublon();
-
+			if (this.leftChild == -1) {
+				return null;
 			} else {
-				// Si pas de doublon, on procède à la suppression normale
-				return this.deleteRoot();
+				System.out.println("cherche à gauche");
+				return nodeReader(raf, this.leftChild * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire);
 			}
-		} else if (this.key.getName().compareTo(stagiaire.getName()) > 0) {
-			this.leftChild = this.leftChild.delete(stagiaire);
 		} else {
-			this.rightChild = this.rightChild.delete(stagiaire);
+			if (this.leftChild == -1) {
+				return null;
+			} else {
+				System.out.println("cherche à droite");
+				return nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire);
+			}
 		}
-		return this;
 	}
+
+//	// suppression d'un noeud à partir de sa cle
+//	// premiere etape recherche du noeud a supprimer
+//	public Node delete(Stagiaire stagiaire) {
+//		if (this.key.getName().compareTo(stagiaire.getName()) == 0) {
+//
+//			if (this.doublon != null) {
+//				// Promouvoir le doublon pour remplacer le nœud actuel
+//				this.key = this.doublon.getKey();
+//				this.doublon = this.doublon.getDoublon();
+//
+//			} else {
+//				// Si pas de doublon, on procède à la suppression normale
+//				return this.deleteRoot();
+//			}
+//		} else if (this.key.getName().compareTo(stagiaire.getName()) > 0) {
+//			this.leftChild = this.leftChild.delete(stagiaire);
+//		} else {
+//			this.rightChild = this.rightChild.delete(stagiaire);
+//		}
+//		return this;
+//	}
 
 //	// methode de suppression
 //	// deuxieme etape suppression du noeud une fois trouve
@@ -208,14 +219,14 @@ public class Node {
 			raf.writeInt(-1);
 			raf.writeInt(-1);
 			raf.writeInt(-1);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public Node nodeReader(RandomAccessFile raf, int position) {
-		
+
 		Node newNode = null;
 
 		try {

@@ -43,6 +43,9 @@ public class App extends Application {
 		Scene scene = new Scene(new StackPane(listView), 640, 480);
 		stage.setScene(scene);
 		stage.show();
+		
+		System.out.println("\n"+searchTree.searchStagiaireInTree(stagiaires.get(3)));
+		
 	}
 
 	public static void main(String[] args) {
