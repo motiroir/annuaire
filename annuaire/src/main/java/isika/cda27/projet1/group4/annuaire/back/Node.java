@@ -135,27 +135,27 @@ public class Node {
 //		}
 //	}
 
-//	// suppression d'un noeud à partir de sa cle
-//	// premiere etape recherche du noeud a supprimer
-//	public Node delete(Stagiaire stagiaire) {
-//		if (this.key.getName().compareTo(stagiaire.getName()) == 0) {
-//
-//			if (this.doublon != null) {
-//				// Promouvoir le doublon pour remplacer le nœud actuel
-//				this.key = this.doublon.getKey();
-//				this.doublon = this.doublon.getDoublon();
-//
-//			} else {
-//				// Si pas de doublon, on procède à la suppression normale
-//				return this.deleteRoot();
-//			}
-//		} else if (this.key.getName().compareTo(stagiaire.getName()) > 0) {
-//			this.leftChild = this.leftChild.delete(stagiaire);
-//		} else {
-//			this.rightChild = this.rightChild.delete(stagiaire);
-//		}
-//		return this;
-//	}
+	// suppression d'un noeud à partir de sa cle
+	// premiere etape recherche du noeud a supprimer
+	public Node delete(Stagiaire stagiaire) {
+		if (this.key.getName().compareTo(stagiaire.getName()) == 0) {
+
+			if (this.doublon != null) {
+				// Promouvoir le doublon pour remplacer le nœud actuel
+				this.key = this.doublon.getKey();
+				this.doublon = this.doublon.getDoublon();
+
+			} else {
+				// Si pas de doublon, on procède à la suppression normale
+				return this.deleteRoot();
+			}
+		} else if (this.key.getName().compareTo(stagiaire.getName()) > 0) {
+			this.leftChild = this.leftChild.delete(stagiaire);
+		} else {
+			this.rightChild = this.rightChild.delete(stagiaire);
+		}
+		return this;
+	}
 
 //	// methode de suppression
 //	// deuxieme etape suppression du noeud une fois trouve
