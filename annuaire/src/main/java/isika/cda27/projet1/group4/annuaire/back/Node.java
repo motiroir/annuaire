@@ -153,7 +153,89 @@ public class Node {
 			}
 		}
 	}
+	
+	//méthode pour récupérer la position d'un noeud 
+	private int findNodeIndex(RandomAccessFile raf) {
+	    try {
+	        // Commencer la recherche à partir de la racine de l'arbre (index 0)
+	        return findNodeIndexHelper(raf, 0);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return -1; // Si le noeud n'est pas trouvé
+	}
 
+	private int findNodeIndexHelper(RandomAccessFile raf, int currentNodeIndex) throws IOException {
+	    // Lire le noeud actuel à la position spécifiée
+	    Node currentNode = nodeReader(raf, currentNodeIndex * NODE_SIZE_OCTET);
+	    // Comparer la clé du noeud actuel avec celle du noeud courant (this)
+	    if (currentNode.getKey().equals(this.key)) {
+	        return currentNodeIndex;
+	    }
+	    // Rechercher récursivement dans l'enfant gauche, si existant
+	    if (currentNode.getLeftChild() != -1) {
+	        int leftChildIndex = findNodeIndexHelper(raf, currentNode.getLeftChild());
+	        if (leftChildIndex != -1) {
+	            return leftChildIndex;
+	        }
+	    }
+	    // Rechercher récursivement dans l'enfant droit, si existant
+	    if (currentNode.getRightChild() != -1) {
+	        int rightChildIndex = findNodeIndexHelper(raf, currentNode.getRightChild());
+	        if (rightChildIndex != -1) {
+	            return rightChildIndex;
+	        }
+	    }
+	    // Si aucun noeud correspondant n'est trouvé, retourner -1
+	    return -1;
+	}
+	//méthode pour trouver le noeud parent d'un noeud sur le même principe
+	private int findParent(RandomAccessFile raf) {
+	    try {
+	        // Commencer la recherche à partir de la racine (index 0)
+	        return findParentHelper(raf, 0);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return -1; // Si le parent n'est pas trouvé
+	}
+
+	private int findParentHelper(RandomAccessFile raf, int currentNodeIndex) throws IOException {
+	    // Lire le noeud actuel à la position spécifiée
+	    Node currentNode = nodeReader(raf, currentNodeIndex * NODE_SIZE_OCTET);
+	    // Vérifier si le noeud courant (this) est l'enfant gauche du noeud actuel
+	    if (currentNode.getLeftChild() != -1) {
+	        Node leftChildNode = nodeReader(raf, currentNode.getLeftChild() * NODE_SIZE_OCTET);
+	        if (leftChildNode.getKey().equals(this.key)) {
+	            return currentNodeIndex;
+	        }
+	    }
+	    // Vérifier si le noeud courant (this) est l'enfant droit du noeud actuel
+	    if (currentNode.getRightChild() != -1) {
+	        Node rightChildNode = nodeReader(raf, currentNode.getRightChild() * NODE_SIZE_OCTET);
+	        if (rightChildNode.getKey().equals(this.key)) {
+	            return currentNodeIndex;
+	        }
+	    }
+	    // Rechercher récursivement dans l'enfant gauche, si existant
+	    if (currentNode.getLeftChild() != -1) {
+	        int parentIndex = findParentHelper(raf, currentNode.getLeftChild());
+	        if (parentIndex != -1) {
+	            return parentIndex;
+	        }
+	    }
+	    // Rechercher récursivement dans l'enfant droit, si existant
+	    if (currentNode.getRightChild() != -1) {
+	        int parentIndex = findParentHelper(raf, currentNode.getRightChild());
+	        if (parentIndex != -1) {
+	            return parentIndex;
+	        }
+	    }
+	    return -1; // Si aucun parent n'est trouvé
+	}
+	//méthode pour modifier un
+	
+	
 //	// suppression d'un noeud à partir de sa cle
 //	// premiere etape recherche du noeud a supprimer
 //	public Node delete(Stagiaire stagiaire) {

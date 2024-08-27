@@ -90,6 +90,7 @@ public class BinarySearchTree {
 		return stagiairesFound;
 	}
 
+	
 //	// suppression d'un element de l'arbre
 //	public void deleteInTree(Stagiaire stagiaire) {
 //		if (isEmpty()) {

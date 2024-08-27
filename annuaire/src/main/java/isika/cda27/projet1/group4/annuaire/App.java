@@ -50,6 +50,7 @@ public class App extends Application {
 		List<Stagiaire> stagiairesSearched = searchTree.searchStagiaireInTree(test);
 		for (Stagiaire stag : stagiairesSearched) {
             System.out.println(stag);
+    		
         }
 		
 	}
