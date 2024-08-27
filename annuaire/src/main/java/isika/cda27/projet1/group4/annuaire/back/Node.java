@@ -171,7 +171,7 @@ public class Node {
 //					// Si pas de doublon, on procède à la suppression normale
 
 			try {
-				int substituteNodePosition = this.deleteRoot(raf);
+				int substituteNodePosition = this.deleteRoot(raf, indexFinParent);
 				if (isLeftChild == true) {
 					raf.seek(indexFinParent - LEFT_CHILD_POSITION);
 					raf.writeInt(substituteNodePosition);
@@ -222,7 +222,7 @@ public class Node {
 	// methode de suppression
 	// deuxieme etape suppression du noeud une fois trouve
 	// le noeud a supprimer a ete trouve c'est "this"
-	private int deleteRoot(RandomAccessFile raf) {
+	private int deleteRoot(RandomAccessFile raf, long indexFinParent) {
 
 		// si le fils gauche est nul on retourne le fils droit
 		// si le fils droit est aussi null le noeud a supprimer sera remplace par null,
@@ -240,8 +240,8 @@ public class Node {
 		// on cherche son remplacant dans le sous arbre droit
 		Node rightNode = nodeReader(raf, this.rightChild * NODE_SIZE_OCTET);
 		int subsitutePosition=0;
+		searchSubstitute(raf, rightNode, indexFinParent);
 		try {
-			searchSubstitute(raf, rightNode, raf.getFilePointer());
 			subsitutePosition = (int) ((raf.getFilePointer() - NODE_SIZE_OCTET) / NODE_SIZE_OCTET);
 		} catch (IOException e) {
 			e.printStackTrace();
