@@ -2,6 +2,7 @@ package isika.cda27.projet1.group4.annuaire.back;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Node {
@@ -125,23 +126,30 @@ public class Node {
 	}
 
 	// recherche d'un noeud par sa cle
-	public Stagiaire searchStagiaire(RandomAccessFile raf, Stagiaire searchedStagiaire) {
+	public List<Stagiaire> searchStagiaire(RandomAccessFile raf, Stagiaire searchedStagiaire, List<Stagiaire> stagiaires) {
 		if (this.key.getName().compareTo(searchedStagiaire.getName()) == 0) {
-			System.out.println("trouve");
-			return this.key;
+//			System.out.println("trouve");
+			stagiaires.add(this.key);
+			if (this.doublon != -1) {
+//				System.out.println("doublon trouve");
+				return nodeReader(raf, this.doublon * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire,stagiaires);
+			}
+			return stagiaires;
 		} else if (this.key.getName().compareTo(searchedStagiaire.getName()) > 0) {
 			if (this.leftChild == -1) {
+//				System.out.println("non trouve");
 				return null;
 			} else {
-				System.out.println("cherche à gauche");
-				return nodeReader(raf, this.leftChild * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire);
+//				System.out.println("cherche à gauche de "+this.key.getName());
+				return nodeReader(raf, this.leftChild * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire,stagiaires);
 			}
 		} else {
-			if (this.leftChild == -1) {
+			if (this.rightChild == -1) {
+//				System.out.println("non trouve");
 				return null;
 			} else {
-				System.out.println("cherche à droite");
-				return nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire);
+//				System.out.println("cherche à droite de "+this.key.getName());
+				return nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire,stagiaires);
 			}
 		}
 	}

@@ -74,20 +74,20 @@ public class BinarySearchTree {
 	}
 
 	// recherche d'un element dans l'arbre
-	public Stagiaire searchStagiaireInTree(Stagiaire searchedStagiaire) {
+	public List<Stagiaire> searchStagiaireInTree(Stagiaire searchedStagiaire) {
+		List<Stagiaire> stagiairesFound = new ArrayList<>();
 		try {
 			if (raf.length()== 0) {
 				System.out.println("L'arbre est vide");
-				return null;
 			} else {
 				this.root = this.root.nodeReader(raf, 0);
-				this.root.searchStagiaire(raf, searchedStagiaire);
+				this.root.searchStagiaire(raf, searchedStagiaire, stagiairesFound);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return searchedStagiaire;
+		return stagiairesFound;
 	}
 
 //	// suppression d'un element de l'arbre
