@@ -2,6 +2,7 @@ package isika.cda27.projet1.group4.annuaire.back;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -129,31 +130,34 @@ public class Node {
 	public List<Stagiaire> searchStagiaire(RandomAccessFile raf, Stagiaire searchedStagiaire,
 			List<Stagiaire> stagiaires) {
 		if (this.key.getName().compareTo(searchedStagiaire.getName()) == 0) {
-//				System.out.println("trouve");
+//			System.out.println("trouve");
 			stagiaires.add(this.key);
 			if (this.doublon != -1) {
-//					System.out.println("doublon trouve");
+//				System.out.println("doublon trouve");
 				return nodeReader(raf, this.doublon * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire,
 						stagiaires);
+
 			}
 			return stagiaires;
 		} else if (this.key.getName().compareTo(searchedStagiaire.getName()) > 0) {
 			if (this.leftChild == -1) {
-//					System.out.println("non trouve");
+
+//				System.out.println("non trouve");
 				return null;
 			} else {
-//					System.out.println("cherche à gauche de "+this.key.getName());
+//				System.out.println("cherche à gauche de "+this.key.getName());
 				return nodeReader(raf, this.leftChild * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire,
 						stagiaires);
 			}
 		} else {
 			if (this.rightChild == -1) {
-//					System.out.println("non trouve");
+//				System.out.println("non trouve");
 				return null;
 			} else {
-//					System.out.println("cherche à droite de "+this.key.getName());
+//				System.out.println("cherche à droite de "+this.key.getName());
 				return nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).searchStagiaire(raf, searchedStagiaire,
 						stagiaires);
+
 			}
 		}
 	}
@@ -239,7 +243,7 @@ public class Node {
 		// si le noeud a deux fils
 		// on cherche son remplacant dans le sous arbre droit
 		Node rightNode = nodeReader(raf, this.rightChild * NODE_SIZE_OCTET);
-		int subsitutePosition=0;
+		int subsitutePosition = 0;
 		searchSubstitute(raf, rightNode, indexFinParent);
 		try {
 			subsitutePosition = (int) ((raf.getFilePointer() - NODE_SIZE_OCTET) / NODE_SIZE_OCTET);
