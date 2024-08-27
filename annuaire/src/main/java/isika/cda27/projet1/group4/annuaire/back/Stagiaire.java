@@ -10,11 +10,11 @@ public class Stagiaire {
 	public static final int STAGIAIRE_SIZE_OCTET = NAME_SIZE * 2 + FIRSTNAME_SIZE * 2 + POSTALCODE_SIZE * 2
 			+ PROMO_SIZE * 2 + YEAR_SIZE * 4;
 
-	private String name;
-	private String firstName;
-	private String postalCode;
-	private String promo;
-	private int year;
+	public String name;
+	public String firstName;
+	public String postalCode;
+	public String promo;
+	public int year;
 
 	public Stagiaire(String name, String firstName, String postalCode, String promo, int year) {
 		super();
