@@ -26,49 +26,32 @@ public class App extends Application {
 
 		Annuaire annuaire = new Annuaire();
 		annuaire.lireFichier("src/main/resources/test.txt");
-
+		
 		// on créé un nouvel arbre
 		BinarySearchTree searchTree = new BinarySearchTree();
 
 //		for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
 //			searchTree.ajouter(annuaire.getStagiaires().get(i));
 //		}
-
+		
 		ListView<Stagiaire> listView = new ListView<Stagiaire>();
 		List<Stagiaire> stagiaires = searchTree.affichage();
-
-		searchTree.deleteInTree(stagiaires.get(2));
-
-		searchTree.affichage();
-		
 		for (Stagiaire stag : stagiaires) {
 			listView.getItems().add(stag);
 		}
-
-//		// test recherche d'un stagiaire par nom
-//		Stagiaire test = new Stagiaire("ROIGNANT", "", "", "", 0);
-//		System.out.println("\nTest du stagiaire à trouver sur " + test.getName());
-//		List<Stagiaire> stagiairesSearched = searchTree.searchStagiaireInTree(test);
-//		for (Stagiaire stag : stagiairesSearched) {
-//			System.out.println(stag);
-//		}
 
 		Scene scene = new Scene(new StackPane(listView), 640, 480);
 		stage.setScene(scene);
 		stage.show();
 		
-<<<<<<< HEAD
-=======
 		// test recherche d'un stagiaire par nom
 		Stagiaire test = new Stagiaire("ROIGNANT","","","",0);
 		
 		List<Stagiaire> stagiairesSearched = searchTree.searchStagiaireInTree(test);
 		for (Stagiaire stag : stagiairesSearched) {
             System.out.println(stag);
-    		
         }
 		
->>>>>>> master
 	}
 
 	public static void main(String[] args) {
