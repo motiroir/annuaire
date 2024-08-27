@@ -67,7 +67,6 @@ public class BinarySearchTree {
 				this.root.read(raf, stagiaires);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return stagiaires;
@@ -97,10 +96,11 @@ public class BinarySearchTree {
 				System.out.println("l'arbre est vide");
 			} else {
 				this.root = this.root.nodeReader(raf, 0);
-				this.root.delete(raf, stagiaire, 0, false);
+				this.root.delete(raf, stagiaire, Node.NODE_SIZE_OCTET, false);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 }
