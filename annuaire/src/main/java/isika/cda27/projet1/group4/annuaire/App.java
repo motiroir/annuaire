@@ -57,6 +57,18 @@ public class App extends Application {
 		stage.setScene(scene);
 		stage.show();
 		
+<<<<<<< HEAD
+=======
+		// test recherche d'un stagiaire par nom
+		Stagiaire test = new Stagiaire("ROIGNANT","","","",0);
+		
+		List<Stagiaire> stagiairesSearched = searchTree.searchStagiaireInTree(test);
+		for (Stagiaire stag : stagiairesSearched) {
+            System.out.println(stag);
+    		
+        }
+		
+>>>>>>> master
 	}
 
 	public static void main(String[] args) {
