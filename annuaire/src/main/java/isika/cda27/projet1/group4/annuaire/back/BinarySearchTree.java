@@ -97,7 +97,7 @@ public class BinarySearchTree {
 				System.out.println("l'arbre est vide");
 			} else {
 				this.root = this.root.nodeReader(raf, 0);
-				this.root.delete(raf, stagiaire, 0, false);
+				this.root.delete(raf, stagiaire, Node.NODE_SIZE_OCTET, false);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

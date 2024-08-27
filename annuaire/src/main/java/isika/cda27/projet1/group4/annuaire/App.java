@@ -44,7 +44,7 @@ public class App extends Application {
 		for (Stagiaire stag : stagiaires) {
 			listView.getItems().add(stag);
 		}
-//
+
 //		// test recherche d'un stagiaire par nom
 //		Stagiaire test = new Stagiaire("ROIGNANT", "", "", "", 0);
 //		System.out.println("\nTest du stagiaire à trouver sur " + test.getName());
@@ -56,14 +56,6 @@ public class App extends Application {
 		Scene scene = new Scene(new StackPane(listView), 640, 480);
 		stage.setScene(scene);
 		stage.show();
-		
-		// test recherche d'un stagiaire par nom
-		Stagiaire test = new Stagiaire("ROIGNANT","","","",0);
-		
-		List<Stagiaire> stagiairesSearched = searchTree.searchStagiaireInTree(test);
-		for (Stagiaire stag : stagiairesSearched) {
-            System.out.println(stag);
-        }
 		
 	}
 
