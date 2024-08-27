@@ -73,22 +73,34 @@ public class BinarySearchTree {
 		return stagiaires;
 	}
 
-//	// recherche d'un element dans l'arbre
-//	public Stagiaire searchStagiaireInTree(Stagiaire searchedStagiaire) {
-//		if (isEmpty()) {
-//			System.out.println("L'arbre est vide");
-//			return null;
-//		} else {
-//			return this.root.searchStagiaire(searchedStagiaire);
-//		}
-//	}
-//
-//	// suppression d'un element de l'arbre
-//	public void deleteInTree(Stagiaire stagiaire) {
-//		if (isEmpty()) {
-//			System.out.println("l'arbre est vide");
-//		} else {
-//			this.root.delete(stagiaire);
-//		}
-//	}
+	// recherche d'un element dans l'arbre
+		public List<Stagiaire> searchStagiaireInTree(Stagiaire searchedStagiaire) {
+			List<Stagiaire> stagiairesFound = new ArrayList<>();
+			try {
+				if (raf.length()== 0) {
+					System.out.println("L'arbre est vide");
+				} else {
+					this.root = this.root.nodeReader(raf, 0);
+					this.root.searchStagiaire(raf, searchedStagiaire, stagiairesFound);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return stagiairesFound;
+		}
+
+	// suppression d'un element de l'arbre
+	public void deleteInTree(Stagiaire stagiaire) {
+		try {
+			if (raf.length()== 0) {
+				System.out.println("l'arbre est vide");
+			} else {
+				this.root = this.root.nodeReader(raf, 0);
+				this.root.delete(raf, stagiaire, 0, false);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
