@@ -26,11 +26,11 @@ public class HomePage extends BorderPane {
 		Header header = new Header(app, stage, "Liste des Stagiaires");
 		this.setTop(header);
 
+		//marges
 		VBox leftBox = new VBox();
 		VBox rightBox = new VBox();
 		leftBox.setPrefWidth(150);
 		rightBox.setPrefWidth(150);
-
 		this.setLeft(leftBox);
 		this.setRight(rightBox);
 

@@ -52,7 +52,7 @@ public class Footer extends HBox {
 	            Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
 	            if (selectedStagiaire != null) {
 	                // Supprimer le stagiaire
-	                //app.myDAO.removeStagiaire(selectedStagiaire);
+	                app.myDAO.removeStagiaire(selectedStagiaire);
 	                myObservableArrayList.setAll(app.myDAO.getStagiaires());
 	            }
 	        }
