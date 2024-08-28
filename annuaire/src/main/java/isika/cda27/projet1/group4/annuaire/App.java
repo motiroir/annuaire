@@ -26,9 +26,9 @@ public class App extends Application {
 		BinarySearchTree searchTree = new BinarySearchTree();
 
 		//Reconstruire le fichier binaire depuis le fichier txt
-//		for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
-//			searchTree.ajouter(annuaire.getStagiaires().get(i));
-//		}
+		for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
+			searchTree.ajouter(annuaire.getStagiaires().get(i));
+		}
 
 		ListView<Stagiaire> listView = new ListView<Stagiaire>();
 		List<Stagiaire> stagiaires = searchTree.affichage();
