@@ -1,35 +1,36 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import isika.cda27.projet1.group4.annuaire.back.BinarySearchTree;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 
 public class AnnuaireDAO {
-	public ArrayList<Stagiaire> stagiaires;
+	public BinarySearchTree searchTree;
+	
 
 	public AnnuaireDAO() {
 		super();
-		stagiaires = new ArrayList<Stagiaire>();
-		BinarySearchTree searchTree = new BinarySearchTree();
-		stagiaires.addAll(searchTree.affichage());
-
+		this.searchTree = new BinarySearchTree();
+		
 	}
 
-	public ArrayList<Stagiaire> getStagiaires() {
-		return stagiaires;
+	public List<Stagiaire> getStagiaires() {
+		return searchTree.affichage();
 	}
-
-	public void setStagiaires(ArrayList<Stagiaire> stagiaires) {
-		this.stagiaires = stagiaires;
-	}
-
-	public void addStagiaire(Stagiaire stagiaire) {
-		stagiaires.add(stagiaire);
-	}
-
-	public void removeStagiaire(Stagiaire stagiaire) {
-		stagiaires.remove(stagiaire);
-	}
-
 }
+
+//	public void setStagiaires() {
+//		this.searchTree = stagiaires;
+//	}
+//
+//	public void addStagiaire(Stagiaire stagiaire) {
+//		searchTree.add(stagiaire);
+//	}
+//
+//	public void removeStagiaire(Stagiaire stagiaire) {
+//		searchTree.remove(stagiaire);
+//	}
+//
+//}
