@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import isika.cda27.projet1.group4.annuaire.back.Annuaire;
-import isika.cda27.projet1.group4.annuaire.back.BinaryFileManager;
 import isika.cda27.projet1.group4.annuaire.back.BinarySearchTree;
 import isika.cda27.projet1.group4.annuaire.back.Node;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
