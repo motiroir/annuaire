@@ -29,6 +29,8 @@ public class AddForm extends BorderPane {
 
 		// ajout du header
 		this.setTop(new Header(app, stage, "Ajouter un stagiaire"));
+		// Masquer le champ de recherche
+	    this.setSearchVisible(false); 
 		
 		//marges sur les côtés
 		VBox leftBox = new VBox();
@@ -152,6 +154,11 @@ public class AddForm extends BorderPane {
 			}
 		});
 
+	}
+	public void setSearchVisible(boolean visible) {
+	    // Trouver le Header et modifier la visibilité du champ de recherche
+	    Header header = (Header) this.getTop();
+	    header.getSearchBox().setVisible(visible);
 	}
 
 }

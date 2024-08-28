@@ -27,6 +27,24 @@
     -fx-border-width: 1px; /* Largeur du contour */
 }
 
+/* Style pour le bouton de recherche avec une icône */
+.button-search {
+    -fx-background-color: transparent; /* Pas de fond pour les icônes */
+    -fx-padding: 0; /* Pas de padding pour une icône */
+    -fx-pref-width: 24px; /* Largeur fixe pour l'icône */
+    -fx-pref-height: 24px; /* Hauteur fixe pour l'icône */
+    -fx-border-width: 0; /* Pas de bordure */
+}
+
+/* Style pour le bouton de réinitialisation avec une icône */
+.button-reset {
+    -fx-background-color: transparent; /* Pas de fond pour les icônes */
+    -fx-padding: 0; /* Pas de padding pour une icône */
+    -fx-pref-width: 24px; /* Largeur fixe pour l'icône */
+    -fx-pref-height: 24px; /* Hauteur fixe pour l'icône */
+    -fx-border-width: 0; /* Pas de bordure */
+}
+
 /* Labels */
 .label {
     -fx-font-size: 14px;

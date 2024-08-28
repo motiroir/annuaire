@@ -18,6 +18,8 @@ public class UserConnexion extends BorderPane {
 
 		// ajout du header
 		this.setTop(new Header(app, stage, "Connexion"));
+		// Masquer le champ de recherche
+	    this.setSearchVisible(false); 
 
 		// gridpane au centre non rempli
 		GridPane gridpane = new GridPane();
@@ -34,6 +36,12 @@ public class UserConnexion extends BorderPane {
 		// Lien avec le css
 		this.scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 
+	}
+	
+	public void setSearchVisible(boolean visible) {
+	    // Trouver le Header et modifier la visibilité du champ de recherche
+	    Header header = (Header) this.getTop();
+	    header.getSearchBox().setVisible(visible);
 	}
 
 }

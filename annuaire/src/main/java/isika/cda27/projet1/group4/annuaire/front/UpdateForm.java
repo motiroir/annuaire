@@ -31,7 +31,9 @@ public class UpdateForm extends BorderPane {
 
 		// ajout du header
 		this.setTop(new Header(app, stage, "Modifier un stagiaire"));
-		
+		// Masquer le champ de recherche
+	    this.setSearchVisible(false);
+	    
 		//marges sur les côtés
 		VBox leftBox = new VBox();
 		VBox rightBox = new VBox();
@@ -163,6 +165,12 @@ public class UpdateForm extends BorderPane {
 			}
 		});
 
+	}
+	
+	public void setSearchVisible(boolean visible) {
+	    // Trouver le Header et modifier la visibilité du champ de recherche
+	    Header header = (Header) this.getTop();
+	    header.getSearchBox().setVisible(visible);
 	}
 	
 	
