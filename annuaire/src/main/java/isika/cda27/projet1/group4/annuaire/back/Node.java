@@ -393,9 +393,22 @@ public class Node {
 		// Lire le noeud actuel à la position spécifiée
 		Node currentNode = nodeReader(raf, currentNodeIndex * NODE_SIZE_OCTET);
 		// Comparer la clé du noeud actuel avec celle du noeud courant (this)
-		if (currentNode.getKey().getName().compareToIgnoreCase(this.key.getName()) == 0) {
-			return currentNodeIndex;
-		}
+		 if (currentNode.getKey().getName().compareToIgnoreCase(this.key.getName()) == 0) {
+		        // Si les noms correspondent, vérifier si les objets sont égaux avec equals()
+		        if (currentNode.getKey().equals(this.key)) {
+		            return currentNodeIndex;
+		        } else {
+		            // Parcourir les doublons pour trouver l'exacte correspondance avec equals()
+		            int doublonIndex = currentNode.getDoublon();
+		            while (doublonIndex != -1) {
+		                Node doublonNode = nodeReader(raf, doublonIndex * NODE_SIZE_OCTET);
+		                if (doublonNode.getKey().equals(this.key)) {
+		                    return doublonIndex;
+		                }
+		                doublonIndex = doublonNode.getDoublon();
+		            }
+		        }
+		    }
 		// Rechercher récursivement dans l'enfant gauche, si existant
 		if (currentNode.getLeftChild() != -1) {
 			int leftChildIndex = findNodeIndexHelper(raf, currentNode.getLeftChild());
