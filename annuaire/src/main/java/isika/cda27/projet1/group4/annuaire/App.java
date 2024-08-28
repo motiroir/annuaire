@@ -34,7 +34,7 @@ public class App extends Application {
 		List<Stagiaire> stagiaires = searchTree.affichage();
 
 		
-		//searchTree.deleteInTree(stagiaires.get(3));
+		//searchTree.deleteInTree(stagiaires.get(9));
 		searchTree.affichage();
 		
 

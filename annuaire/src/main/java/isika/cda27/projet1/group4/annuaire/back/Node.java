@@ -213,14 +213,14 @@ public class Node {
 		// Vérifier si le noeud courant (this) est l'enfant gauche du noeud actuel
 		if (currentNode.getLeftChild() != -1) {
 			Node leftChildNode = nodeReader(raf, currentNode.getLeftChild() * NODE_SIZE_OCTET);
-			if (leftChildNode.getKey().getName().compareTo(this.key.getName()) ==0) {
+			if (leftChildNode.getKey().getName().compareTo(this.key.getName()) == 0) {
 				return currentNodeIndex;
 			}
 		}
 		// Vérifier si le noeud courant (this) est l'enfant droit du noeud actuel
 		if (currentNode.getRightChild() != -1) {
 			Node rightChildNode = nodeReader(raf, currentNode.getRightChild() * NODE_SIZE_OCTET);
-			if (rightChildNode.getKey().getName().compareTo(this.key.getName()) ==0) {
+			if (rightChildNode.getKey().getName().compareTo(this.key.getName()) == 0) {
 				return currentNodeIndex;
 			}
 		}
@@ -245,14 +245,27 @@ public class Node {
 	// premiere etape recherche du noeud a supprimer
 	public int delete(RandomAccessFile raf, Stagiaire stagiaire) {
 		if (this.key.getName().compareTo(stagiaire.getName()) == 0) {
-//						if (this.doublon != -1) {
+			// gestion des doublons
+			if (this.doublon != -1) {
+				int indexNoeud = this.findNodeIndex(raf);
+				if (indexNoeud != -1) {
+					try {
+						raf.seek((indexNoeud + 1) * NODE_SIZE_OCTET - DOUBLON_POSITION);
+						raf.writeInt(-1);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
 //							// Promouvoir le doublon pour remplacer le nœud actuel
 //							this.key = this.doublon.getKey();
 //							this.doublon = this.doublon.getDoublon();
-//						} else {
-						
-			// Si pas de doublon, on procède à la suppression normale
-			return this.deleteRoot(raf);
+			} else {
+
+				// Si pas de doublon, on procède à la suppression normale
+				return this.deleteRoot(raf);
+			}
 		} else if (this.key.getName().compareTo(stagiaire.getName()) > 0) {
 			nodeReader(raf, this.leftChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
 		} else {
@@ -269,9 +282,9 @@ public class Node {
 		if (this.leftChild == -1) {
 			int position = this.findNodeIndex(raf);
 			int indexParent = this.findParent(raf);
-			Node parent= null;
-			if (indexParent!=-1) {
-				parent = nodeReader(raf, indexParent*NODE_SIZE_OCTET);
+			Node parent = null;
+			if (indexParent != -1) {
+				parent = nodeReader(raf, indexParent * NODE_SIZE_OCTET);
 				if (parent.leftChild == position) {
 					try {
 						raf.seek((indexParent + 1) * NODE_SIZE_OCTET - LEFT_CHILD_POSITION);
@@ -298,9 +311,9 @@ public class Node {
 		if (this.rightChild == -1) {
 			int position = this.findNodeIndex(raf);
 			int indexParent = this.findParent(raf);
-			Node parent= null;
-			if (indexParent!=-1) {
-				parent = nodeReader(raf, indexParent*NODE_SIZE_OCTET);
+			Node parent = null;
+			if (indexParent != -1) {
+				parent = nodeReader(raf, indexParent * NODE_SIZE_OCTET);
 				if (parent.leftChild == position) {
 					try {
 						raf.seek((indexParent + 1) * NODE_SIZE_OCTET - LEFT_CHILD_POSITION);
@@ -330,7 +343,7 @@ public class Node {
 
 		int indexPositionARemplacer = this.findNodeIndex(raf);
 		Stagiaire stagiaireSubstitute = substitute.key;
-		
+
 		// on supprime le noeud substitut original puisqu'il a pris la place du noeud
 		// supprimé
 		// on se place dans le sous-arbre droit dans le quel on a été cherché le
@@ -340,7 +353,7 @@ public class Node {
 		// c'est plus court)
 		rightNode.delete(raf, stagiaireSubstitute);// TODO : adapter delete
 		// on remplace le stagiaire à supprimer par le stagiaire remplaçant
-		
+
 		stagiaireWriter(raf, stagiaireSubstitute, indexPositionARemplacer);
 		// on revoie la position du substitut
 		return indexPositionARemplacer;
