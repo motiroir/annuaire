@@ -52,6 +52,21 @@ public class Stagiaire {
     }
 
     /**
+     * Crée une instance de Stagiaire avec uniquement le nom fourni.
+     * Les autres champs sont initialisés avec des valeurs par défaut.
+     *
+     * @param name Le nom du stagiaire.
+     */
+    public Stagiaire(String name) {
+        super();
+        this.name = name;
+        this.firstName = "";
+        this.postalCode = "";
+        this.promo = "";
+        this.year = 0;
+    }
+
+    /**
      * Retourne une chaîne de caractères représentant l'objet Stagiaire.
      *
      * @return Une chaîne de caractères contenant les informations du stagiaire.
