@@ -19,18 +19,15 @@ public class AnnuaireDAO {
 	public List<Stagiaire> getStagiaires() {
 		return searchTree.affichage();
 	}
-}
 
-//	public void setStagiaires() {
-//		this.searchTree = stagiaires;
-//	}
-//
-//	public void addStagiaire(Stagiaire stagiaire) {
-//		searchTree.add(stagiaire);
-//	}
-//
-//	public void removeStagiaire(Stagiaire stagiaire) {
-//		searchTree.remove(stagiaire);
-//	}
-//
-//}
+	public void addStagiaire(Stagiaire stagiaire) {
+		searchTree.ajouter(stagiaire);
+	}
+	
+	public void removeStagiaire(Stagiaire stagiaire) {
+	    searchTree.deleteInTree(stagiaire);
+	}
+	public void updateStagiaire(Stagiaire oldStagiaire, Stagiaire newStagiaire) {
+	    searchTree.updateInTree(oldStagiaire, newStagiaire);
+	}
+}
