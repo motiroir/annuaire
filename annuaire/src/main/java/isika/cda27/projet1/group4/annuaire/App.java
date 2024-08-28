@@ -56,31 +56,15 @@ public class App extends Application {
 		myObservableArrayList = FXCollections.observableArrayList(this.myDAO.getStagiaires());
 //		System.out.println(myDAO);
 
-		// on créé un nouvel arbre
-		// BinarySearchTree searchTree = new BinarySearchTree();
+//		 on créé un nouvel arbre
+//		 BinarySearchTree searchTree = new BinarySearchTree();
 
-		for (int i = 0; i < myDAO.getStagiaires().size(); i++) {
-			System.out.println(myDAO.getStagiaires().get(i));
-		}
+//		for (int i = 0; i < myDAO.getStagiaires().size(); i++) {
+//			System.out.println(myDAO.getStagiaires().get(i));
+//		}
 
-//		ListView<Stagiaire> listView = new ListView<Stagiaire>();
-//		List<Stagiaire> stagiaires = searchTree.affichage();
-//
-//		searchTree.deleteInTree(stagiaires.get(2));
-//
-//		searchTree.affichage();
-//		
-//		for (Stagiaire stag : stagiaires) {
-//			listView.getItems().add(stag);
-//		}
-//
-//		// test recherche d'un stagiaire par nom
-//		Stagiaire test = new Stagiaire("ROIGNANT", "", "", "", 0);
-//		System.out.println("\nTest du stagiaire à trouver sur " + test.getName());
-//		List<Stagiaire> stagiairesSearched = searchTree.searchStagiaireInTree(test);
-//		for (Stagiaire stag : stagiairesSearched) {
-//			System.out.println(stag);
-//		}
+
+		
 
 		// création du borderPane
 		BorderPane borderPane = new BorderPane();

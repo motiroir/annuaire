@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BinarySearchTree {
 	Node root;
-	RandomAccessFile raf;  
+	RandomAccessFile raf;
 
 	public BinarySearchTree() {
 		root = new Node(null);
@@ -37,66 +37,67 @@ public class BinarySearchTree {
 	}
 
 	// ajouter un element
-	//on utilise cette fonction pour créer l'arbre à l'aide d'une boucle sur une liste de stagiaires
-	//annuaire dans le main à partir d'un fichier texte
+	// on utilise cette fonction pour créer l'arbre à l'aide d'une boucle sur une
+	// liste de stagiaires
+	// annuaire dans le main à partir d'un fichier texte
 	public void ajouter(Stagiaire stagiaire) {
 		try {
-			//System.out.println("dbt : taille fichier = " + raf.length());
-			if (raf.length()== 0) {
+			// System.out.println("dbt : taille fichier = " + raf.length());
+			if (raf.length() == 0) {
 				this.root = new Node(stagiaire);
 				this.root.newNodeWriter(raf, stagiaire);
 			} else {
 				this.root = this.root.nodeReader(raf, 0);
-				//System.out.println("racine :" + this.root);
+				// System.out.println("racine :" + this.root);
 				this.root.addNode(raf, stagiaire);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
 
 	// affichage par ordre alphabetique
 	public List<Stagiaire> affichage() {
 		List<Stagiaire> stagiaires = new ArrayList<>();
 		try {
-			if (raf.length()== 0) {
+			if (raf.length() == 0) {
 				System.out.println("L'arbre est vide");
 			} else {
 				this.root = this.root.nodeReader(raf, 0);
 				this.root.read(raf, stagiaires);
 			}
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return stagiaires;
 	}
 
 	// recherche d'un element dans l'arbre
-		public List<Stagiaire> searchStagiaireInTree(Stagiaire searchedStagiaire) {
-			List<Stagiaire> stagiairesFound = new ArrayList<>();
-			try {
-				if (raf.length()== 0) {
-					System.out.println("L'arbre est vide");
-				} else {
-					this.root = this.root.nodeReader(raf, 0);
-					this.root.searchStagiaire(raf, searchedStagiaire, stagiairesFound);
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public List<Stagiaire> searchStagiaireInTree(Stagiaire searchedStagiaire) {
+		List<Stagiaire> stagiairesFound = new ArrayList<>();
+		try {
+			if (raf.length() == 0) {
+				System.out.println("L'arbre est vide");
+			} else {
+				this.root = this.root.nodeReader(raf, 0);
+				this.root.searchStagiaire(raf, searchedStagiaire, stagiairesFound);
 			}
-			return stagiairesFound;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return stagiairesFound;
+	}
 
 	// suppression d'un element de l'arbre
 	public void deleteInTree(Stagiaire stagiaire) {
 		try {
-			if (raf.length()== 0) {
+			if (raf.length() == 0) {
 				System.out.println("l'arbre est vide");
 			} else {
 				this.root = this.root.nodeReader(raf, 0);
-				this.root.delete(raf, stagiaire, Node.NODE_SIZE_OCTET, false);
+				this.root.delete(raf, stagiaire);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
