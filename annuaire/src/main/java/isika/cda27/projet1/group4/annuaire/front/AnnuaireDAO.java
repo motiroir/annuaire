@@ -20,11 +20,6 @@ public class AnnuaireDAO {
 		return searchTree.affichage();
 	}
 
-
-//	public void setStagiaires() {
-//		this.searchTree = stagiaires;
-//	}
-//
 	public void addStagiaire(Stagiaire stagiaire) {
 		searchTree.ajouter(stagiaire);
 	}
@@ -32,7 +27,7 @@ public class AnnuaireDAO {
 	public void removeStagiaire(Stagiaire stagiaire) {
 	    searchTree.deleteInTree(stagiaire);
 	}
-	public void updateStagiaire(Stagiaire stagiaire) {
-	    searchTree.updateInTree(stagiaire);
+	public void updateStagiaire(Stagiaire oldStagiaire, Stagiaire newStagiaire) {
+	    searchTree.updateInTree(oldStagiaire, newStagiaire);
 	}
 }
