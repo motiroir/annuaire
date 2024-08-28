@@ -1,14 +1,5 @@
 package isika.cda27.projet1.group4.annuaire;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.Date;
-import java.util.List;
-
-import isika.cda27.projet1.group4.annuaire.back.Annuaire;
-import isika.cda27.projet1.group4.annuaire.back.BinarySearchTree;
-import isika.cda27.projet1.group4.annuaire.back.Node;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
 import javafx.application.Application;
@@ -20,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -28,14 +18,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.lang.NumberFormatException;
 
 /**
  * JavaFX App
  */
-public class App extends Application {
+public class AppBis extends Application {
 
 	public AnnuaireDAO myDAO;
 	public ObservableList<Stagiaire> myObservableArrayList;
@@ -61,9 +50,6 @@ public class App extends Application {
 //		for (int i = 0; i < myDAO.getStagiaires().size(); i++) {
 //			System.out.println(myDAO.getStagiaires().get(i));
 //		}
-
-
-		
 
 		// création du borderPane
 		BorderPane borderPane = new BorderPane();
@@ -273,12 +259,44 @@ public class App extends Application {
 						stage.setScene(AddScene);
 						stage.show();
 
+						validateButton.setOnAction(new EventHandler<ActionEvent>() {
+							@Override
+							public void handle(ActionEvent event) {
+
+								// Récupérer les valeurs des champs
+								String name = nameTextfield.getText();
+								String firstName = firstnameTextfield.getText();
+								String postalCode = postalCodeTextfield.getText();
+								String promo = promoTextfield.getText();
+								String sYear = yearTextfield.getText();
+								int year =0;
+								
+									try {
+										year = Integer.parseInt(sYear);
+									} catch (NumberFormatException e) {
+										e.printStackTrace();
+									}
+							
+								// Créer un nouveau stagiaire
+								Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+
+								// Ajouter le stagiaire via le DAO
+								myDAO.addStagiaire(stagiaire);
+								myObservableArrayList.setAll(myDAO.getStagiaires());
+
+								// Revenir à la scène précédente
+								stage.setScene(secondeScene);
+
+							}
+
+						});
+
 						cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
-						@Override
-						public void handle(ActionEvent event) {
-						// Revenir à la scène 02
-						stage.setScene(secondeScene);
+							@Override
+							public void handle(ActionEvent event) {
+								// Revenir à la scène 02
+								stage.setScene(secondeScene);
 
 							}
 						});
@@ -286,11 +304,33 @@ public class App extends Application {
 					}
 
 				});
+
+				buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						// Récupérer le stagiaire sélectionné
+						Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
+
+						if (selectedStagiaire != null) {
+							// Supprimer le stagiaire
+							myDAO.removeStagiaire(selectedStagiaire);
+							System.out.println("stagiaire à supp " + selectedStagiaire);
+							myObservableArrayList.setAll(myDAO.getStagiaires());
+						}
+					}
+				});
+
 				buttonUpdate.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
 					public void handle(ActionEvent event) {
 
+/////           /////////////////////////////Récupérer le stagiaire sélectionné
+				Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
+				// on vérifie que le stagiaire selectionné n'est pas null 
+				if (selectedStagiaire != null) {
+					
+					
 						BorderPane UpdateBorderPane = new BorderPane();
 
 						// création de la Hbox header
@@ -316,27 +356,27 @@ public class App extends Application {
 						// remplir la GridPane avec les labels et les textfields
 
 						Label nameLabel = new Label(" Nom ");
-						TextField nameTextfield = new TextField();
+						TextField nameTextfield = new TextField(selectedStagiaire.getName());
 						gridpane.add(nameLabel, 0, 0); // (colonne/ligne)
 						gridpane.add(nameTextfield, 1, 0);
 
 						Label firstnameLabel = new Label(" Prénom ");
-						TextField firstnameTextfield = new TextField();
+						TextField firstnameTextfield = new TextField(selectedStagiaire.getFirstName());
 						gridpane.add(firstnameLabel, 0, 1); // (colonne/ligne)
 						gridpane.add(firstnameTextfield, 1, 1);
 
 						Label postalCodeLabel = new Label(" Département ");
-						TextField postalCodeTextfield = new TextField();
+						TextField postalCodeTextfield = new TextField(  selectedStagiaire.getPostalCode() );
 						gridpane.add(postalCodeLabel, 0, 2); // (colonne/ligne)
 						gridpane.add(postalCodeTextfield, 1, 2);
 
 						Label promoLabel = new Label(" Promotion ");
-						TextField promoTextfield = new TextField();
+						TextField promoTextfield = new TextField(selectedStagiaire.getPromo());
 						gridpane.add(promoLabel, 0, 3); // (colonne/ligne)
 						gridpane.add(promoTextfield, 1, 3);
 
 						Label yearLabel = new Label(" Année ");
-						TextField yearTextfield = new TextField();
+						TextField yearTextfield = new TextField(String.valueOf(selectedStagiaire.getYear()));
 						gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
 						gridpane.add(yearTextfield, 1, 4);
 
@@ -353,21 +393,62 @@ public class App extends Application {
 						Button validateButton = new Button(" Valider ");
 						hboxBottom.getChildren().add(validateButton);
 						hboxBottom.setMargin(validateButton, new Insets(10, 0, 30, 490));
-
+						
 						Scene UpdateScene = new Scene(UpdateBorderPane, 640, 480);
 						stage.setScene(UpdateScene);
 						stage.show();
+						
+						
+						 validateButton.setOnAction(new EventHandler<ActionEvent>() {
+				                @Override
+				                public void handle(ActionEvent event) {
+						
+						
+							
+							// Récupérer les valeurs des champs
+							String name = nameTextfield.getText();
+							String firstName = firstnameTextfield.getText();
+							String postalCode = postalCodeTextfield.getText();
+							String promo = promoTextfield.getText();
+							String sYear = yearTextfield.getText();
+							int year =0;
+							
+								try {
+									year = Integer.parseInt(sYear);
+								} catch (NumberFormatException e) {
+									e.printStackTrace();
+								}
+				        
+								// Créer un nouveau stagiaire
+								Stagiaire newStagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+								
+								// Appeler la méthode update du DAO
+				                myDAO.updateStagiaire(selectedStagiaire, newStagiaire);
+				                myObservableArrayList.setAll(myDAO.getStagiaires());
+				                
+												
+						
+				             // Revenir à la scène précédente
+			                    stage.setScene(secondeScene);
+						
+
+				                }
+				            });
 
 						cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
-						@Override
-						public void handle(ActionEvent event) {
-						// Revenir à la scène 02
-						stage.setScene(secondeScene);
+							@Override
+							public void handle(ActionEvent event) {
+								// Revenir à la scène 02
+								stage.setScene(secondeScene);
+
+						
+						
 
 							}
+				                
 						});
-
+				}
 					}
 				});
 

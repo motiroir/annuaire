@@ -169,7 +169,8 @@ public class Node {
 	// suppression d'un noeud à partir de sa cle
 	// premiere etape recherche du noeud a supprimer
 	public int delete(RandomAccessFile raf, Stagiaire stagiaire) {
-		if (this.key.getName().compareTo(stagiaire.getName()) == 0) {
+		System.out.println("this ? " + this);
+		if (this.key.getName().compareToIgnoreCase(stagiaire.getName()) == 0) {
 			// gestion des doublons
 			if (this.doublon != -1) {
 				int indexNoeud = this.findNodeIndex(raf);
@@ -185,9 +186,10 @@ public class Node {
 				// Si pas de doublon, on procède à la suppression normale
 				return this.deleteRoot(raf);
 			}
-		} else if (this.key.getName().compareTo(stagiaire.getName()) > 0) {
+		} else if (this.key.getName().compareToIgnoreCase(stagiaire.getName()) > 0) {
 			nodeReader(raf, this.leftChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
 		} else {
+			if(this.rightChild != -1)
 			nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
 		}
 		return this.findNodeIndex(raf);
