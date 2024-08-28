@@ -269,14 +269,14 @@ public class AppBis extends Application {
 								String postalCode = postalCodeTextfield.getText();
 								String promo = promoTextfield.getText();
 								String sYear = yearTextfield.getText();
-								int year =0;
-								
-									try {
-										year = Integer.parseInt(sYear);
-									} catch (NumberFormatException e) {
-										e.printStackTrace();
-									}
-							
+								int year = 0;
+
+								try {
+									year = Integer.parseInt(sYear);
+								} catch (NumberFormatException e) {
+									e.printStackTrace();
+								}
+
 								// Créer un nouveau stagiaire
 								Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
 
@@ -326,129 +326,119 @@ public class AppBis extends Application {
 					public void handle(ActionEvent event) {
 
 /////           /////////////////////////////Récupérer le stagiaire sélectionné
-				Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
-				// on vérifie que le stagiaire selectionné n'est pas null 
-				if (selectedStagiaire != null) {
-					
-					
-						BorderPane UpdateBorderPane = new BorderPane();
+						Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
+						// on vérifie que le stagiaire selectionné n'est pas null
+						if (selectedStagiaire != null) {
 
-						// création de la Hbox header
-						HBox hboxHeader = new HBox();
-						UpdateBorderPane.setTop(hboxHeader);
+							BorderPane UpdateBorderPane = new BorderPane();
 
-						// création du bouton connexion
-						Button buttonConnexion = new Button("  Connexion  ");
-						hboxHeader.getChildren().add(buttonConnexion);
-						hboxHeader.setMargin(buttonConnexion, new Insets(10, 10, 20, 540));
+							// création de la Hbox header
+							HBox hboxHeader = new HBox();
+							UpdateBorderPane.setTop(hboxHeader);
 
-						// création de la GridePane
-						GridPane gridpane = new GridPane();
-						UpdateBorderPane.setCenter(gridpane);
+							// création du bouton connexion
+							Button buttonConnexion = new Button("  Connexion  ");
+							hboxHeader.getChildren().add(buttonConnexion);
+							hboxHeader.setMargin(buttonConnexion, new Insets(10, 10, 20, 540));
 
-						// organisation :
-						gridpane.setVgap(20); // Espace vertical entre les lignes
-						gridpane.setHgap(0); // Espace horizontal entre les colonnes
+							// création de la GridePane
+							GridPane gridpane = new GridPane();
+							UpdateBorderPane.setCenter(gridpane);
 
-						// ajouter une marge intérieure sur tous les côtés du GridPane
-						gridpane.setPadding(new Insets(80));
+							// organisation :
+							gridpane.setVgap(20); // Espace vertical entre les lignes
+							gridpane.setHgap(0); // Espace horizontal entre les colonnes
 
-						// remplir la GridPane avec les labels et les textfields
+							// ajouter une marge intérieure sur tous les côtés du GridPane
+							gridpane.setPadding(new Insets(80));
 
-						Label nameLabel = new Label(" Nom ");
-						TextField nameTextfield = new TextField(selectedStagiaire.getName());
-						gridpane.add(nameLabel, 0, 0); // (colonne/ligne)
-						gridpane.add(nameTextfield, 1, 0);
+							// remplir la GridPane avec les labels et les textfields
 
-						Label firstnameLabel = new Label(" Prénom ");
-						TextField firstnameTextfield = new TextField(selectedStagiaire.getFirstName());
-						gridpane.add(firstnameLabel, 0, 1); // (colonne/ligne)
-						gridpane.add(firstnameTextfield, 1, 1);
+							Label nameLabel = new Label(" Nom ");
+							TextField nameTextfield = new TextField(selectedStagiaire.getName());
+							gridpane.add(nameLabel, 0, 0); // (colonne/ligne)
+							gridpane.add(nameTextfield, 1, 0);
 
-						Label postalCodeLabel = new Label(" Département ");
-						TextField postalCodeTextfield = new TextField(  selectedStagiaire.getPostalCode() );
-						gridpane.add(postalCodeLabel, 0, 2); // (colonne/ligne)
-						gridpane.add(postalCodeTextfield, 1, 2);
+							Label firstnameLabel = new Label(" Prénom ");
+							TextField firstnameTextfield = new TextField(selectedStagiaire.getFirstName());
+							gridpane.add(firstnameLabel, 0, 1); // (colonne/ligne)
+							gridpane.add(firstnameTextfield, 1, 1);
 
-						Label promoLabel = new Label(" Promotion ");
-						TextField promoTextfield = new TextField(selectedStagiaire.getPromo());
-						gridpane.add(promoLabel, 0, 3); // (colonne/ligne)
-						gridpane.add(promoTextfield, 1, 3);
+							Label postalCodeLabel = new Label(" Département ");
+							TextField postalCodeTextfield = new TextField(selectedStagiaire.getPostalCode());
+							gridpane.add(postalCodeLabel, 0, 2); // (colonne/ligne)
+							gridpane.add(postalCodeTextfield, 1, 2);
 
-						Label yearLabel = new Label(" Année ");
-						TextField yearTextfield = new TextField(String.valueOf(selectedStagiaire.getYear()));
-						gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
-						gridpane.add(yearTextfield, 1, 4);
+							Label promoLabel = new Label(" Promotion ");
+							TextField promoTextfield = new TextField(selectedStagiaire.getPromo());
+							gridpane.add(promoLabel, 0, 3); // (colonne/ligne)
+							gridpane.add(promoTextfield, 1, 3);
 
-						// création de la Hbox Bottom
-						HBox hboxBottom = new HBox();
-						UpdateBorderPane.setBottom(hboxBottom);
+							Label yearLabel = new Label(" Année ");
+							TextField yearTextfield = new TextField(String.valueOf(selectedStagiaire.getYear()));
+							gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
+							gridpane.add(yearTextfield, 1, 4);
 
-						// création du bouton Annuler
-						Button cancelButton = new Button(" Annuler ");
-						hboxBottom.getChildren().add(cancelButton);
-						hboxBottom.setMargin(cancelButton, new Insets(10, 0, 30, 10));
+							// création de la Hbox Bottom
+							HBox hboxBottom = new HBox();
+							UpdateBorderPane.setBottom(hboxBottom);
 
-						// création du bouton valider
-						Button validateButton = new Button(" Valider ");
-						hboxBottom.getChildren().add(validateButton);
-						hboxBottom.setMargin(validateButton, new Insets(10, 0, 30, 490));
-						
-						Scene UpdateScene = new Scene(UpdateBorderPane, 640, 480);
-						stage.setScene(UpdateScene);
-						stage.show();
-						
-						
-						 validateButton.setOnAction(new EventHandler<ActionEvent>() {
-				                @Override
-				                public void handle(ActionEvent event) {
-						
-						
-							
-							// Récupérer les valeurs des champs
-							String name = nameTextfield.getText();
-							String firstName = firstnameTextfield.getText();
-							String postalCode = postalCodeTextfield.getText();
-							String promo = promoTextfield.getText();
-							String sYear = yearTextfield.getText();
-							int year =0;
-							
-								try {
-									year = Integer.parseInt(sYear);
-								} catch (NumberFormatException e) {
-									e.printStackTrace();
+							// création du bouton Annuler
+							Button cancelButton = new Button(" Annuler ");
+							hboxBottom.getChildren().add(cancelButton);
+							hboxBottom.setMargin(cancelButton, new Insets(10, 0, 30, 10));
+
+							// création du bouton valider
+							Button validateButton = new Button(" Valider ");
+							hboxBottom.getChildren().add(validateButton);
+							hboxBottom.setMargin(validateButton, new Insets(10, 0, 30, 490));
+
+							Scene UpdateScene = new Scene(UpdateBorderPane, 640, 480);
+							stage.setScene(UpdateScene);
+							stage.show();
+
+							validateButton.setOnAction(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent event) {
+
+									// Récupérer les valeurs des champs
+									String name = nameTextfield.getText();
+									String firstName = firstnameTextfield.getText();
+									String postalCode = postalCodeTextfield.getText();
+									String promo = promoTextfield.getText();
+									String sYear = yearTextfield.getText();
+									int year = 0;
+
+									try {
+										year = Integer.parseInt(sYear);
+									} catch (NumberFormatException e) {
+										e.printStackTrace();
+									}
+
+									// Créer un nouveau stagiaire
+									Stagiaire newStagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+
+									// Appeler la méthode update du DAO
+									myDAO.updateStagiaire(selectedStagiaire, newStagiaire);
+									myObservableArrayList.setAll(myDAO.getStagiaires());
+
+									// Revenir à la scène précédente
+									stage.setScene(secondeScene);
+
 								}
-				        
-								// Créer un nouveau stagiaire
-								Stagiaire newStagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
-								
-								// Appeler la méthode update du DAO
-				                myDAO.updateStagiaire(selectedStagiaire, newStagiaire);
-				                myObservableArrayList.setAll(myDAO.getStagiaires());
-				                
-												
-						
-				             // Revenir à la scène précédente
-			                    stage.setScene(secondeScene);
-						
+							});
 
-				                }
-				            });
+							cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
-						cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+								@Override
+								public void handle(ActionEvent event) {
+									// Revenir à la scène 02
+									stage.setScene(secondeScene);
 
-							@Override
-							public void handle(ActionEvent event) {
-								// Revenir à la scène 02
-								stage.setScene(secondeScene);
+								}
 
-						
-						
-
-							}
-				                
-						});
-				}
+							});
+						}
 					}
 				});
 
