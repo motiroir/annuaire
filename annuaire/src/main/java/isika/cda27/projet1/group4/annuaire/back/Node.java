@@ -31,13 +31,13 @@ public class Node {
 		this.leftChild = leftChild;
 		this.doublon = doublon;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Node [key=" + key + ", leftChild=" + leftChild + ", rightChild=" + rightChild + ", doublon=" + doublon
 				+ "]";
 	}
-	
+
 	public Stagiaire getKey() {
 		return key;
 	}
@@ -98,14 +98,14 @@ public class Node {
 					newNodeWriter(raf, stagiaire);
 				} else {
 					// Naviguer à travers la chaîne des doublons
-	                Node currentDoublon = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
-	                while (currentDoublon.doublon != -1) {
-	                    currentDoublon = nodeReader(raf, currentDoublon.doublon * NODE_SIZE_OCTET);
-	                }
-	                // On a trouvé le dernier doublon, ajouter le nouveau stagiaire ici
-	                raf.seek(raf.getFilePointer() - DOUBLON_POSITION);
-	                raf.writeInt((int) (raf.length() / NODE_SIZE_OCTET));
-	                newNodeWriter(raf, stagiaire);
+					Node currentDoublon = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
+					while (currentDoublon.doublon != -1) {
+						currentDoublon = nodeReader(raf, currentDoublon.doublon * NODE_SIZE_OCTET);
+					}
+					// On a trouvé le dernier doublon, ajouter le nouveau stagiaire ici
+					raf.seek(raf.getFilePointer() - DOUBLON_POSITION);
+					raf.writeInt((int) (raf.length() / NODE_SIZE_OCTET));
+					newNodeWriter(raf, stagiaire);
 				}
 			}
 		} catch (IOException e) {
@@ -179,13 +179,55 @@ public class Node {
 		if (this.key.getName().compareToIgnoreCase(stagiaire.getName()) == 0) {
 			// gestion des doublons
 			if (this.doublon != -1) {
-				int indexNoeud = this.findNodeIndex(raf);
-				if (indexNoeud != -1) {
+				Node currentDoublon = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
+
+				if (this.key.equals(stagiaire)) {
+					// Si le noeud à supprimer est le noeud actuel (this) et qu'il a des doublons
+					int thisIndex = this.findNodeIndex(raf);
 					try {
-						raf.seek((indexNoeud + 1) * NODE_SIZE_OCTET - DOUBLON_POSITION);
-						raf.writeInt(-1);
+						// Copier les données du premier doublon dans ce noeud
+						stagiaireWriter(raf, currentDoublon.key, thisIndex);
+
+						// Mettre à jour le pointeur de doublon pour qu'il pointe vers le doublon
+						// suivant
+						raf.seek(thisIndex * NODE_SIZE_OCTET + NODE_SIZE_OCTET - DOUBLON_POSITION);
+						raf.writeInt(currentDoublon.doublon);
+
+						// Supprimer le doublon qui vient d'être déplacé en mettant à jour le pointeur
+						// de l'ancien doublon
+						raf.seek(this.doublon * NODE_SIZE_OCTET + NODE_SIZE_OCTET - DOUBLON_POSITION);
+						raf.writeInt(-1); // Effacer le pointeur de doublon pour ce noeud déplacé
+
 					} catch (IOException e) {
 						e.printStackTrace();
+					}
+					return thisIndex;
+				}
+
+				// Parcourir la chaîne des doublons
+				Node previousNode = this;
+				while (currentDoublon != null) {
+					if (currentDoublon.key.equals(stagiaire)) {
+						// Supprimer le doublon en rétablissant les liens
+						previousNode.doublon = currentDoublon.doublon;
+
+						// Mettre à jour le fichier pour supprimer le doublon
+						try {
+							raf.seek((previousNode.findNodeIndex(raf) + 1) * NODE_SIZE_OCTET - DOUBLON_POSITION);
+							raf.writeInt(previousNode.doublon);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+						return previousNode.findNodeIndex(raf);
+					}
+
+					// Passer au prochain doublon
+					previousNode = currentDoublon;
+					if (currentDoublon.doublon != -1) {
+						currentDoublon = nodeReader(raf, currentDoublon.doublon * NODE_SIZE_OCTET);
+					} else {
+						currentDoublon = null;
 					}
 				}
 			} else {
@@ -195,8 +237,8 @@ public class Node {
 		} else if (this.key.getName().compareToIgnoreCase(stagiaire.getName()) > 0) {
 			nodeReader(raf, this.leftChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
 		} else {
-			if(this.rightChild != -1)
-			nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
+			if (this.rightChild != -1)
+				nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
 		}
 		return this.findNodeIndex(raf);
 	}
@@ -394,22 +436,22 @@ public class Node {
 		// Lire le noeud actuel à la position spécifiée
 		Node currentNode = nodeReader(raf, currentNodeIndex * NODE_SIZE_OCTET);
 		// Comparer la clé du noeud actuel avec celle du noeud courant (this)
-		 if (currentNode.getKey().getName().compareToIgnoreCase(this.key.getName()) == 0) {
-		        // Si les noms correspondent, vérifier si les objets sont égaux avec equals()
-		        if (currentNode.getKey().equals(this.key)) {
-		            return currentNodeIndex;
-		        } else {
-		            // Parcourir les doublons pour trouver l'exacte correspondance avec equals()
-		            int doublonIndex = currentNode.getDoublon();
-		            while (doublonIndex != -1) {
-		                Node doublonNode = nodeReader(raf, doublonIndex * NODE_SIZE_OCTET);
-		                if (doublonNode.getKey().equals(this.key)) {
-		                    return doublonIndex;
-		                }
-		                doublonIndex = doublonNode.getDoublon();
-		            }
-		        }
-		    }
+		if (currentNode.getKey().getName().compareToIgnoreCase(this.key.getName()) == 0) {
+			// Si les noms correspondent, vérifier si les objets sont égaux avec equals()
+			if (currentNode.getKey().equals(this.key)) {
+				return currentNodeIndex;
+			} else {
+				// Parcourir les doublons pour trouver l'exacte correspondance avec equals()
+				int doublonIndex = currentNode.getDoublon();
+				while (doublonIndex != -1) {
+					Node doublonNode = nodeReader(raf, doublonIndex * NODE_SIZE_OCTET);
+					if (doublonNode.getKey().equals(this.key)) {
+						return doublonIndex;
+					}
+					doublonIndex = doublonNode.getDoublon();
+				}
+			}
+		}
 		// Rechercher récursivement dans l'enfant gauche, si existant
 		if (currentNode.getLeftChild() != -1) {
 			int leftChildIndex = findNodeIndexHelper(raf, currentNode.getLeftChild());
