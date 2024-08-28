@@ -104,4 +104,18 @@ public class BinarySearchTree {
 		}
 	}
 
+	// modification d'un element de l'arbre
+	public void updateInTree(Stagiaire oldStagiaire, Stagiaire newStagiaire) {
+			try {
+            if (raf.length() == 0) {
+                System.out.println("l'arbre est vide");
+            } else {
+                this.root = this.root.nodeReader(raf, 0);
+                this.root.delete(raf, oldStagiaire);
+                this.root.addNode(raf, newStagiaire);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
 }
