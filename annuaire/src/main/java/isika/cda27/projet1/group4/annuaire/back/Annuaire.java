@@ -30,6 +30,7 @@ public class Annuaire {
 				Stagiaire stagiaire = new Stagiaire(nom, prenom, departement, promotion, annee);
 				stagiaires.add(stagiaire);
 			}
+			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

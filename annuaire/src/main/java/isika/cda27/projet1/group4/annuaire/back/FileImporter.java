@@ -5,93 +5,100 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
+import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
+import isika.cda27.projet1.group4.annuaire.front.HomePage;
 
 public class FileImporter {
 
-    public String importer(Stage stage) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Ouvrir un fichier texte");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Texte", "*.txt","*.DON"));
+	public String importer(Stage stage, App app) {
 
-        File selectedFile = fileChooser.showOpenDialog(stage);
-        if (selectedFile != null) {
-            try {
-                Path filePath = selectedFile.toPath();
-                List<String> fileLines = Files.readAllLines(filePath);
-                
-                // Vérifier la structure du fichier
-                String structureTestResult = testFileStructure(fileLines);
-                if (structureTestResult != null) {
-                    return structureTestResult;
-                }
-                
-                // Suppression d'un autre fichier après vérification réussie
-                String deletionResult = deleteAnotherFile("src/main/resources/save/stagiairesDataBase.bin");
-                if (deletionResult != null) {
-                    return deletionResult;
-                }
-                
-                // Retourner le contenu si le fichier est valide
-                Annuaire annuaire = new Annuaire();
-    			annuaire.lireFichier(filePath.toString());
-    			BinarySearchTree searchTree = new BinarySearchTree();
-    			for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
-    				searchTree.ajouter(annuaire.getStagiaires().get(i));
-    			}
-                return "import ok";
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "Erreur lors de la lecture du fichier.";
-            }
-        } else {
-            return "Aucun fichier sélectionné.";
-        }
-    }
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Ouvrir un fichier texte");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Texte", "*.txt", "*.DON"));
 
-    private String testFileStructure(List<String> fileLines) {
-        // Taille du fichier doit être un multiple de 6 pour correspondre au schéma
-        if (fileLines.size() % 6 != 0) {
-            return "Erreur : Le fichier ne respecte pas le format attendu (multiples de 6 lignes).";
-        }
+		File selectedFile = fileChooser.showOpenDialog(stage);
+		if (selectedFile != null) {
+			try {
+				Path filePath = selectedFile.toPath();
+				List<String> fileLines = Files.readAllLines(filePath);
 
-        for (int i = 0; i < fileLines.size(); i += 6) {
-            // Vérification des 3 premières lignes
-            for (int j = 0; j < 3; j++) {
-                if (!fileLines.get(i + j).matches("[a-zA-Z ]+")) {
-                    return "Erreur : La ligne " + (i + j + 1) + " doit être une chaîne sans ponctuation.";
-                }
-            }
+				// Vérifier la structure du fichier
+				String structureTestResult = testFileStructure(fileLines);
+				if (structureTestResult != null) {
+					return structureTestResult;
+				}
 
-            // Vérification de la 3e et 5e ligne
-            if (!fileLines.get(i + 3).matches("[a-zA-Z ]+/\\d+")) {
-                return "Erreur : La ligne " + (i + 4) + " doit être une chaîne suivie d'un nombre (format String/Int sans ponctuation).";
-            }
-            if (!fileLines.get(i + 4).matches("[a-zA-Z ]+/\\d+")) {
-                return "Erreur : La ligne " + (i + 5) + " doit être une chaîne suivie d'un nombre (format String/Int sans ponctuation).";
-            }
+				// on ferme la lecture du fichier pour pouvoir le supprimer
+				app.myDAO.searchTree.raf.close();
+				// Suppression d'un autre fichier après vérification réussie
+				String deletionResult = deleteAnotherFile("src/main/resources/save/stagiairesDataBase.bin");
+				if (deletionResult != null) {
+					return deletionResult;
+				}
 
-            // Vérification de la 6e ligne
-            if (!fileLines.get(i + 5).equals("*")) {
-                return "Erreur : La ligne " + (i + 6) + " doit être un '*'.";
-            }
-        }
-        return null; // null signifie que la structure est valide
-    }
+				// Construction du nouvel annuaire
+				Annuaire annuaire = new Annuaire();
+				annuaire.lireFichier(filePath.toString());
+				app.myDAO = new AnnuaireDAO();
+				for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
+					app.myDAO.searchTree.ajouter(annuaire.getStagiaires().get(i));
+				}
+				
+				app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
+			} catch (IOException e) {
+				e.printStackTrace();
+				return "Erreur lors de la lecture du fichier.";
+			}
+			return "Importation d'un nouveau fichier texte réussie";
+		} else {
+			return "Aucun fichier sélectionné.";
+		}
+	}
 
-    private String deleteAnotherFile(String filePath) {
-        File fileToDelete = new File(filePath);
-        if (fileToDelete.exists()) {
-            if (fileToDelete.delete()) {
-                return null; // Suppression réussie
-            } else {
-                return "Erreur : Impossible de supprimer le fichier " + filePath;
-            }
-        } else {
-            return "Erreur : Le fichier à supprimer n'existe pas.";
-        }
-    }
+	private String testFileStructure(List<String> fileLines) {
+		// Taille du fichier doit être un multiple de 6 pour correspondre au schéma
+		if (fileLines.size() % 6 != 0) {
+			return "Erreur : Le fichier ne respecte pas le format attendu (multiples de 6 lignes).";
+		}
+
+		for (int i = 0; i < fileLines.size(); i += 6) {
+			// Vérification de la 6e ligne
+			if (!fileLines.get(i + 5).equals("*")) {
+				return "Erreur : La ligne " + (i + 6) + " doit être un '*'.";
+			}
+		}
+		return null; // null signifie que la structure est valide
+	}
+
+	private String deleteAnotherFile(String filePath) {
+
+		File fileToDelete = new File(filePath);
+		
+		if (fileToDelete.exists()) {
+			
+			try {
+				// on essaye de renommer le fichier avant la suppression pour vérifier s'il est
+				// verrouillé
+				File tempFile = new File(fileToDelete.getAbsolutePath() + ".tmp");
+				boolean renamed = fileToDelete.renameTo(tempFile);
+				if (renamed) {
+					tempFile.delete(); 
+					return null; // Suppression réussie
+				} else {
+					return "Erreur : Le fichier est peut-être utilisé par un autre processus.";
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "Erreur : Impossible de supprimer le fichier " + filePath;
+			}
+		} else {
+			return "Erreur : Le fichier à supprimer n'existe pas.";
+		}
+	}
+
 }
