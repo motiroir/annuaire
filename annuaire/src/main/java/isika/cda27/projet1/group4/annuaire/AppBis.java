@@ -1,6 +1,7 @@
 package isika.cda27.projet1.group4.annuaire;
 
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
+import isika.cda27.projet1.group4.annuaire.back.StagiaireFilter;
 import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -18,13 +19,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.lang.NumberFormatException;
+import java.util.List;
 
 /**
  * JavaFX App
  */
 public class AppBis extends Application {
+	
+	
 
 	public AnnuaireDAO myDAO;
 	public ObservableList<Stagiaire> myObservableArrayList;
@@ -42,6 +47,10 @@ public class AppBis extends Application {
 		// annuaire.lireFichier("src/main/resources/test.txt");
 
 		myObservableArrayList = FXCollections.observableArrayList(this.myDAO.getStagiaires());
+		
+		//crée une nouvelle instance de StagiaireFilter, en passant myDAO comme argument  
+		StagiaireFilter stagiairefilter = new StagiaireFilter(myDAO);
+		
 //		System.out.println(myDAO);
 
 //		 on créé un nouvel arbre
@@ -53,18 +62,92 @@ public class AppBis extends Application {
 
 		// création du borderPane
 		BorderPane borderPane = new BorderPane();
+		
+		//////////////////////////////////////////////////////////////////////////////////////////
+		
+		// création des champs pour permettre la recherche 
+	
+		Label filterNameLabel = new Label("Nom :");
+		TextField filterNameField = new TextField();
+		filterNameField.setPrefWidth(50);
 
+		Label filterFirstNameLabel = new Label("Prénom :");
+		TextField filterFirstNameField = new TextField();
+
+		Label filterPostalCodeLabel = new Label("Code Postal :");
+		TextField filterPostalCodeField = new TextField();
+
+		Label filterPromoLabel = new Label("Promotion :");
+		TextField filterPromoField = new TextField();
+
+		Label filterYearLabel = new Label("Année :");
+		TextField filterYearField = new TextField();
+
+		
+		// création du bouton rechercher
+		Button filterButton = new Button("Rechercher");
+
+		// Ajoutez les éléments à la VBox
+		VBox filterBox = new VBox();
+				
+				
+		 filterBox.getChildren().addAll( filterNameLabel, filterNameField, filterFirstNameLabel, filterFirstNameField,
+		 filterPostalCodeLabel, filterPostalCodeField, filterPromoLabel, filterPromoField,
+		 filterYearLabel, filterYearField, filterButton);
+		
+		 borderPane.setTop(filterBox);
+		 
+		 
+		 TableView<Stagiaire> tableView = new TableView<Stagiaire>(myObservableArrayList);
+		 filterButton.setOnAction(new EventHandler<ActionEvent>() {
+			    @Override
+			    public void handle(ActionEvent event) {
+			        String name = filterNameField.getText();
+			        String firstName = filterFirstNameField.getText();
+			        String postalCode = filterPostalCodeField.getText();
+			        String promo = filterPromoField.getText();
+			        String year = filterYearField.getText();
+
+			        List<Stagiaire> filteredStagiaires = stagiairefilter.filterStagiaires(name, firstName, postalCode, promo, year);
+			        myObservableArrayList.setAll(filteredStagiaires);
+			        tableView.setItems(myObservableArrayList);
+			    }
+			});
+		
+
+		 
+		 
+		 
 		// création de la Hbox header
 		HBox hboxHeader = new HBox();
-		borderPane.setTop(hboxHeader);
+		//borderPane.setTop(hboxHeader);
 
 		// création du bouton connexion
 		Button buttonConnexion = new Button("  Connexion  ");
 		hboxHeader.getChildren().add(buttonConnexion);
 		hboxHeader.setMargin(buttonConnexion, new Insets(10, 10, 20, 540));// Marges haut, droite, bas, gauche
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 		// Créer un TableView de stagiaires
-		TableView<Stagiaire> tableView = new TableView<Stagiaire>(myObservableArrayList);// mettre la liste en argument
+		//TableView<Stagiaire> tableView = new TableView<Stagiaire>(myObservableArrayList);// mettre la liste en argument
 
 		// Créer les colonnes
 		TableColumn<Stagiaire, String> nameColumn = new TableColumn<Stagiaire, String>(" Nom");
@@ -185,6 +268,8 @@ public class AppBis extends Application {
 				stage.setScene(secondeScene);
 				stage.show();
 
+				borderPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+				
 				buttonAdd.setOnAction(new EventHandler<ActionEvent>() {
 
 					@Override
@@ -240,6 +325,87 @@ public class AppBis extends Application {
 						gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
 						gridpane.add(yearTextfield, 1, 4);
 
+						
+						
+						
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+						
+						
+						 // Ajouter un ChangeListener pour restreindre l'entrée du champ nom
+				        nameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+				        	//vérifie si newValue ne contient que des lettres alphabétiques, majuscules ou minuscules.
+				            if (!newValue.matches("[a-zA-Z ]*")) {
+				                nameTextfield.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+				                
+				           
+					            }
+				         // Limite la longueur à 20 caractères
+				            if (newValue.length() > 20) {
+				                // Rétablit l'ancienne valeur si la nouvelle dépasse 20 caractères
+				                nameTextfield.setText(oldValue);
+				            }
+				        });
+
+				        // Ajouter un ChangeListener pour restreindre l'entrée du champ firstName
+				        firstnameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+				            if (!newValue.matches("[a-zA-Z ]*")) {
+				                firstnameTextfield.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+				            }
+				                // Limite la longueur à 20 caractères
+					            if (newValue.length() > 20) {
+					                // Rétablit l'ancienne valeur si la nouvelle dépasse 20 caractères
+					                firstnameTextfield.setText(oldValue);
+					            }
+					        });
+				             
+
+						
+				     // Ajouter un ChangeListener pour restreindre l'entrée du champ postalCodeTextfield
+				        postalCodeTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+				            if (!newValue.matches("[a-zA-Z0-9 ]*")) {
+				                // Filtre les caractères non alphabétiques et non numériques
+				            	postalCodeTextfield.setText(newValue.replaceAll("[^a-zA-Z0-9 ]", ""));
+				            	
+				            	}
+				            	// Limiter la longueur
+					            if (newValue.length() > 8) {
+					                postalCodeTextfield.setText(oldValue);
+					            
+				            }
+				        });	
+				        
+				        
+				     // Ajouter un ChangeListener pour restreindre l'entrée du champ promoTextfield
+				        promoTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+				            if (!newValue.matches("[a-zA-Z0-9 ]*")) {
+				                // Filtre les caractères non alphabétiques et non numériques
+				            	promoTextfield.setText(newValue.replaceAll("[^a-zA-Z0-9 ]", ""));
+				            	}
+				            	// Limiter la longueur
+					            if (newValue.length() > 10) {
+					                promoTextfield.setText(oldValue);
+					            
+				            }
+				        });	
+				        
+				        
+				     // Ajouter un ChangeListener pour restreindre l'entrée du champ à uniquement des nombres
+				        yearTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+				            // Vérifie si newValue contient uniquement des chiffres
+				            if (!newValue.matches("\\d*")) {
+				                // Filtre les caractères non numériques
+				            	 yearTextfield.setText(newValue.replaceAll("[^\\d]", ""));
+				            }
+
+				            // Limite la longueur à 4 chiffres
+				            if (newValue.length() > 4) {
+				                yearTextfield.setText(oldValue);
+				            }
+				        });
+				        
+				        
+       	////////////////////////////////////////////////////////////////////////////////////////////////////////////////			        
+				        
 						// création de la Hbox Bottom
 						HBox hboxBottom = new HBox();
 						addBorderPane.setBottom(hboxBottom);
@@ -254,15 +420,66 @@ public class AppBis extends Application {
 						Button validateButton = new Button(" Valider ");
 						hboxBottom.getChildren().add(validateButton);
 						hboxBottom.setMargin(validateButton, new Insets(10, 0, 30, 490));
+						
+						
+						
+						
 
 						Scene AddScene = new Scene(addBorderPane, 640, 480);
 						stage.setScene(AddScene);
 						stage.show();
+						addBorderPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 
 						validateButton.setOnAction(new EventHandler<ActionEvent>() {
 							@Override
 							public void handle(ActionEvent event) {
 
+								 boolean isValid = true;
+
+							        // Vérification pour le champ nameTextfield
+							        if (nameTextfield.getText().isEmpty()) {
+							            nameTextfield.getStyleClass().add("text-field-error");
+							            isValid = false;
+							        } else {
+							            nameTextfield.getStyleClass().remove("text-field-error");
+							        }
+
+							        // Vérification pour le champ firstnameTextfield
+							        if (firstnameTextfield.getText().isEmpty()) {
+							            firstnameTextfield.getStyleClass().add("text-field-error");
+							            isValid = false;
+							        } else {
+							            firstnameTextfield.getStyleClass().remove("text-field-error");
+							        }
+
+							        // Vérification pour le champ postalCodeTextfield
+							        if (postalCodeTextfield.getText().isEmpty()) {
+							            postalCodeTextfield.getStyleClass().add("text-field-error");
+							            isValid = false;
+							        } else {
+							            postalCodeTextfield.getStyleClass().remove("text-field-error");
+							        }
+
+							        // Vérification pour le champ promoTextfield
+							        if (promoTextfield.getText().isEmpty()) {
+							            promoTextfield.getStyleClass().add("text-field-error");
+							            isValid = false;
+							        } else {
+							            promoTextfield.getStyleClass().remove("text-field-error");
+							        }
+
+							        // Vérification pour le champ yearTextfield
+							        if (yearTextfield.getText().isEmpty()) {
+							            yearTextfield.getStyleClass().add("text-field-error");
+							            isValid = false;
+							        } else {
+							            yearTextfield.getStyleClass().remove("text-field-error");
+							        }
+								    
+								    
+							     // Si tous les champs sont valides
+							        if (isValid) {
+								
 								// Récupérer les valeurs des champs
 								String name = nameTextfield.getText();
 								String firstName = firstnameTextfield.getText();
@@ -286,7 +503,7 @@ public class AppBis extends Application {
 
 								// Revenir à la scène précédente
 								stage.setScene(secondeScene);
-
+							        }
 							}
 
 						});
@@ -325,7 +542,7 @@ public class AppBis extends Application {
 					@Override
 					public void handle(ActionEvent event) {
 
-/////           /////////////////////////////Récupérer le stagiaire sélectionné
+                        ///////////////////////////////////////////Récupérer le stagiaire sélectionné
 						Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
 						// on vérifie que le stagiaire selectionné n'est pas null
 						if (selectedStagiaire != null) {
@@ -446,6 +663,9 @@ public class AppBis extends Application {
 		});
 
 	}
+	
+	
+	
 
 	public static void main(String[] args) {
 		launch();
