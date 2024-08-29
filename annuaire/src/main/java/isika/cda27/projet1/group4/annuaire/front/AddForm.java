@@ -30,37 +30,37 @@ public class AddForm extends BorderPane {
 		// ajout du header
 		this.setTop(new Header(app, stage, "Ajouter un stagiaire"));
 		// Masquer le champ de recherche
-	    this.setSearchVisible(false); 
-		
-		//marges sur les côtés
+		this.setSearchVisible(false);
+
+		// marges sur les côtés
 		VBox leftBox = new VBox();
 		VBox rightBox = new VBox();
 		leftBox.setPrefWidth(150);
 		rightBox.setPrefWidth(150);
 		this.setLeft(leftBox);
 		this.setRight(rightBox);
-		
+
 		// boite à formulaire
 		VBox formBox = new VBox();
 		formBox.setMaxSize(600, 400);
-		formBox.setStyle("-fx-border-color: #d3d3d3; " +   // Couleur de la bordure
-                "-fx-border-width: 2px; " +   // Épaisseur de la bordure
-                "-fx-border-radius: 5px;");   // Rayon pour les coins arrondis
+		formBox.setStyle("-fx-border-color: #d3d3d3; " + // Couleur de la bordure
+				"-fx-border-width: 2px; " + // Épaisseur de la bordure
+				"-fx-border-radius: 5px;"); // Rayon pour les coins arrondis
 		this.setCenter(formBox);
-		
-		//Instruction
+
+		// Instruction
 		HBox consigne = new HBox();
 		formBox.getChildren().add(consigne);
-		
+
 		Label lblConsigne = new Label("Veuillez remplir les champs suivants pour ajouter un nouveau stagiaire");
 		consigne.getChildren().add(lblConsigne);
-		consigne.setPadding(new Insets (40, 0, 0, 0));
+		consigne.setPadding(new Insets(40, 0, 0, 0));
 		consigne.setAlignment(Pos.CENTER);
-		
+
 		// gridpane du formulaire sans boutons
 		GridPane gridpane = new GridPane();
 		formBox.getChildren().add(gridpane);
-		
+
 		// organisation :
 		gridpane.setVgap(30); // Espace vertical entre les lignes
 		gridpane.setHgap(60); // Espace horizontal entre les colonnes
@@ -68,7 +68,6 @@ public class AddForm extends BorderPane {
 		// ajouter une marge intérieure sur tous les côtés du GridPane
 		gridpane.setPadding(new Insets(40));
 		gridpane.setAlignment(Pos.CENTER);
-		
 
 		// remplir la GridPane avec les labels et les textfields
 
@@ -97,24 +96,92 @@ public class AddForm extends BorderPane {
 		gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
 		gridpane.add(yearTextfield, 1, 4);
 
-		
 		HBox buttons = new HBox();
 		formBox.getChildren().add(buttons);
-		
+
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ nom
+		nameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			// vérifie si newValue ne contient que des lettres alphabétiques, majuscules ou
+			// minuscules.
+			if (!newValue.matches("[a-zA-Z ]*")) {
+				nameTextfield.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+
+			}
+			// Limite la longueur à 20 caractères
+			if (newValue.length() > 20) {
+				// Rétablit l'ancienne valeur si la nouvelle dépasse 20 caractères
+				nameTextfield.setText(oldValue);
+			}
+		});
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ firstName
+		firstnameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("[a-zA-Z ]*")) {
+				firstnameTextfield.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+			}
+			// Limite la longueur à 20 caractères
+			if (newValue.length() > 20) {
+				// Rétablit l'ancienne valeur si la nouvelle dépasse 20 caractères
+				firstnameTextfield.setText(oldValue);
+			}
+		});
+
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ
+		// postalCodeTextfield
+		postalCodeTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("[a-zA-Z0-9 ]*")) {
+				// Filtre les caractères non alphabétiques et non numériques
+				postalCodeTextfield.setText(newValue.replaceAll("[^a-zA-Z0-9 ]", ""));
+
+			}
+			// Limiter la longueur
+			if (newValue.length() > 8) {
+				postalCodeTextfield.setText(oldValue);
+
+			}
+		});
+
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ promoTextfield
+		promoTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("[a-zA-Z0-9 ]*")) {
+				// Filtre les caractères non alphabétiques et non numériques
+				promoTextfield.setText(newValue.replaceAll("[^a-zA-Z0-9 ]", ""));
+			}
+			// Limiter la longueur
+			if (newValue.length() > 10) {
+				promoTextfield.setText(oldValue);
+
+			}
+		});
+
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ à uniquement des
+		// nombres
+		yearTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			// Vérifie si newValue contient uniquement des chiffres
+			if (!newValue.matches("\\d*")) {
+				// Filtre les caractères non numériques
+				yearTextfield.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+			// Limite la longueur à 4 chiffres
+			if (newValue.length() > 4) {
+				yearTextfield.setText(oldValue);
+			}
+		});
+
 		// création des boutons
 		Button cancelButton = new Button("Annuler");
 		Button validateButton = new Button("Valider");
 		buttons.getChildren().addAll(cancelButton, validateButton);
 		buttons.setAlignment(Pos.CENTER);
-		buttons.setMargin(cancelButton, new Insets(0, 100, 40, 0));;
-		buttons.setMargin(validateButton, new Insets(0, 0, 40, 100));;
+		buttons.setMargin(cancelButton, new Insets(0, 100, 40, 0));
+		;
+		buttons.setMargin(validateButton, new Insets(0, 0, 40, 100));
+		;
 
 		// creation de la scene
 		this.scene = new Scene(this, 1280, 720);
 		// Lien avec le css
 		this.scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-		
-		
+
 		validateButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -124,14 +191,14 @@ public class AddForm extends BorderPane {
 				String postalCode = postalCodeTextfield.getText();
 				String promo = promoTextfield.getText();
 				String sYear = yearTextfield.getText();
-				int year =0;
-				
-					try {
-						year = Integer.parseInt(sYear);
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
-					}
-			
+				int year = 0;
+
+				try {
+					year = Integer.parseInt(sYear);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+
 				// Créer un nouveau stagiaire
 				Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
 				// Ajouter le stagiaire via le DAO
@@ -142,7 +209,7 @@ public class AddForm extends BorderPane {
 				stage.setScene(homepage.getScene());
 			}
 		});
-		
+
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -155,10 +222,11 @@ public class AddForm extends BorderPane {
 		});
 
 	}
+
 	public void setSearchVisible(boolean visible) {
-	    // Trouver le Header et modifier la visibilité du champ de recherche
-	    Header header = (Header) this.getTop();
-	    header.getSearchBox().setVisible(visible);
+		// Trouver le Header et modifier la visibilité du champ de recherche
+		Header header = (Header) this.getTop();
+		header.getSearchBox().setVisible(visible);
 	}
 
 }
