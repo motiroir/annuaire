@@ -1,13 +1,19 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class Footer extends HBox {
@@ -58,7 +64,6 @@ public class Footer extends HBox {
 			public void handle(ActionEvent event) {
 				AddForm addForm = new AddForm(app, stage);
 				stage.setScene(addForm.getScene());
-				stage.setTitle("Page de connexion");
 			}
 		});
 
@@ -86,7 +91,42 @@ public class Footer extends HBox {
 				Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
 				UpdateForm updateForm = new UpdateForm(app, stage, selectedStagiaire);
 				stage.setScene(updateForm.getScene());
-				stage.setTitle("Page de modification");
+
+			}
+		});
+
+		// Gestion de l'impression en PDF
+		buttonImpression.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// Créer un FileChooser pour que l'utilisateur puisse choisir l'emplacement où
+				// enregistrer le fichier PDF
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Enregistrer le fichier PDF");
+				fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+
+				// Afficher la boîte de dialogue de sauvegarde
+				File file = fileChooser.showSaveDialog(stage);
+
+				// Si l'utilisateur a choisi un fichier
+				if (file != null) {
+					try {
+						// Appeler la méthode pour imprimer le tableau en PDF
+						PdfPrint.printTableToPdf(tableView, file.getAbsolutePath());
+						showConfirmationDialog(
+								"Le fichier PDF a été créé avec succès à l'emplacement :\n" + file.getAbsolutePath());
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+
+			private void showConfirmationDialog(String message) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Confirmation");
+				alert.setHeaderText(null);
+				alert.setContentText(message);
+				alert.showAndWait();
 
 			}
 		});
