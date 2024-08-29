@@ -134,7 +134,7 @@ public class UserConnexion extends BorderPane {
 					HomePage homepage = new HomePage(app, stage);
 					stage.setScene(homepage.getScene());
 	            } else {
-	                Alert alert = new Alert(Alert.AlertType.ERROR, "Nom d'utilisateur ou mat de passe invalide");
+	                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Nom d'utilisateur ou mot de passe invalide");
 	                alert.show();
 	            }
 		        }
