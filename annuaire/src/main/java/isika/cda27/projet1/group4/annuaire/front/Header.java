@@ -27,13 +27,16 @@ public class Header extends StackPane {
 	private HBox searchBox;
 	private App app;
 	private Stage stage;
+	private FilteredSearch filteredSearch;
+	// Variable pour suivre l'état du bouton
+	boolean isSearchMode = true;
 
 	public Header(App app, Stage stage, String subtitle) {
 		super();
 		this.title = "ISIKA";
 		this.subtitle = subtitle;
-		this.app=app;
-		this.stage=stage;
+		this.app = app;
+		this.stage = stage;
 
 		// Créer le VBox pour les titres
 		VBox titles = new VBox();
@@ -48,34 +51,37 @@ public class Header extends StackPane {
 		lblSubtitle.getStyleClass().add("sub-title"); // Assurez-vous que le sous-titre utilise la bonne classe CSS
 
 		titles.getChildren().addAll(lblTitle, lblSubtitle);
-		
+
 		// Créer le champ de recherche et le bouton de recherche
-        TextField searchField = new TextField();
-        searchField.setPromptText("Rechercher...");
-        //Button searchButton = new Button("Rechercher");
-        
-        //Bouton de connexion avec icones
-        // Créer le bouton de recherche avec une icône
-        Image searchIcon = new Image(getClass().getResourceAsStream("/icons/__search-icon.png")); 
-        ImageView searchImageView = new ImageView(searchIcon);
-        Button searchButton = new Button("", searchImageView);
+		TextField searchField = new TextField();
+		searchField.setPromptText("Rechercher par nom...");
 
-        // Créer le bouton de réinitialisation avec une icône
-        Image resetIcon = new Image(getClass().getResourceAsStream("/icons/__reset-icon.png")); 
-        ImageView resetImageView = new ImageView(resetIcon);
-        Button resetButton = new Button("", searchImageView);
-        
-        // Appliquer les styles CSS
-        searchButton.getStyleClass().add("button-search");
-        resetButton.getStyleClass().add("button-reset");
+		// Créer le bouton avec l'icône de recherche
+		Image searchIcon = new Image(getClass().getResourceAsStream("/icons/__search-icon.png"));
+		ImageView buttonImageView = new ImageView(searchIcon);
+		buttonImageView.setFitHeight(20);
+		buttonImageView.setFitWidth(20);
+		Button toggleButton = new Button("", buttonImageView);
 
-        // Initialement, le bouton de réinitialisation est invisible
-        resetButton.setVisible(false);
-        
-        // Créer un HBox pour contenir le champ et le bouton de recherche
-        this.searchBox = new HBox(10, searchField, searchButton, resetButton);
-        searchBox.setAlignment(Pos.CENTER_LEFT);
-        searchBox.setMaxWidth(300);
+		// Créer le bouton pour accéder à la recherche avancée
+		Image filterhIcon = new Image(getClass().getResourceAsStream("/icons/__filter-icon.png"));
+		ImageView filterImageView = new ImageView(filterhIcon);
+		buttonImageView.setFitHeight(20);
+		buttonImageView.setFitWidth(20);
+		Button filterButton = new Button("", filterImageView);
+
+		// Appliquer les styles CSS
+		toggleButton.getStyleClass().add("button-search");
+		filterButton.getStyleClass().add("button-search");
+
+		// Créer un HBox pour contenir le champ et le bouton de recherche
+		this.searchBox = new HBox(10, searchField, toggleButton, filterButton);
+		searchBox.setAlignment(Pos.CENTER_LEFT);
+		searchBox.setMaxWidth(300);
+		
+		// Créer la FilteredSearch mais la rendre invisible au départ
+        filteredSearch = new FilteredSearch(app);
+        filteredSearch.setVisible(false);
 
 		// Créer le bouton de connexion
 		Button buttonConnexion = new Button("Connexion");
@@ -85,61 +91,76 @@ public class Header extends StackPane {
 		bottomSeparator.setPrefHeight(1); // Hauteur du trait
 
 		// Ajouter le VBox des titres et le bouton de connexion au StackPane
-		this.getChildren().addAll(titles, buttonConnexion, bottomSeparator, searchBox);
-		
+		this.getChildren().addAll(titles, searchBox, filteredSearch, buttonConnexion, bottomSeparator);
+
 		// Aligner des elements du stackpane
 		StackPane.setAlignment(titles, Pos.CENTER);
 		StackPane.setAlignment(buttonConnexion, Pos.CENTER_RIGHT);
 		StackPane.setAlignment(searchBox, Pos.CENTER_LEFT);
+		StackPane.setAlignment(filteredSearch, Pos.CENTER_LEFT);
 		StackPane.setAlignment(bottomSeparator, Pos.BOTTOM_CENTER);
 
 		// Ajouter des marges au bouton pour l'écarter du bord
 		StackPane.setMargin(buttonConnexion, new Insets(5, 40, 5, 0)); // Marges autour du bouton
 		StackPane.setMargin(searchBox, new Insets(5, 0, 5, 40)); // Marges autour du bouton
-		
-		//Gestion de l'action du bouton rechercher
-		searchButton.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent event) {
-		        String query = searchField.getText();
-		        List<Stagiaire> results = app.myDAO.searchByName(query);
-		        app.myObservableArrayList.setAll(results);
-		        
-		        // Changer le bouton de recherche en bouton de réinitialisation
-		        searchButton.setVisible(false);
-		        resetButton.setVisible(true);
-		    }
+
+		// Gestion de l'action du bouton
+		toggleButton.setOnAction(event -> {
+			// Action de recherche
+			String query = searchField.getText();
+
+			if (searchField.getText().isEmpty()) {
+				
+				searchField.getStyleClass().add("text-field-error");
+				
+			} else {
+				
+				if (isSearchMode) {
+					List<Stagiaire> results = app.myDAO.searchByName(query);
+					app.myObservableArrayList.setAll(results);
+					
+					// Vérification des résultats et basculement du mode
+					if (results != null && !results.isEmpty()) {
+						// Changer l'image du bouton pour l'état de réinitialisation
+						Image resetIcon = new Image(getClass().getResourceAsStream("/icons/__reset-icon.png"));
+						buttonImageView.setImage(resetIcon);
+						
+						// Passer en mode réinitialisation
+						isSearchMode = false;
+					}
+				} else {
+					// Simplification pour vérification
+					System.out.println("Entré dans le bloc else");
+					
+					// Réinitialiser la liste complète
+					app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
+					
+					// Changer l'image du bouton pour l'état de recherche
+					Image searchIconAgain = new Image(getClass().getResourceAsStream("/icons/__search-icon.png"));
+					buttonImageView.setImage(searchIconAgain);
+					
+					// Effacer le champ de recherche
+					searchField.clear();
+					
+					// Passer en mode recherche
+					isSearchMode = true;
+				}
+				
+				searchField.getStyleClass().remove("text-field-error");
+			}
 		});
-		//Gestion de l'action du bouton rechercher (version reset)
-		resetButton.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override
-		    public void handle(ActionEvent event) {
-		        // Réinitialiser la liste complète
-		        app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
-		        
-		        // Changer le bouton de réinitialisation en bouton de recherche
-		        resetButton.setVisible(false);
-		        searchButton.setVisible(true);
-		        searchField.clear(); // Effacer le champ de recherche
-		    }
-		});
-		
 
 		buttonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				UserConnexion userConnexion = new UserConnexion(app, stage);
 				stage.setScene(userConnexion.getScene());
-				stage.setTitle("Page de connexion");
 			}
 		});
 	}
-	
+
 	public HBox getSearchBox() {
-	    return searchBox;
+		return searchBox;
 	}
-	
-	
-	
-	
+
 }

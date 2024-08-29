@@ -103,8 +103,8 @@ public class AddForm extends BorderPane {
 		nameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
 			// vérifie si newValue ne contient que des lettres alphabétiques, majuscules ou
 			// minuscules.
-			if (!newValue.matches("[a-zA-Z ]*")) {
-				nameTextfield.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+			if (!newValue.matches("[a-zA-ZÀ-ÿ ]*")) {
+				nameTextfield.setText(newValue.replaceAll("[^a-zA-ZÀ-ÿ ]", ""));
 
 			}
 			// Limite la longueur à 20 caractères
@@ -115,8 +115,8 @@ public class AddForm extends BorderPane {
 		});
 		// Ajouter un ChangeListener pour restreindre l'entrée du champ firstName
 		firstnameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
-			if (!newValue.matches("[a-zA-Z ]*")) {
-				firstnameTextfield.setText(newValue.replaceAll("[^a-zA-Z ]", ""));
+			if (!newValue.matches("[a-zA-ZÀ-ÿ ]*")) {
+				firstnameTextfield.setText(newValue.replaceAll("[^a-zA-ZÀ-ÿ ]", ""));
 			}
 			// Limite la longueur à 20 caractères
 			if (newValue.length() > 20) {
@@ -185,30 +185,98 @@ public class AddForm extends BorderPane {
 		validateButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				// Récupérer les valeurs des champs
-				String name = nameTextfield.getText();
-				String firstName = firstnameTextfield.getText();
-				String postalCode = postalCodeTextfield.getText();
-				String promo = promoTextfield.getText();
-				String sYear = yearTextfield.getText();
-				int year = 0;
-
-				try {
-					year = Integer.parseInt(sYear);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
+				boolean isValid = true;
+				// Vérification pour le champ nameTextfield
+				if (nameTextfield.getText().isEmpty()) {
+					nameTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					nameTextfield.getStyleClass().remove("text-field-error");
+				}
+				// Vérification pour le champ firstnameTextfield
+				if (firstnameTextfield.getText().isEmpty()) {
+					firstnameTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					firstnameTextfield.getStyleClass().remove("text-field-error");
+				}
+				// Vérification pour le champ postalCodeTextfield
+				if (postalCodeTextfield.getText().isEmpty()) {
+					postalCodeTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					postalCodeTextfield.getStyleClass().remove("text-field-error");
+				}
+				// Vérification pour le champ promoTextfield
+				if (promoTextfield.getText().isEmpty()) {
+					promoTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					promoTextfield.getStyleClass().remove("text-field-error");
+				}
+				// Vérification pour le champ yearTextfield
+				if (yearTextfield.getText().isEmpty()) {
+					yearTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					yearTextfield.getStyleClass().remove("text-field-error");
 				}
 
-				// Créer un nouveau stagiaire
-				Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
-				// Ajouter le stagiaire via le DAO
-				app.myDAO.addStagiaire(stagiaire);
-				app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
-				// Revenir à la scène précédente (accueil)
-				HomePage homepage = new HomePage(app, stage);
-				stage.setScene(homepage.getScene());
+				// Si tous les champs sont valides
+				if (isValid) {
+
+					// Récupérer les valeurs des champs
+					String name = nameTextfield.getText();
+					String firstName = firstnameTextfield.getText();
+					String postalCode = postalCodeTextfield.getText();
+					String promo = promoTextfield.getText();
+					String sYear = yearTextfield.getText();
+					int year = 0;
+					try {
+						year = Integer.parseInt(sYear);
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+					// Créer un nouveau stagiaire
+					Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+					// Ajouter le stagiaire via le DAO
+					app.myDAO.addStagiaire(stagiaire);
+					app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
+					// Revenir à la scène précédente (accueil)
+					HomePage homepage = new HomePage(app, stage);
+					stage.setScene(homepage.getScene());
+
+				}
 			}
 		});
+
+//		validateButton.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override
+//			public void handle(ActionEvent event) {
+//				// Récupérer les valeurs des champs
+//				String name = nameTextfield.getText();
+//				String firstName = firstnameTextfield.getText();
+//				String postalCode = postalCodeTextfield.getText();
+//				String promo = promoTextfield.getText();
+//				String sYear = yearTextfield.getText();
+//				int year = 0;
+//
+//				try {
+//					year = Integer.parseInt(sYear);
+//				} catch (NumberFormatException e) {
+//					e.printStackTrace();
+//				}
+//
+//				// Créer un nouveau stagiaire
+//				Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+//				// Ajouter le stagiaire via le DAO
+//				app.myDAO.addStagiaire(stagiaire);
+//				app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
+//				// Revenir à la scène précédente (accueil)
+//				HomePage homepage = new HomePage(app, stage);
+//				stage.setScene(homepage.getScene());
+//			}
+//		});
 
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
