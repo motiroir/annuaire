@@ -51,8 +51,8 @@ public class HomePage extends BorderPane {
 		HBox hboxBottom = new HBox();
 		this.setBottom(hboxBottom);
 		
+//>>>>>>>>>>>>>>>>>>Bouton importer à modifier<<<<<<<<<<<<<<<<<<<<<<<<
 		 Button importButton = new Button("Importer un fichier texte");
-	        
 	        importButton.setOnAction(e -> {
 	            FileImporter importer = new FileImporter();
 	            String fileContent = importer.importer(stage, app);
@@ -63,7 +63,8 @@ public class HomePage extends BorderPane {
 	            alert.showAndWait();
 	        });
 	    leftBox.getChildren().add(importButton);
-		
+//>>>>>>>>>>>>>>>>>>Bouton importer à modifier/déplacer<<<<<<<<<<<<<<<<<<<<<<<<
+	    
 		Footer footer = new Footer(app, stage, app.myObservableArrayList, this);
 		this.setBottom(footer);
 
