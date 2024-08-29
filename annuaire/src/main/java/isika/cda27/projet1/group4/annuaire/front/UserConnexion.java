@@ -103,7 +103,28 @@ public class UserConnexion extends BorderPane {
 		validateButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				// Récupérer les valeurs des champs
+				
+				 boolean isValid = true;
+
+			        // Vérification pour le champ nameTextfield
+			        if (usernameField.getText().isEmpty()) {
+			        	usernameField.getStyleClass().add("text-field-error");
+			            isValid = false;
+			        } else {
+			        	usernameField.getStyleClass().remove("text-field-error");
+			        }
+
+			        // Vérification pour le champ firstnameTextfield
+			        if (passwordField.getText().isEmpty()) {
+			        	passwordField.getStyleClass().add("text-field-error");
+			            isValid = false;
+			        } else {
+			        	passwordField.getStyleClass().remove("text-field-error");
+			        }
+
+			     // Si tous les champs sont valides
+		        if (isValid) {
+		        // Récupérer les valeurs des champs
 				String username = usernameField.getText();
 	            String password = passwordField.getText();
 	            app.currentUser = app.userManager.authenticate(username, password);
@@ -113,9 +134,10 @@ public class UserConnexion extends BorderPane {
 					HomePage homepage = new HomePage(app, stage);
 					stage.setScene(homepage.getScene());
 	            } else {
-	                Alert alert = new Alert(Alert.AlertType.ERROR, "Nom d'utilisateur ou mat de passe invalide");
+	                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Nom d'utilisateur ou mot de passe invalide");
 	                alert.show();
 	            }
+		        }
 			}
 		});
 		
