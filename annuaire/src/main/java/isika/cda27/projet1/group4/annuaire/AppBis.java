@@ -127,25 +127,6 @@ public class AppBis extends Application {
 		hboxHeader.getChildren().add(buttonConnexion);
 		hboxHeader.setMargin(buttonConnexion, new Insets(10, 10, 20, 540));// Marges haut, droite, bas, gauche
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
 		// Créer un TableView de stagiaires
 		//TableView<Stagiaire> tableView = new TableView<Stagiaire>(myObservableArrayList);// mettre la liste en argument
 
@@ -173,8 +154,6 @@ public class AppBis extends Application {
 		// Ajouter les colonnes au TableView
 		tableView.getColumns().addAll(nameColumn, firstNameColumn, postalCodeColumn, promoColumn, yearColumn);
 
-		// Ajouter les stagiaires au TableView
-		// tableView.getItems().addAll();
 
 		// Ajouter le TableView au BorderPane
 		borderPane.setCenter(tableView);
@@ -237,9 +216,7 @@ public class AppBis extends Application {
 				// Ajouter les colonnes au TableView
 				tableView.getColumns().addAll(nameColumn, firstNameColumn, postalCodeColumn, promoColumn, yearColumn);
 
-				// Ajouter les stagiaires au TableView
-				// tableView.getItems().addAll();
-
+				
 				// Ajouter le TableView au BorderPane
 				borderPane.setCenter(tableView);
 
