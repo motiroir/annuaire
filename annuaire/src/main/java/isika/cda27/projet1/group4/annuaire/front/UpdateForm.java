@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class UpdateForm extends BorderPane {
-	
+
 	private Scene scene;
 	private App app;
 	private Stage stage;
@@ -27,42 +27,42 @@ public class UpdateForm extends BorderPane {
 		super();
 		this.app = app;
 		this.stage = stage;
-		this.selectedStagiaire=selectedStagiaire;
+		this.selectedStagiaire = selectedStagiaire;
 
 		// ajout du header
 		this.setTop(new Header(app, stage, "Modifier un stagiaire"));
 		// Masquer le champ de recherche
-	    this.setSearchVisible(false);
-	    
-		//marges sur les côtés
+		this.setSearchVisible(false);
+
+		// marges sur les côtés
 		VBox leftBox = new VBox();
 		VBox rightBox = new VBox();
 		leftBox.setPrefWidth(150);
 		rightBox.setPrefWidth(150);
 		this.setLeft(leftBox);
 		this.setRight(rightBox);
-		
+
 		// boite à formulaire
 		VBox formBox = new VBox();
 		formBox.setMaxSize(600, 400);
-		formBox.setStyle("-fx-border-color: #d3d3d3; " +   // Couleur de la bordure
-                "-fx-border-width: 2px; " +   // Épaisseur de la bordure
-                "-fx-border-radius: 5px;");   // Rayon pour les coins arrondis
+		formBox.setStyle("-fx-border-color: #d3d3d3; " + // Couleur de la bordure
+				"-fx-border-width: 2px; " + // Épaisseur de la bordure
+				"-fx-border-radius: 5px;"); // Rayon pour les coins arrondis
 		this.setCenter(formBox);
-		
-		//Instruction
+
+		// Instruction
 		HBox consigne = new HBox();
 		formBox.getChildren().add(consigne);
-		
+
 		Label lblConsigne = new Label("Veuillez modifier les champs souhaités pour modifier le stagiaire");
 		consigne.getChildren().add(lblConsigne);
-		consigne.setPadding(new Insets (40, 0, 0, 0));
+		consigne.setPadding(new Insets(40, 0, 0, 0));
 		consigne.setAlignment(Pos.CENTER);
-		
+
 		// gridpane du formulaire sans boutons
 		GridPane gridpane = new GridPane();
 		formBox.getChildren().add(gridpane);
-		
+
 		// organisation :
 		gridpane.setVgap(30); // Espace vertical entre les lignes
 		gridpane.setHgap(60); // Espace horizontal entre les colonnes
@@ -70,7 +70,6 @@ public class UpdateForm extends BorderPane {
 		// ajouter une marge intérieure sur tous les côtés du GridPane
 		gridpane.setPadding(new Insets(40));
 		gridpane.setAlignment(Pos.CENTER);
-		
 
 		// remplir la GridPane avec les labels et les textfields
 
@@ -99,61 +98,56 @@ public class UpdateForm extends BorderPane {
 		gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
 		gridpane.add(yearTextfield, 1, 4);
 
-		
 		HBox buttons = new HBox();
 		formBox.getChildren().add(buttons);
-		
+
 		// création des boutons
 		Button cancelButton = new Button("Annuler");
 		Button validateButton = new Button("Valider");
 		buttons.getChildren().addAll(cancelButton, validateButton);
 		buttons.setAlignment(Pos.CENTER);
-		buttons.setMargin(cancelButton, new Insets(0, 100, 40, 0));;
-		buttons.setMargin(validateButton, new Insets(0, 0, 40, 100));;
+		buttons.setMargin(cancelButton, new Insets(0, 100, 40, 0));
+		;
+		buttons.setMargin(validateButton, new Insets(0, 0, 40, 100));
+		;
 
 		// creation de la scene
 		this.scene = new Scene(this, 1280, 720);
 		// Lien avec le css
 		this.scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-		
-		
-		validateButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-	
-	
-		
-		// Récupérer les valeurs des champs
-		String name = nameTextfield.getText();
-		String firstName = firstnameTextfield.getText();
-		String postalCode = postalCodeTextfield.getText();
-		String promo = promoTextfield.getText();
-		String sYear = yearTextfield.getText();
-		int year =0;
-		
-			try {
-				year = Integer.parseInt(sYear);
-			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			}
-    
-			// Créer un nouveau stagiaire
-			Stagiaire newStagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
-			
-			// Appeler la méthode update du DAO
-            app.myDAO.updateStagiaire(selectedStagiaire, newStagiaire);
-            app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
-            
-							
-	
-         // Revenir à la scène précédente
-            HomePage homepage = new HomePage(app, stage);
-            stage.setScene(homepage.getScene());
-	
 
-            }
-        });
-		
+		validateButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+
+				// Récupérer les valeurs des champs
+				String name = nameTextfield.getText();
+				String firstName = firstnameTextfield.getText();
+				String postalCode = postalCodeTextfield.getText();
+				String promo = promoTextfield.getText();
+				String sYear = yearTextfield.getText();
+				int year = 0;
+
+				try {
+					year = Integer.parseInt(sYear);
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+				}
+
+				// Créer un nouveau stagiaire
+				Stagiaire newStagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+
+				// Appeler la méthode update du DAO
+				app.myDAO.updateStagiaire(selectedStagiaire, newStagiaire);
+				app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
+
+				// Revenir à la scène précédente
+				HomePage homepage = new HomePage(app, stage);
+				stage.setScene(homepage.getScene());
+
+			}
+		});
+
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -166,13 +160,11 @@ public class UpdateForm extends BorderPane {
 		});
 
 	}
-	
+
 	public void setSearchVisible(boolean visible) {
-	    // Trouver le Header et modifier la visibilité du champ de recherche
-	    Header header = (Header) this.getTop();
-	    header.getSearchBox().setVisible(visible);
+		// Trouver le Header et modifier la visibilité du champ de recherche
+		Header header = (Header) this.getTop();
+		header.getSearchBox().setVisible(visible);
 	}
-	
-	
 
 }
