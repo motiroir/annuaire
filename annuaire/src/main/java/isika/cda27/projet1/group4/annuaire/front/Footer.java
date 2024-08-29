@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -24,23 +26,34 @@ public class Footer extends HBox {
 
 		Button buttonUpdate = new Button("Modifier");
 		this.getChildren().add(buttonUpdate);
-		this.setMargin(buttonUpdate, new Insets(20, 0, 20, 80));
+		buttonUpdate.setVisible(false);
+		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER || app.currentUser.getRole() == Role.STUDENT) {
+			buttonUpdate.setVisible(true);
+			this.setMargin(buttonUpdate, new Insets(20, 0, 20, 80));
+			buttonUpdate.setDisable(true);
+		}
 
 		Button buttonDelete = new Button("Supprimer");
 		this.getChildren().add(buttonDelete);
-		this.setMargin(buttonDelete, new Insets(20, 0, 20, 80));
+		buttonDelete.setVisible(false);
+		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER) {
+			buttonDelete.setVisible(true);
+			this.setMargin(buttonDelete, new Insets(20, 0, 20, 80));
+			buttonDelete.setDisable(true);
+		}
 
 		Button buttonAdd = new Button(" Ajouter");
 		this.getChildren().add(buttonAdd);
-		this.setMargin(buttonAdd, new Insets(20, 0, 20, 80));
+		buttonAdd.setVisible(false);
+		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER) {
+			buttonAdd.setVisible(true);
+			this.setMargin(buttonAdd, new Insets(20, 0, 20, 80));
+		}
 
 		Button buttonImpression = new Button("Imprimer");
 		this.getChildren().add(buttonImpression);
-		this.setMargin(buttonImpression, new Insets(20, 0, 20, 530));
-
-		// Desactivation des boutons initial
-		buttonUpdate.setDisable(true);
-		buttonDelete.setDisable(true);
+		this.setMargin(buttonImpression, new Insets(20, 60, 20, 530));
+		this.setAlignment(Pos.CENTER_RIGHT);
 
 		// Utiliser la méthode pour obtenir TableViewStagiaires
 		TableViewStagiaires tableView = homePage.getTableView();

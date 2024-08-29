@@ -1,6 +1,12 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
+import java.util.List;
+
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
+import isika.cda27.projet1.group4.annuaire.back.StagiaireFilter;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -11,9 +17,9 @@ public class FilteredSearch extends HBox {
 
 	private TextField nameField;
 	private TextField firstNameField;
-	private TextField promotionField;
 	private TextField departmentField;
-	private TextField emailField;
+	private TextField promotionField;
+	private TextField yearField;
 	private Button toggleButton;
 	private Button filterButton;
 	private App app;
@@ -28,14 +34,14 @@ public class FilteredSearch extends HBox {
 		firstNameField = new TextField();
 		firstNameField.setPromptText("Prénom...");
 
-		promotionField = new TextField();
-		promotionField.setPromptText("Département...");
-
 		departmentField = new TextField();
-		departmentField.setPromptText("Promotion...");
+		departmentField.setPromptText("Département...");
 
-		emailField = new TextField();
-		emailField.setPromptText("Année...");
+		promotionField = new TextField();
+		promotionField.setPromptText("Promotion...");
+
+		yearField = new TextField();
+		yearField.setPromptText("Année...");
 
 		// Créer le bouton avec l'icône de recherche
 		Image searchIcon = new Image(getClass().getResourceAsStream("/icons/__search-icon.png"));
@@ -52,7 +58,7 @@ public class FilteredSearch extends HBox {
 		filterButton = new Button("", filterImageView);
 
 		// Ajouter les champs au HBox avec les boutons
-		this.getChildren().addAll(nameField, firstNameField, promotionField, departmentField, emailField, toggleButton,
+		this.getChildren().addAll(nameField, firstNameField, departmentField, promotionField, yearField, toggleButton,
 				filterButton);
 		this.setSpacing(10);
 
@@ -61,25 +67,24 @@ public class FilteredSearch extends HBox {
 		filterButton.getStyleClass().add("button-search");
 
 		// Gestion de l'action des boutons
-		toggleButton.setOnAction(event -> updateSearchResults());
-		
-		filterButton.setOnAction(event -> {
-		    
+		toggleButton.setOnAction(event -> {
+			
+			StagiaireFilter stagiairefilter = new StagiaireFilter(app.myDAO);
+
+			String name = nameField.getText();
+			String firstName = firstNameField.getText();
+			String postalCode = departmentField.getText();
+			String promo = promotionField.getText();
+			String year = yearField.getText();
+
+			List<Stagiaire> filteredStagiaires = stagiairefilter.filterStagiaires(name, firstName, postalCode, promo, year);
+			app.myObservableArrayList.setAll(filteredStagiaires);
 		});
-		
-		
-	}
 
-	private void updateSearchResults() {
-		String nameQuery = nameField.getText().trim().toLowerCase();
-		String firstNameQuery = firstNameField.getText().trim().toLowerCase();
-		String promotionQuery = promotionField.getText().trim().toLowerCase();
-		String departmentQuery = departmentField.getText().trim().toLowerCase();
-		String emailQuery = emailField.getText().trim().toLowerCase();
+		filterButton.setOnAction(event -> {
 
-		// List<Stagiaire> results = app.myDAO.searchByCriteria(nameQuery,
-		// firstNameQuery, promotionQuery, departmentQuery, emailQuery);
-		// app.myObservableArrayList.setAll(results);
+		});
+
 	}
 
 	public Button getToggleButton() {
