@@ -10,6 +10,8 @@ import isika.cda27.projet1.group4.annuaire.back.Annuaire;
 import isika.cda27.projet1.group4.annuaire.back.BinarySearchTree;
 import isika.cda27.projet1.group4.annuaire.back.Node;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
+import isika.cda27.projet1.group4.annuaire.back.User;
+import isika.cda27.projet1.group4.annuaire.back.UserManager;
 import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
 import isika.cda27.projet1.group4.annuaire.front.Header;
 import isika.cda27.projet1.group4.annuaire.front.HomePage;
@@ -42,11 +44,15 @@ public class App extends Application {
 
 	public AnnuaireDAO myDAO;
 	public ObservableList<Stagiaire> myObservableArrayList;
+	public UserManager userManager;
+	public User currentUser;
 
 	// methode dediée a l'initialisation
 	@Override
 	public void init() {
 		myDAO = new AnnuaireDAO();
+		userManager = new UserManager();
+		currentUser = new User();
 	}
 
 	@Override
