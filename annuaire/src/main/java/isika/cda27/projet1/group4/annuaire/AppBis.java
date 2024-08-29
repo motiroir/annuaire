@@ -345,7 +345,7 @@ public class AppBis extends Application {
 				            	
 				            	}
 				            	// Limiter la longueur
-					            if (newValue.length() > 8) {
+					            if (newValue.length() > 10) {
 					                postalCodeTextfield.setText(oldValue);
 					            
 				            }
