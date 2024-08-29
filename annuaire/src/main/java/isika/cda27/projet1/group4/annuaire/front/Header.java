@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
+import isika.cda27.projet1.group4.annuaire.back.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -31,6 +33,7 @@ public class Header extends StackPane {
 	private VBox titles;
 	// Variable pour suivre l'état des bouton
 	boolean isSearchMode = true;
+	boolean isUserConnected;
 
 	public Header(App app, Stage stage, String subtitle) {
 		super();
@@ -85,19 +88,56 @@ public class Header extends StackPane {
 		filteredSearch.setVisible(false);
 		filteredSearch.setAlignment(Pos.CENTER_LEFT);
 
+		//Zone de connexion
+		HBox connexionZone = new HBox();
+		connexionZone.setMaxWidth(300);
+		connexionZone.setAlignment(Pos.CENTER_RIGHT);
+		connexionZone.setPadding(new Insets(0, 40, 0, 0));
+		
+		if (app.currentUser.getRole()==Role.ADMIN) {
+			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__admin-icon.png"));
+			ImageView adminImageView = new ImageView(adminIcon);
+			adminImageView.setFitHeight(40);
+			adminImageView.setFitWidth(40);
+			connexionZone.getChildren().add(adminImageView);
+		}
+		
+		if (app.currentUser.getRole()==Role.TEACHER) {
+			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__teacher-icon.png"));
+			ImageView adminImageView = new ImageView(adminIcon);
+			adminImageView.setFitHeight(40);
+			adminImageView.setFitWidth(40);
+			connexionZone.getChildren().add(adminImageView);
+		}
+		
+		if (app.currentUser.getRole()==Role.STUDENT) {
+			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__student-icon.png"));
+			ImageView adminImageView = new ImageView(adminIcon);
+			adminImageView.setFitHeight(40);
+			adminImageView.setFitWidth(40);
+			connexionZone.getChildren().add(adminImageView);
+		}
+		
 		// Créer le bouton de connexion
 		Button buttonConnexion = new Button("Connexion");
-
+		
+		if (app.currentUser.getRole() != null) {
+			buttonConnexion.setText("Déconnexion");
+		} else buttonConnexion.setText("Connexion");
+		connexionZone.setMargin(buttonConnexion, new Insets (20));
+		connexionZone.getChildren().add(buttonConnexion);
+		
+		
 		// Créer un separator pour le bas
 		Separator bottomSeparator = new Separator();
 		bottomSeparator.setPrefHeight(1); // Hauteur du trait
 
 		// Ajouter le VBox des titres et le bouton de connexion au StackPane
-		this.getChildren().addAll(titles, searchBox, filteredSearch, buttonConnexion, bottomSeparator);
+		this.getChildren().addAll(titles, searchBox, filteredSearch, connexionZone, bottomSeparator);
 
 		// Aligner des elements du stackpane
 		StackPane.setAlignment(titles, Pos.CENTER);
-		StackPane.setAlignment(buttonConnexion, Pos.CENTER_RIGHT);
+		StackPane.setAlignment(connexionZone, Pos.CENTER_RIGHT);
 		StackPane.setAlignment(searchBox, Pos.CENTER_LEFT);
 		StackPane.setAlignment(filteredSearch, Pos.CENTER_LEFT);
 		StackPane.setAlignment(bottomSeparator, Pos.BOTTOM_CENTER);
@@ -166,8 +206,15 @@ public class Header extends StackPane {
 		buttonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				
+				if (app.currentUser.getRole() != null) {
+					app.currentUser = new User();
+					HomePage homepage = new HomePage(app, stage);
+					stage.setScene(homepage.getScene());
+				} else {
 				UserConnexion userConnexion = new UserConnexion(app, stage);
 				stage.setScene(userConnexion.getScene());
+				}
 			}
 		});
 	}
