@@ -160,8 +160,8 @@ public class Header extends StackPane {
 			titles.setVisible(!isSearchBoxVisible);
 		});
 
-		filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
-		filteredSearch.getFilterButton().setOnAction(filterButton.getOnAction());
+//		filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
+//		filteredSearch.getFilterButton().setOnAction(filterButton.getOnAction());
 
 		buttonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
