@@ -28,7 +28,8 @@ public class Header extends StackPane {
 	private App app;
 	private Stage stage;
 	private FilteredSearch filteredSearch;
-	// Variable pour suivre l'état du bouton
+	private VBox titles;
+	// Variable pour suivre l'état des bouton
 	boolean isSearchMode = true;
 
 	public Header(App app, Stage stage, String subtitle) {
@@ -39,7 +40,7 @@ public class Header extends StackPane {
 		this.stage = stage;
 
 		// Créer le VBox pour les titres
-		VBox titles = new VBox();
+		titles = new VBox();
 		titles.setAlignment(Pos.CENTER); // Centre les titres horizontalement
 		titles.setSpacing(5); // Espacement entre le titre et le sous-titre
 		titles.setPadding(new Insets(10));
@@ -66,8 +67,8 @@ public class Header extends StackPane {
 		// Créer le bouton pour accéder à la recherche avancée
 		Image filterhIcon = new Image(getClass().getResourceAsStream("/icons/__filter-icon.png"));
 		ImageView filterImageView = new ImageView(filterhIcon);
-		buttonImageView.setFitHeight(20);
-		buttonImageView.setFitWidth(20);
+		filterImageView.setFitHeight(20);
+		filterImageView.setFitWidth(20);
 		Button filterButton = new Button("", filterImageView);
 
 		// Appliquer les styles CSS
@@ -78,10 +79,11 @@ public class Header extends StackPane {
 		this.searchBox = new HBox(10, searchField, toggleButton, filterButton);
 		searchBox.setAlignment(Pos.CENTER_LEFT);
 		searchBox.setMaxWidth(300);
-		
+
 		// Créer la FilteredSearch mais la rendre invisible au départ
-        filteredSearch = new FilteredSearch(app);
-        filteredSearch.setVisible(false);
+		filteredSearch = new FilteredSearch(app);
+		filteredSearch.setVisible(false);
+		filteredSearch.setAlignment(Pos.CENTER_LEFT);
 
 		// Créer le bouton de connexion
 		Button buttonConnexion = new Button("Connexion");
@@ -100,9 +102,10 @@ public class Header extends StackPane {
 		StackPane.setAlignment(filteredSearch, Pos.CENTER_LEFT);
 		StackPane.setAlignment(bottomSeparator, Pos.BOTTOM_CENTER);
 
-		// Ajouter des marges au bouton pour l'écarter du bord
-		StackPane.setMargin(buttonConnexion, new Insets(5, 40, 5, 0)); // Marges autour du bouton
-		StackPane.setMargin(searchBox, new Insets(5, 0, 5, 40)); // Marges autour du bouton
+		// Ajouter des marges
+		StackPane.setMargin(buttonConnexion, new Insets(5, 40, 5, 0));
+		StackPane.setMargin(searchBox, new Insets(5, 0, 5, 40));
+		StackPane.setMargin(filteredSearch, new Insets(5, 0, 5, 40));
 
 		// Gestion de l'action du bouton
 		toggleButton.setOnAction(event -> {
@@ -110,45 +113,55 @@ public class Header extends StackPane {
 			String query = searchField.getText();
 
 			if (searchField.getText().isEmpty()) {
-				
+
 				searchField.getStyleClass().add("text-field-error");
-				
+
 			} else {
-				
+
 				if (isSearchMode) {
 					List<Stagiaire> results = app.myDAO.searchByName(query);
 					app.myObservableArrayList.setAll(results);
-					
+
 					// Vérification des résultats et basculement du mode
 					if (results != null && !results.isEmpty()) {
 						// Changer l'image du bouton pour l'état de réinitialisation
 						Image resetIcon = new Image(getClass().getResourceAsStream("/icons/__reset-icon.png"));
 						buttonImageView.setImage(resetIcon);
-						
+
 						// Passer en mode réinitialisation
 						isSearchMode = false;
 					}
 				} else {
 					// Simplification pour vérification
 					System.out.println("Entré dans le bloc else");
-					
+
 					// Réinitialiser la liste complète
 					app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
-					
+
 					// Changer l'image du bouton pour l'état de recherche
 					Image searchIconAgain = new Image(getClass().getResourceAsStream("/icons/__search-icon.png"));
 					buttonImageView.setImage(searchIconAgain);
-					
+
 					// Effacer le champ de recherche
 					searchField.clear();
-					
+
 					// Passer en mode recherche
 					isSearchMode = true;
 				}
-				
+
 				searchField.getStyleClass().remove("text-field-error");
 			}
 		});
+
+		filterButton.setOnAction(event -> {
+			boolean isSearchBoxVisible = searchBox.isVisible();
+			searchBox.setVisible(!isSearchBoxVisible);
+			filteredSearch.setVisible(isSearchBoxVisible);
+			titles.setVisible(!isSearchBoxVisible);
+		});
+
+		filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
+		filteredSearch.getFilterButton().setOnAction(filterButton.getOnAction());
 
 		buttonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

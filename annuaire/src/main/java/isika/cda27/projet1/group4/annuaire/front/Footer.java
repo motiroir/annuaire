@@ -1,8 +1,7 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
 import java.io.File;
-
-import com.aspose.pdf.internal.imaging.internal.Exceptions.IO.FileNotFoundException;
+import java.io.FileNotFoundException;
 
 import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
@@ -95,8 +94,8 @@ public class Footer extends HBox {
 
 			}
 		});
-		
-		//Gestion de l'impression en PDF
+
+		// Gestion de l'impression en PDF
 		buttonImpression.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -114,7 +113,8 @@ public class Footer extends HBox {
 					try {
 						// Appeler la méthode pour imprimer le tableau en PDF
 						PdfPrint.printTableToPdf(tableView, file.getAbsolutePath());
-						showConfirmationDialog("Le fichier PDF a été créé avec succès à l'emplacement :\n" + file.getAbsolutePath());
+						showConfirmationDialog(
+								"Le fichier PDF a été créé avec succès à l'emplacement :\n" + file.getAbsolutePath());
 					} catch (FileNotFoundException e) {
 						e.printStackTrace();
 					}
@@ -123,11 +123,11 @@ public class Footer extends HBox {
 
 			private void showConfirmationDialog(String message) {
 				Alert alert = new Alert(AlertType.INFORMATION);
-		        alert.setTitle("Confirmation");
-		        alert.setHeaderText(null);
-		        alert.setContentText(message);
-		        alert.showAndWait();
-				
+				alert.setTitle("Confirmation");
+				alert.setHeaderText(null);
+				alert.setContentText(message);
+				alert.showAndWait();
+
 			}
 		});
 

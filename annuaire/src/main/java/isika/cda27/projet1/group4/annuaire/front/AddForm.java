@@ -113,6 +113,7 @@ public class AddForm extends BorderPane {
 				nameTextfield.setText(oldValue);
 			}
 		});
+		
 		// Ajouter un ChangeListener pour restreindre l'entrée du champ firstName
 		firstnameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("[a-zA-ZÀ-ÿ ]*")) {
@@ -249,34 +250,6 @@ public class AddForm extends BorderPane {
 				}
 			}
 		});
-
-//		validateButton.setOnAction(new EventHandler<ActionEvent>() {
-//			@Override
-//			public void handle(ActionEvent event) {
-//				// Récupérer les valeurs des champs
-//				String name = nameTextfield.getText();
-//				String firstName = firstnameTextfield.getText();
-//				String postalCode = postalCodeTextfield.getText();
-//				String promo = promoTextfield.getText();
-//				String sYear = yearTextfield.getText();
-//				int year = 0;
-//
-//				try {
-//					year = Integer.parseInt(sYear);
-//				} catch (NumberFormatException e) {
-//					e.printStackTrace();
-//				}
-//
-//				// Créer un nouveau stagiaire
-//				Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
-//				// Ajouter le stagiaire via le DAO
-//				app.myDAO.addStagiaire(stagiaire);
-//				app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
-//				// Revenir à la scène précédente (accueil)
-//				HomePage homepage = new HomePage(app, stage);
-//				stage.setScene(homepage.getScene());
-//			}
-//		});
 
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
