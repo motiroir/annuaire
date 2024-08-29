@@ -98,6 +98,75 @@ public class UpdateForm extends BorderPane {
 		gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
 		gridpane.add(yearTextfield, 1, 4);
 
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ nom
+		nameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			// vérifie si newValue ne contient que des lettres alphabétiques, majuscules ou
+			// minuscules.
+			if (!newValue.matches("[a-zA-ZÀ-ÿ ]*")) {
+				nameTextfield.setText(newValue.replaceAll("[^a-zA-ZÀ-ÿ ]", ""));
+
+			}
+			// Limite la longueur à 20 caractères
+			if (newValue.length() > 20) {
+				// Rétablit l'ancienne valeur si la nouvelle dépasse 20 caractères
+				nameTextfield.setText(oldValue);
+			}
+		});
+
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ firstName
+		firstnameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("[a-zA-ZÀ-ÿ ]*")) {
+				firstnameTextfield.setText(newValue.replaceAll("[^a-zA-ZÀ-ÿ ]", ""));
+			}
+			// Limite la longueur à 20 caractères
+			if (newValue.length() > 20) {
+				// Rétablit l'ancienne valeur si la nouvelle dépasse 20 caractères
+				firstnameTextfield.setText(oldValue);
+			}
+		});
+
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ
+		// postalCodeTextfield
+		postalCodeTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("[a-zA-Z0-9 ]*")) {
+				// Filtre les caractères non alphabétiques et non numériques
+				postalCodeTextfield.setText(newValue.replaceAll("[^a-zA-Z0-9 ]", ""));
+
+			}
+			// Limiter la longueur
+			if (newValue.length() > 10) {
+				postalCodeTextfield.setText(oldValue);
+
+			}
+		});
+
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ promoTextfield
+		promoTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("[a-zA-Z0-9 ]*")) {
+				// Filtre les caractères non alphabétiques et non numériques
+				promoTextfield.setText(newValue.replaceAll("[^a-zA-Z0-9 ]", ""));
+			}
+			// Limiter la longueur
+			if (newValue.length() > 10) {
+				promoTextfield.setText(oldValue);
+
+			}
+		});
+
+		// Ajouter un ChangeListener pour restreindre l'entrée du champ à uniquement des
+		// nombres
+		yearTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
+			// Vérifie si newValue contient uniquement des chiffres
+			if (!newValue.matches("\\d*")) {
+				// Filtre les caractères non numériques
+				yearTextfield.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+			// Limite la longueur à 4 chiffres
+			if (newValue.length() > 4) {
+				yearTextfield.setText(oldValue);
+			}
+		});
+
 		HBox buttons = new HBox();
 		formBox.getChildren().add(buttons);
 
@@ -120,31 +189,76 @@ public class UpdateForm extends BorderPane {
 			@Override
 			public void handle(ActionEvent event) {
 
-				// Récupérer les valeurs des champs
-				String name = nameTextfield.getText();
-				String firstName = firstnameTextfield.getText();
-				String postalCode = postalCodeTextfield.getText();
-				String promo = promoTextfield.getText();
-				String sYear = yearTextfield.getText();
-				int year = 0;
+				boolean isValid = true;
 
-				try {
-					year = Integer.parseInt(sYear);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
+				// Vérification pour le champ nameTextfield
+				if (nameTextfield.getText().isEmpty()) {
+					nameTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					nameTextfield.getStyleClass().remove("text-field-error");
 				}
 
-				// Créer un nouveau stagiaire
-				Stagiaire newStagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+				// Vérification pour le champ firstnameTextfield
+				if (firstnameTextfield.getText().isEmpty()) {
+					firstnameTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					firstnameTextfield.getStyleClass().remove("text-field-error");
+				}
 
-				// Appeler la méthode update du DAO
-				app.myDAO.updateStagiaire(selectedStagiaire, newStagiaire);
-				app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
+				// Vérification pour le champ postalCodeTextfield
+				if (postalCodeTextfield.getText().isEmpty()) {
+					postalCodeTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					postalCodeTextfield.getStyleClass().remove("text-field-error");
+				}
 
-				// Revenir à la scène précédente
-				HomePage homepage = new HomePage(app, stage);
-				stage.setScene(homepage.getScene());
+				// Vérification pour le champ promoTextfield
+				if (promoTextfield.getText().isEmpty()) {
+					promoTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					promoTextfield.getStyleClass().remove("text-field-error");
+				}
 
+				// Vérification pour le champ yearTextfield
+				if (yearTextfield.getText().isEmpty()) {
+					yearTextfield.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					yearTextfield.getStyleClass().remove("text-field-error");
+				}
+
+				// Si tous les champs sont valides
+				if (isValid) {
+
+					// Récupérer les valeurs des champs
+					String name = nameTextfield.getText();
+					String firstName = firstnameTextfield.getText();
+					String postalCode = postalCodeTextfield.getText();
+					String promo = promoTextfield.getText();
+					String sYear = yearTextfield.getText();
+					int year = 0;
+
+					try {
+						year = Integer.parseInt(sYear);
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+
+					// Créer un nouveau stagiaire
+					Stagiaire newStagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+
+					// Appeler la méthode update du DAO
+					app.myDAO.updateStagiaire(selectedStagiaire, newStagiaire);
+					app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
+
+					// Revenir à la scène précédente
+					HomePage homepage = new HomePage(app, stage);
+					stage.setScene(homepage.getScene());
+				}
 			}
 		});
 

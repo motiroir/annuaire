@@ -96,8 +96,6 @@ public class AddForm extends BorderPane {
 		gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
 		gridpane.add(yearTextfield, 1, 4);
 
-		HBox buttons = new HBox();
-		formBox.getChildren().add(buttons);
 
 		// Ajouter un ChangeListener pour restreindre l'entrée du champ nom
 		nameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -168,6 +166,9 @@ public class AddForm extends BorderPane {
 			}
 		});
 
+		HBox buttons = new HBox();
+		formBox.getChildren().add(buttons);
+		
 		// création des boutons
 		Button cancelButton = new Button("Annuler");
 		Button validateButton = new Button("Valider");

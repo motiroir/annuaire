@@ -11,6 +11,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -134,7 +136,16 @@ public class UserConnexion extends BorderPane {
 					HomePage homepage = new HomePage(app, stage);
 					stage.setScene(homepage.getScene());
 	            } else {
-	                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Nom d'utilisateur ou mot de passe invalide");
+
+	                Alert alert = new Alert(Alert.AlertType.NONE, "Nom d'utilisateur ou mot de passe invalide", ButtonType.OK);
+	                
+	                // Appliquer le fichier CSS
+	                DialogPane dialogPane = alert.getDialogPane();
+	                dialogPane.getStylesheets().add(
+	                    getClass().getResource("/css/style.css").toExternalForm()
+	                );
+	                dialogPane.getStyleClass().add("alert");
+
 	                alert.show();
 	            }
 		        }
