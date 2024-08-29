@@ -52,32 +52,26 @@ public class App extends Application {
 	@Override
 	public void start(Stage stage) {
 
-		// Annuaire annuaire = new Annuaire();
-		// annuaire.lireFichier("src/main/resources/test.txt");
-
-		myObservableArrayList = FXCollections.observableArrayList(this.myDAO.getStagiaires());
-		
-		// Création de la première scène
-		HomePage root = new HomePage(this, stage);
-		//Lien avec le css
-		root.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-		
-        stage.setScene(root.getScene());
-        stage.setTitle("Annuaire");
-        stage.show();
-	
-//		System.out.println(myDAO);
-
-//		 on créé un nouvel arbre
-//		 BinarySearchTree searchTree = new BinarySearchTree();
-
-//		for (int i = 0; i < myDAO.getStagiaires().size(); i++) {
-//			System.out.println(myDAO.getStagiaires().get(i));
+		// construction de l'arbre depuis un fichier texte
+//		Annuaire annuaire = new Annuaire();
+//		annuaire.lireFichier("src/main/resources/STAGIAIRES.DON");
+//		BinarySearchTree searchTree = new BinarySearchTree();
+//		for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
+//			searchTree.ajouter(annuaire.getStagiaires().get(i));
 //		}
 
-		
+		myObservableArrayList = FXCollections.observableArrayList(this.myDAO.getStagiaires());
 
-		
+		// Création de la première scène
+		HomePage root = new HomePage(this, stage);
+		// Lien avec le css
+		root.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+
+		stage.setScene(root.getScene());
+		stage.setTitle("Annuaire");
+		stage.show();
+
+//		System.out.println(myDAO);
 
 //		// le bouton connexion permet de basculer vers une nouvelle scène
 //		buttonConnexion.setOnAction(new EventHandler<ActionEvent>() {

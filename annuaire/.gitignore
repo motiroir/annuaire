@@ -7,3 +7,6 @@ target/
 .project
 .settings/
 .metadata/
+
+# Le fichier binaire de sauvegarde
+src/main/resources/save

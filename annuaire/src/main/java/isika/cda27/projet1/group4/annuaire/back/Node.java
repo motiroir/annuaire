@@ -6,71 +6,147 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * La classe Node représente un nœud dans un arbre binaire qui stocke des objets
+ * de type {@link Stagiaire}. Chaque nœud contient un stagiaire, ainsi que des
+ * références à ses enfants gauche et droit, et à un doublon.
+ * <p>
+ * Les nœuds sont stockés dans un fichier binaire, où chaque nœud est de taille
+ * fixe. La classe fournit des méthodes pour ajouter, lire, rechercher et
+ * supprimer des nœuds dans cet arbre.
+ */
 public class Node {
 
-	private Stagiaire key;
-	private int leftChild;
-	private int rightChild;
-	private int doublon;
-	public static final int NODE_SIZE_OCTET = Stagiaire.STAGIAIRE_SIZE_OCTET + 12;
-	public static final int LEFT_CHILD_POSITION = 12;
-	public static final int RIGHT_CHILD_POSITION = 8;
-	public static final int DOUBLON_POSITION = 4;
+    private Stagiaire key;
+    private int leftChild;
+    private int rightChild;
+    private int doublon;
+    public static final int NODE_SIZE_OCTET = Stagiaire.STAGIAIRE_SIZE_OCTET + 12;
+    public static final int LEFT_CHILD_POSITION = 12;
+    public static final int RIGHT_CHILD_POSITION = 8;
+    public static final int DOUBLON_POSITION = 4;
 
-	public Node(Stagiaire key) {
-		this.key = key;
-		this.rightChild = -1;
-		this.leftChild = -1;
-		this.doublon = -1;
-	}
+    /**
+     * Constructeur de la classe Node qui initialise un nœud avec une clé donnée.
+     * Les références aux enfants et aux doublons sont initialisées à -1 (null).
+     *
+     * @param key Le stagiaire à stocker dans ce nœud.
+     */
+    public Node(Stagiaire key) {
+        this.key = key;
+        this.rightChild = -1;
+        this.leftChild = -1;
+        this.doublon = -1;
+    }
 
-	public Node(Stagiaire key, int leftChild, int rightChild, int doublon) {
-		super();
-		this.key = key;
-		this.rightChild = rightChild;
-		this.leftChild = leftChild;
-		this.doublon = doublon;
-	}
-	
-	@Override
-	public String toString() {
-		return "Node [key=" + key + ", leftChild=" + leftChild + ", rightChild=" + rightChild + ", doublon=" + doublon
-				+ "]";
-	}
-	
-	public Stagiaire getKey() {
-		return key;
-	}
+    /**
+     * Constructeur de la classe Node qui initialise un nœud avec une clé, ainsi
+     * que des références explicites aux enfants gauche et droit, et aux doublons.
+     *
+     * @param key        Le stagiaire à stocker dans ce nœud.
+     * @param leftChild  L'index du nœud enfant gauche.
+     * @param rightChild L'index du nœud enfant droit.
+     * @param doublon    L'index du nœud doublon.
+     */
+    public Node(Stagiaire key, int leftChild, int rightChild, int doublon) {
+        super();
+        this.key = key;
+        this.rightChild = rightChild;
+        this.leftChild = leftChild;
+        this.doublon = doublon;
+    }
 
-	public void setKey(Stagiaire key) {
-		this.key = key;
-	}
+    /**
+     * Retourne une représentation sous forme de chaîne de caractères de ce nœud.
+     *
+     * @return Une chaîne de caractères représentant ce nœud.
+     */
+    @Override
+    public String toString() {
+        return "Node [key=" + key + ", leftChild=" + leftChild + ", rightChild=" + rightChild + ", doublon=" + doublon
+                + "]";
+    }
 
-	public int getRightChild() {
-		return rightChild;
-	}
+    // Getters et setters pour les attributs du nœud
 
-	public void setRightChild(int rightChild) {
-		this.rightChild = rightChild;
-	}
+    /**
+     * Retourne la clé (stagiaire) de ce nœud.
+     *
+     * @return Le stagiaire stocké dans ce nœud.
+     */
+    public Stagiaire getKey() {
+        return key;
+    }
 
-	public int getLeftChild() {
-		return leftChild;
-	}
+    /**
+     * Définit la clé (stagiaire) de ce nœud.
+     *
+     * @param key Le stagiaire à stocker dans ce nœud.
+     */
+    public void setKey(Stagiaire key) {
+        this.key = key;
+    }
 
-	public void setLeftChild(int leftChild) {
-		this.leftChild = leftChild;
-	}
+    /**
+     * Retourne l'index de l'enfant droit de ce nœud.
+     *
+     * @return L'index de l'enfant droit.
+     */
+    public int getRightChild() {
+        return rightChild;
+    }
 
-	public int getDoublon() {
-		return doublon;
-	}
+    /**
+     * Définit l'index de l'enfant droit de ce nœud.
+     *
+     * @param rightChild L'index de l'enfant droit.
+     */
+    public void setRightChild(int rightChild) {
+        this.rightChild = rightChild;
+    }
 
-	public void setDoublon(int doublon) {
-		this.doublon = doublon;
-	}
+    /**
+     * Retourne l'index de l'enfant gauche de ce nœud.
+     *
+     * @return L'index de l'enfant gauche.
+     */
+    public int getLeftChild() {
+        return leftChild;
+    }
 
-	// Ajout d'un noeud
+    /**
+     * Définit l'index de l'enfant gauche de ce nœud.
+     *
+     * @param leftChild L'index de l'enfant gauche.
+     */
+    public void setLeftChild(int leftChild) {
+        this.leftChild = leftChild;
+    }
+
+    /**
+     * Retourne l'index du nœud doublon de ce nœud.
+     *
+     * @return L'index du nœud doublon.
+     */
+    public int getDoublon() {
+        return doublon;
+    }
+
+    /**
+     * Définit l'index du nœud doublon de ce nœud.
+     *
+     * @param doublon L'index du nœud doublon.
+     */
+    public void setDoublon(int doublon) {
+        this.doublon = doublon;
+    }
+
+    /**
+     * Ajoute un nœud à l'arbre binaire en fonction de la clé du stagiaire donné.
+     *
+     * @param raf       Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param stagiaire Le stagiaire à ajouter dans l'arbre.
+     */
 	public void addNode(RandomAccessFile raf, Stagiaire stagiaire) {
 		try {
 			if (this.key.getName().compareToIgnoreCase(stagiaire.getName()) > 0) {
@@ -98,14 +174,14 @@ public class Node {
 					newNodeWriter(raf, stagiaire);
 				} else {
 					// Naviguer à travers la chaîne des doublons
-	                Node currentDoublon = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
-	                while (currentDoublon.doublon != -1) {
-	                    currentDoublon = nodeReader(raf, currentDoublon.doublon * NODE_SIZE_OCTET);
-	                }
-	                // On a trouvé le dernier doublon, ajouter le nouveau stagiaire ici
-	                raf.seek(raf.getFilePointer() - DOUBLON_POSITION);
-	                raf.writeInt((int) (raf.length() / NODE_SIZE_OCTET));
-	                newNodeWriter(raf, stagiaire);
+					Node currentDoublon = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
+					while (currentDoublon.doublon != -1) {
+						currentDoublon = nodeReader(raf, currentDoublon.doublon * NODE_SIZE_OCTET);
+					}
+					// On a trouvé le dernier doublon, ajouter le nouveau stagiaire ici
+					raf.seek(raf.getFilePointer() - DOUBLON_POSITION);
+					raf.writeInt((int) (raf.length() / NODE_SIZE_OCTET));
+					newNodeWriter(raf, stagiaire);
 				}
 			}
 		} catch (IOException e) {
@@ -113,8 +189,13 @@ public class Node {
 		}
 	}
 
-	// parcours infixe (affichage par ordre alphabetique)
-	// le parcours infixe Gauche Node Droit
+    /**
+     * Lit et récupère les nœuds de l'arbre dans un ordre infixe (Gauche, Nœud,
+     * Droit).
+     *
+     * @param raf        Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param stagiaires La liste où les stagiaires seront ajoutés.
+     */
 	public void read(RandomAccessFile raf, List<Stagiaire> stagiaires) {
 		if (this.leftChild != -1) {
 			Node leftNode = nodeReader(raf, this.leftChild * NODE_SIZE_OCTET);
@@ -139,7 +220,14 @@ public class Node {
 		}
 	}
 
-	// recherche d'un noeud par sa cle
+	 /**
+     * Recherche un stagiaire dans l'arbre binaire par sa clé.
+     *
+     * @param raf               Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param searchedStagiaire Le stagiaire recherché.
+     * @param stagiaires        La liste des stagiaires trouvés.
+     * @return Une liste des stagiaires correspondant à la clé recherchée.
+     */
 	public List<Stagiaire> searchStagiaire(RandomAccessFile raf, Stagiaire searchedStagiaire,
 			List<Stagiaire> stagiaires) {
 		if (this.key.getName().compareToIgnoreCase(searchedStagiaire.getName()) == 0) {
@@ -173,19 +261,66 @@ public class Node {
 		}
 	}
 
-	// suppression d'un noeud à partir de sa cle
-	// premiere etape recherche du noeud a supprimer
+	  /**
+     * Supprime un nœud de l'arbre en fonction de la clé du stagiaire donné.
+     *
+     * @param raf       Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param stagiaire Le stagiaire à supprimer de l'arbre.
+     * @return L'index du nœud supprimé.
+     */
 	public int delete(RandomAccessFile raf, Stagiaire stagiaire) {
 		if (this.key.getName().compareToIgnoreCase(stagiaire.getName()) == 0) {
 			// gestion des doublons
 			if (this.doublon != -1) {
-				int indexNoeud = this.findNodeIndex(raf);
-				if (indexNoeud != -1) {
+				Node currentDoublon = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);
+
+				if (this.key.equals(stagiaire)) {
+					// Si le noeud à supprimer est le noeud actuel (this) et qu'il a des doublons
+					int thisIndex = this.findNodeIndex(raf);
 					try {
-						raf.seek((indexNoeud + 1) * NODE_SIZE_OCTET - DOUBLON_POSITION);
-						raf.writeInt(-1);
+						// Copier les données du premier doublon dans ce noeud
+						stagiaireWriter(raf, currentDoublon.key, thisIndex);
+
+						// Mettre à jour le pointeur de doublon pour qu'il pointe vers le doublon
+						// suivant
+						raf.seek(thisIndex * NODE_SIZE_OCTET + NODE_SIZE_OCTET - DOUBLON_POSITION);
+						raf.writeInt(currentDoublon.doublon);
+
+						// Supprimer le doublon qui vient d'être déplacé en mettant à jour le pointeur
+						// de l'ancien doublon
+						raf.seek(this.doublon * NODE_SIZE_OCTET + NODE_SIZE_OCTET - DOUBLON_POSITION);
+						raf.writeInt(-1); // Effacer le pointeur de doublon pour ce noeud déplacé
+
 					} catch (IOException e) {
 						e.printStackTrace();
+					}
+					return thisIndex;
+				}
+
+				// Parcourir la chaîne des doublons
+				Node previousNode = this;
+				while (currentDoublon != null) {
+					if (currentDoublon.key.equals(stagiaire)) {
+						// Supprimer le doublon en rétablissant les liens
+						previousNode.doublon = currentDoublon.doublon;
+
+						// Mettre à jour le fichier pour supprimer le doublon
+						try {
+							raf.seek((previousNode.findNodeIndex(raf) + 1) * NODE_SIZE_OCTET - DOUBLON_POSITION);
+							raf.writeInt(previousNode.doublon);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
+						return previousNode.findNodeIndex(raf);
+					}
+
+					// Passer au prochain doublon
+					previousNode = currentDoublon;
+					if (currentDoublon.doublon != -1) {
+						currentDoublon = nodeReader(raf, currentDoublon.doublon * NODE_SIZE_OCTET);
+					} else {
+						currentDoublon = null;
 					}
 				}
 			} else {
@@ -195,12 +330,18 @@ public class Node {
 		} else if (this.key.getName().compareToIgnoreCase(stagiaire.getName()) > 0) {
 			nodeReader(raf, this.leftChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
 		} else {
-			if(this.rightChild != -1)
-			nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
+			if (this.rightChild != -1)
+				nodeReader(raf, this.rightChild * NODE_SIZE_OCTET).delete(raf, stagiaire);
 		}
 		return this.findNodeIndex(raf);
 	}
 
+    /**
+     * Méthode privée pour supprimer la racine de l'arbre.
+     *
+     * @param raf Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @return L'index du nœud remplacé.
+     */
 	private int deleteRoot(RandomAccessFile raf) {
 
 		// si le fils gauche est nul on retourne le fils droit
@@ -282,7 +423,14 @@ public class Node {
 		return indexPositionARemplacer;
 	}
 
-	// methode de recherche du noeud substitute pour le cas noeud avec deux fils
+	   /**
+     * Méthode privée pour rechercher le nœud substitut lors de la suppression d'un
+     * nœud avec deux enfants.
+     *
+     * @param raf     Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param courant Le nœud courant dans la recherche du substitut.
+     * @return Le nœud substitut trouvé.
+     */
 	private Node searchSubstitute(RandomAccessFile raf, Node courant) {
 		// on est dans le sous arbre droit et on cherche le noeud le plus a gauche du
 		// sous arbre droit
@@ -295,7 +443,12 @@ public class Node {
 
 	}
 
-	// Binary File Writer
+	 /**
+     * Écrit un nouveau nœud à la fin du fichier binaire.
+     *
+     * @param raf       Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param stagiaire Le stagiaire à ajouter comme nouveau nœud.
+     */
 	public void newNodeWriter(RandomAccessFile raf, Stagiaire stagiaire) {
 		try {
 
@@ -316,6 +469,14 @@ public class Node {
 		}
 	}
 
+	 /**
+     * Écrit les informations d'un stagiaire dans un nœud existant dans le fichier
+     * binaire.
+     *
+     * @param raf       Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param stagiaire Le stagiaire à écrire.
+     * @param index     L'index où écrire les informations du stagiaire.
+     */
 	public void stagiaireWriter(RandomAccessFile raf, Stagiaire stagiaire, long index) {
 		try {
 
@@ -332,6 +493,18 @@ public class Node {
 		}
 	}
 
+    /**
+     * Lit un nœud à partir d'une position spécifiée dans le fichier binaire.
+     * <p>
+     * Cette méthode lit les données binaires à la position donnée dans le fichier
+     * et les convertit en un objet {@link Node}. Elle extrait les informations
+     * concernant le stagiaire ainsi que les indices des enfants gauche et droit,
+     * et le doublon éventuel.
+     *
+     * @param raf      Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param position La position à laquelle lire le nœud dans le fichier.
+     * @return Le nœud lu à la position spécifiée, ou {@code null} en cas d'erreur.
+     */
 	public Node nodeReader(RandomAccessFile raf, int position) {
 
 		Node newNode = null;
@@ -379,7 +552,17 @@ public class Node {
 		return newNode;
 	}
 
-	// méthode pour récupérer la position d'un noeud
+	 /**
+     * Trouve l'index d'un nœud dans le fichier en cherchant un nœud correspondant
+     * à la clé du nœud courant.
+     * <p>
+     * Cette méthode commence la recherche à partir de la racine de l'arbre et
+     * utilise une recherche récursive pour trouver l'index du nœud dont la clé
+     * correspond à celle du nœud courant.
+     *
+     * @param raf Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @return L'index du nœud correspondant, ou {@code -1} si le nœud n'est pas trouvé.
+     */
 	private int findNodeIndex(RandomAccessFile raf) {
 		try {
 			// Commencer la recherche à partir de la racine de l'arbre (index 0)
@@ -390,26 +573,38 @@ public class Node {
 		return -1; // Si le noeud n'est pas trouvé
 	}
 
+	 /**
+     * Recherche récursivement l'index d'un nœud correspondant à la clé du nœud
+     * courant en utilisant un index de nœud spécifié.
+     * <p>
+     * Cette méthode lit chaque nœud à partir du fichier et compare sa clé avec celle
+     * du nœud courant. Elle recherche également les doublons et les enfants gauche et droit.
+     *
+     * @param raf               Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param currentNodeIndex  L'index du nœud actuel dans la recherche.
+     * @return L'index du nœud correspondant, ou {@code -1} si le nœud n'est pas trouvé.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
 	private int findNodeIndexHelper(RandomAccessFile raf, int currentNodeIndex) throws IOException {
 		// Lire le noeud actuel à la position spécifiée
 		Node currentNode = nodeReader(raf, currentNodeIndex * NODE_SIZE_OCTET);
 		// Comparer la clé du noeud actuel avec celle du noeud courant (this)
-		 if (currentNode.getKey().getName().compareToIgnoreCase(this.key.getName()) == 0) {
-		        // Si les noms correspondent, vérifier si les objets sont égaux avec equals()
-		        if (currentNode.getKey().equals(this.key)) {
-		            return currentNodeIndex;
-		        } else {
-		            // Parcourir les doublons pour trouver l'exacte correspondance avec equals()
-		            int doublonIndex = currentNode.getDoublon();
-		            while (doublonIndex != -1) {
-		                Node doublonNode = nodeReader(raf, doublonIndex * NODE_SIZE_OCTET);
-		                if (doublonNode.getKey().equals(this.key)) {
-		                    return doublonIndex;
-		                }
-		                doublonIndex = doublonNode.getDoublon();
-		            }
-		        }
-		    }
+		if (currentNode.getKey().getName().compareToIgnoreCase(this.key.getName()) == 0) {
+			// Si les noms correspondent, vérifier si les objets sont égaux avec equals()
+			if (currentNode.getKey().equals(this.key)) {
+				return currentNodeIndex;
+			} else {
+				// Parcourir les doublons pour trouver l'exacte correspondance avec equals()
+				int doublonIndex = currentNode.getDoublon();
+				while (doublonIndex != -1) {
+					Node doublonNode = nodeReader(raf, doublonIndex * NODE_SIZE_OCTET);
+					if (doublonNode.getKey().equals(this.key)) {
+						return doublonIndex;
+					}
+					doublonIndex = doublonNode.getDoublon();
+				}
+			}
+		}
 		// Rechercher récursivement dans l'enfant gauche, si existant
 		if (currentNode.getLeftChild() != -1) {
 			int leftChildIndex = findNodeIndexHelper(raf, currentNode.getLeftChild());
@@ -428,7 +623,16 @@ public class Node {
 		return -1;
 	}
 
-	// méthode pour trouver le noeud parent d'un noeud sur le même principe
+	 /**
+     * Trouve l'index du parent du nœud courant dans le fichier.
+     * <p>
+     * Cette méthode commence la recherche à partir de la racine de l'arbre et
+     * utilise une recherche récursive pour déterminer l'index du parent du nœud
+     * courant.
+     *
+     * @param raf Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @return L'index du parent du nœud courant, ou {@code -1} si le parent n'est pas trouvé.
+     */
 	private int findParent(RandomAccessFile raf) {
 		try {
 			// Commencer la recherche à partir de la racine (index 0)
@@ -439,6 +643,18 @@ public class Node {
 		return -1; // Si le parent n'est pas trouvé
 	}
 
+	/**
+     * Recherche récursivement l'index du parent du nœud courant dans le fichier.
+     * <p>
+     * Cette méthode lit chaque nœud à partir du fichier et vérifie si le nœud courant
+     * est un enfant gauche ou droit d'un nœud donné. Elle continue la recherche dans
+     * les enfants gauche et droit.
+     *
+     * @param raf               Le fichier d'accès aléatoire où les nœuds sont stockés.
+     * @param currentNodeIndex  L'index du nœud actuel dans la recherche.
+     * @return L'index du parent du nœud courant, ou {@code -1} si le parent n'est pas trouvé.
+     * @throws IOException Si une erreur d'entrée/sortie se produit.
+     */
 	private int findParentHelper(RandomAccessFile raf, int currentNodeIndex) throws IOException {
 		// Lire le noeud actuel à la position spécifiée
 		Node currentNode = nodeReader(raf, currentNodeIndex * NODE_SIZE_OCTET);

@@ -48,7 +48,6 @@ public class BinarySearchTree {
 				this.root.newNodeWriter(raf, stagiaire);
 			} else {
 				this.root = this.root.nodeReader(raf, 0);
-				// System.out.println("racine :" + this.root);
 				this.root.addNode(raf, stagiaire);
 			}
 		} catch (IOException e) {
@@ -67,7 +66,6 @@ public class BinarySearchTree {
 				this.root.read(raf, stagiaires);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return stagiaires;
@@ -106,16 +104,16 @@ public class BinarySearchTree {
 
 	// modification d'un element de l'arbre
 	public void updateInTree(Stagiaire oldStagiaire, Stagiaire newStagiaire) {
-			try {
-            if (raf.length() == 0) {
-                System.out.println("l'arbre est vide");
-            } else {
-                this.root = this.root.nodeReader(raf, 0);
-                this.root.delete(raf, oldStagiaire);
-                this.root.addNode(raf, newStagiaire);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			if (raf.length() == 0) {
+				System.out.println("l'arbre est vide");
+			} else {
+				this.root.delete(raf, oldStagiaire);
+				this.root.addNode(raf, newStagiaire);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 }

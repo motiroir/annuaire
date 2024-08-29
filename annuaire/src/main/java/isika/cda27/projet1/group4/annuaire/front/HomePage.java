@@ -3,6 +3,7 @@ package isika.cda27.projet1.group4.annuaire.front;
 import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
@@ -26,17 +27,18 @@ public class HomePage extends BorderPane {
 		Header header = new Header(app, stage, "Liste des Stagiaires");
 		this.setTop(header);
 
+		// marges
 		VBox leftBox = new VBox();
 		VBox rightBox = new VBox();
 		leftBox.setPrefWidth(150);
 		rightBox.setPrefWidth(150);
-
 		this.setLeft(leftBox);
 		this.setRight(rightBox);
 
 		// Ajouter le TableView au BorderPane
 		this.tableView = new TableViewStagiaires(app.myObservableArrayList);
 		this.setCenter(tableView);
+		this.setAlignment(tableView, Pos.CENTER);
 
 		// création de la Hbox Bottom
 		HBox hboxBottom = new HBox();
@@ -44,22 +46,17 @@ public class HomePage extends BorderPane {
 
 		Footer footer = new Footer(app, stage, app.myObservableArrayList, this);
 		this.setBottom(footer);
-		
-		//création de la scene
-		this.scene = new Scene(this, 1280, 720);
-		//Lien avec le css
-		this.scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-		
-		
-		
-	}
-	
-	// Méthode pour obtenir TableViewStagiaires
-    public TableViewStagiaires getTableView() {
-        return tableView;
-    }
-    
-	
 
+		// création de la scene
+		this.scene = new Scene(this, 1280, 720);
+		// Lien avec le css
+		this.scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+
+	}
+
+	// Méthode pour obtenir TableViewStagiaires
+	public TableViewStagiaires getTableView() {
+		return tableView;
+	}
 
 }

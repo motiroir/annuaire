@@ -16,19 +16,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class AddForm extends BorderPane {
-
+public class UpdateForm extends BorderPane {
+	
 	private Scene scene;
 	private App app;
 	private Stage stage;
+	private Stagiaire selectedStagiaire;
 
-	public AddForm(App app, Stage stage) {
+	public UpdateForm(App app, Stage stage, Stagiaire selectedStagiaire) {
 		super();
 		this.app = app;
 		this.stage = stage;
+		this.selectedStagiaire=selectedStagiaire;
 
 		// ajout du header
-		this.setTop(new Header(app, stage, "Ajouter un stagiaire"));
+		this.setTop(new Header(app, stage, "Modifier un stagiaire"));
 		
 		//marges sur les côtés
 		VBox leftBox = new VBox();
@@ -50,7 +52,7 @@ public class AddForm extends BorderPane {
 		HBox consigne = new HBox();
 		formBox.getChildren().add(consigne);
 		
-		Label lblConsigne = new Label("Veuillez remplir les champs suivants pour ajouter un nouveau stagiaire");
+		Label lblConsigne = new Label("Veuillez modifier les champs souhaités pour modifier le stagiaire");
 		consigne.getChildren().add(lblConsigne);
 		consigne.setPadding(new Insets (40, 0, 0, 0));
 		consigne.setAlignment(Pos.CENTER);
@@ -71,27 +73,27 @@ public class AddForm extends BorderPane {
 		// remplir la GridPane avec les labels et les textfields
 
 		Label nameLabel = new Label(" Nom ");
-		TextField nameTextfield = new TextField();
+		TextField nameTextfield = new TextField(selectedStagiaire.getName());
 		gridpane.add(nameLabel, 0, 0); // (colonne/ligne)
 		gridpane.add(nameTextfield, 1, 0);
 
 		Label firstnameLabel = new Label(" Prénom ");
-		TextField firstnameTextfield = new TextField();
+		TextField firstnameTextfield = new TextField(selectedStagiaire.getFirstName());
 		gridpane.add(firstnameLabel, 0, 1); // (colonne/ligne)
 		gridpane.add(firstnameTextfield, 1, 1);
 
 		Label postalCodeLabel = new Label(" Département ");
-		TextField postalCodeTextfield = new TextField();
+		TextField postalCodeTextfield = new TextField(selectedStagiaire.getPostalCode());
 		gridpane.add(postalCodeLabel, 0, 2); // (colonne/ligne)
 		gridpane.add(postalCodeTextfield, 1, 2);
 
 		Label promoLabel = new Label(" Promotion ");
-		TextField promoTextfield = new TextField();
+		TextField promoTextfield = new TextField(selectedStagiaire.getPromo());
 		gridpane.add(promoLabel, 0, 3); // (colonne/ligne)
 		gridpane.add(promoTextfield, 1, 3);
 
 		Label yearLabel = new Label(" Année ");
-		TextField yearTextfield = new TextField();
+		TextField yearTextfield = new TextField(String.valueOf(selectedStagiaire.getYear()));
 		gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
 		gridpane.add(yearTextfield, 1, 4);
 
@@ -114,32 +116,41 @@ public class AddForm extends BorderPane {
 		
 		
 		validateButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				// Récupérer les valeurs des champs
-				String name = nameTextfield.getText();
-				String firstName = firstnameTextfield.getText();
-				String postalCode = postalCodeTextfield.getText();
-				String promo = promoTextfield.getText();
-				String sYear = yearTextfield.getText();
-				int year =0;
-				
-					try {
-						year = Integer.parseInt(sYear);
-					} catch (NumberFormatException e) {
-						e.printStackTrace();
-					}
-			
-				// Créer un nouveau stagiaire
-				Stagiaire stagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
-				// Ajouter le stagiaire via le DAO
-				app.myDAO.addStagiaire(stagiaire);
-				app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
-				// Revenir à la scène précédente (accueil)
-				HomePage homepage = new HomePage(app, stage);
-				stage.setScene(homepage.getScene());
+            @Override
+            public void handle(ActionEvent event) {
+	
+	
+		
+		// Récupérer les valeurs des champs
+		String name = nameTextfield.getText();
+		String firstName = firstnameTextfield.getText();
+		String postalCode = postalCodeTextfield.getText();
+		String promo = promoTextfield.getText();
+		String sYear = yearTextfield.getText();
+		int year =0;
+		
+			try {
+				year = Integer.parseInt(sYear);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
 			}
-		});
+    
+			// Créer un nouveau stagiaire
+			Stagiaire newStagiaire = new Stagiaire(name, firstName, postalCode, promo, year);
+			
+			// Appeler la méthode update du DAO
+            app.myDAO.updateStagiaire(selectedStagiaire, newStagiaire);
+            app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
+            
+							
+	
+         // Revenir à la scène précédente
+            HomePage homepage = new HomePage(app, stage);
+            stage.setScene(homepage.getScene());
+	
+
+            }
+        });
 		
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -153,5 +164,7 @@ public class AddForm extends BorderPane {
 		});
 
 	}
+	
+	
 
 }

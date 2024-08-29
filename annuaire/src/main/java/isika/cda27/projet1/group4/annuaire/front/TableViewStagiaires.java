@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.skin.TableViewSkin;
 
 public class TableViewStagiaires extends TableView<Stagiaire> {
 	
@@ -14,32 +15,33 @@ public class TableViewStagiaires extends TableView<Stagiaire> {
 		super();
 		this.myObservableArrayList = myObservableArrayList;
 		
+		// Définir la politique de redimensionnement des colonnes pour qu'elles s'ajustent
+	    this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		
 		// Créer les colonnes
 		TableColumn<Stagiaire, String> nameColumn = new TableColumn<Stagiaire, String>(" Nom");
 		nameColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
-		nameColumn.setPrefWidth(196);
 
 		TableColumn<Stagiaire, String> firstNameColumn = new TableColumn<Stagiaire, String>(" Prénom");
 		firstNameColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("firstName"));
-		firstNameColumn.setPrefWidth(196);
 
 		TableColumn<Stagiaire, String> postalCodeColumn = new TableColumn<Stagiaire, String>(" Département");
 		postalCodeColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("postalCode"));
-		postalCodeColumn.setPrefWidth(196);
 
 		TableColumn<Stagiaire, String> promoColumn = new TableColumn<Stagiaire, String>(" Promotion");
 		promoColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
-		promoColumn.setPrefWidth(196);
 
 		TableColumn<Stagiaire, String> yearColumn = new TableColumn<Stagiaire, String>(" Année");
 		yearColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("year"));
-		yearColumn.setPrefWidth(194);
 
 		// Ajouter les colonnes au TableView
 		this.getColumns().addAll(nameColumn, firstNameColumn, postalCodeColumn, promoColumn, yearColumn);
 		
 		// Lier la liste observable au TableView
         this.setItems(this.myObservableArrayList);
+        
+        
+        
 	}
 
 	
