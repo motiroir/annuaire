@@ -36,6 +36,7 @@ public class AnnuaireDAO {
         return searchTree.searchStagiaireInTree(new Stagiaire(name));
     }
 
+    
     /**
      * Récupère la liste complète des stagiaires dans l'annuaire.
      *
