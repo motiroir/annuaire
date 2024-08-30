@@ -2,6 +2,7 @@ package isika.cda27.projet1.group4.annuaire.front;
 
 import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.FileChecker;
+import isika.cda27.projet1.group4.annuaire.back.FileExporter;
 import isika.cda27.projet1.group4.annuaire.back.FileImporter;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.geometry.Insets;
@@ -82,6 +83,19 @@ public class HomePage extends BorderPane {
 		leftBox.getChildren().add(importButton);
 //>>>>>>>>>>>>>>>>>>Bouton importer à modifier/déplacer<<<<<<<<<<<<<<<<<<<<<<<<
 
+	    Button exportButton = new Button("Exporter");
+	       
+		exportButton.setOnAction(e -> {
+		    FileExporter exporter = new FileExporter();
+		    String exportResult = exporter.exporterAnnuaire(stage, app.myObservableArrayList);
+		
+		    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		    alert.setTitle("Exportation de l'annuaire");
+		    alert.setHeaderText(null);
+		    alert.setContentText(exportResult);
+		    alert.showAndWait();
+		});
+		leftBox.getChildren().add(exportButton);
 		Footer footer = new Footer(app, stage, app.myObservableArrayList, this);
 		this.setBottom(footer);
 
