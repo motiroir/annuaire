@@ -4,6 +4,7 @@ import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
 import isika.cda27.projet1.group4.annuaire.back.UserManager;
+import isika.cda27.projet1.group4.annuaire.exceptions.AuthenticationFailedException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -130,7 +131,12 @@ public class UserConnexion extends BorderPane {
 					// Récupérer les valeurs des champs
 					String username = usernameField.getText();
 					String password = passwordField.getText();
-					app.currentUser = app.userManager.authenticate(username, password);
+					try {
+						app.currentUser = app.userManager.login(username, password);
+					} catch (AuthenticationFailedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					if (app.currentUser != null) {
 						System.out.println("utilisateur : " + app.currentUser.getUsername() + " connecté en tant que : "
 								+ app.currentUser.getRole());
