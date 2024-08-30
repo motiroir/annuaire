@@ -203,8 +203,8 @@ public class Node {
 				leftNode.read(raf, stagiaires);
 			}
 		}
-		System.out.println(this.key.toString() + ", LC : " + this.leftChild + ", RC : " + this.rightChild + ", D : "
-				+ this.doublon);
+//		System.out.println(this.key.toString() + ", LC : " + this.leftChild + ", RC : " + this.rightChild + ", D : "
+//				+ this.doublon);
 		stagiaires.add(this.key);
 		if (this.doublon != -1) {
 			Node doublonNode = nodeReader(raf, this.doublon * NODE_SIZE_OCTET);

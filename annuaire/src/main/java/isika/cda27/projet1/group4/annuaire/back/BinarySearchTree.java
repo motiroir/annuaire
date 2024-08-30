@@ -82,7 +82,6 @@ public class BinarySearchTree {
 				this.root.searchStagiaire(raf, searchedStagiaire, stagiairesFound);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return stagiairesFound;
