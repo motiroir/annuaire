@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -27,7 +28,6 @@ public class UserConnexion extends BorderPane {
 	private App app;
 	private Stage stage;
 
-	
 	public UserConnexion(App app, Stage stage) {
 		super();
 		this.app = app;
@@ -35,36 +35,36 @@ public class UserConnexion extends BorderPane {
 
 		// ajout du header
 		this.setTop(new Header(app, stage, "Connexion"));
-		
-		//marges sur les côtés
+
+		// marges sur les côtés
 		VBox leftBox = new VBox();
 		VBox rightBox = new VBox();
 		leftBox.setPrefWidth(150);
 		rightBox.setPrefWidth(150);
 		this.setLeft(leftBox);
 		this.setRight(rightBox);
-		
+
 		// boite à formulaire
 		VBox formBox = new VBox();
 		formBox.setMaxSize(600, 400);
-		formBox.setStyle("-fx-border-color: #d3d3d3; " +   // Couleur de la bordure
-                "-fx-border-width: 2px; " +   // Épaisseur de la bordure
-                "-fx-border-radius: 5px;");   // Rayon pour les coins arrondis
+		formBox.setStyle("-fx-border-color: #d3d3d3; " + // Couleur de la bordure
+				"-fx-border-width: 2px; " + // Épaisseur de la bordure
+				"-fx-border-radius: 5px;"); // Rayon pour les coins arrondis
 		this.setCenter(formBox);
-		
-		//Instruction
+
+		// Instruction
 		HBox consigne = new HBox();
 		formBox.getChildren().add(consigne);
-		
+
 		Label lblConsigne = new Label("Veuillez remplir les champs suivants pour vous identifier");
 		consigne.getChildren().add(lblConsigne);
-		consigne.setPadding(new Insets (40, 0, 0, 0));
-		consigne.setAlignment(Pos.CENTER);		
-		
+		consigne.setPadding(new Insets(40, 0, 0, 0));
+		consigne.setAlignment(Pos.CENTER);
+
 		// gridpane au centre non rempli
 		GridPane gridpane = new GridPane();
 		formBox.getChildren().add(gridpane);
-		
+
 		// organisation :
 		gridpane.setVgap(30); // Espace vertical entre les lignes
 		gridpane.setHgap(60); // Espace horizontal entre les colonnes
@@ -72,7 +72,7 @@ public class UserConnexion extends BorderPane {
 		// ajouter une marge intérieure sur tous les côtés du GridPane
 		gridpane.setPadding(new Insets(40));
 		gridpane.setAlignment(Pos.CENTER);
-		
+
 		// remplir la GridPane avec les labels et les textfields
 
 		Label nameLabel = new Label(" Nom d'utilisateur ");
@@ -87,71 +87,86 @@ public class UserConnexion extends BorderPane {
 
 		HBox buttons = new HBox();
 		formBox.getChildren().add(buttons);
-		
+
 		// création des boutons
 		Button cancelButton = new Button("Annuler");
 		Button validateButton = new Button("Valider");
 		buttons.getChildren().addAll(cancelButton, validateButton);
 		buttons.setAlignment(Pos.CENTER);
-		buttons.setMargin(cancelButton, new Insets(0, 100, 40, 0));;
-		buttons.setMargin(validateButton, new Insets(0, 0, 40, 100));;
+		buttons.setMargin(cancelButton, new Insets(0, 100, 40, 0));
+		;
+		buttons.setMargin(validateButton, new Insets(0, 0, 40, 100));
+		;
 
 		// creation de la scene
 		this.scene = new Scene(this, 1280, 720);
 		// Lien avec le css
 		this.scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-		
-		
+
 		validateButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
-				 boolean isValid = true;
 
-			        // Vérification pour le champ nameTextfield
-			        if (usernameField.getText().isEmpty()) {
-			        	usernameField.getStyleClass().add("text-field-error");
-			            isValid = false;
-			        } else {
-			        	usernameField.getStyleClass().remove("text-field-error");
-			        }
+				boolean isValid = true;
 
-			        // Vérification pour le champ firstnameTextfield
-			        if (passwordField.getText().isEmpty()) {
-			        	passwordField.getStyleClass().add("text-field-error");
-			            isValid = false;
-			        } else {
-			        	passwordField.getStyleClass().remove("text-field-error");
-			        }
+				// Vérification pour le champ nameTextfield
+				if (usernameField.getText().isEmpty()) {
+					usernameField.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					usernameField.getStyleClass().remove("text-field-error");
+				}
 
-			     // Si tous les champs sont valides
-		        if (isValid) {
-		        // Récupérer les valeurs des champs
-				String username = usernameField.getText();
-	            String password = passwordField.getText();
-	            app.currentUser = app.userManager.authenticate(username, password);
-	            if (app.currentUser != null) {
-	                System.out.println("utilisateur : "+app.currentUser.getUsername()+" connecté en tant que : "+ app.currentUser.getRole());
-	             // Revenir à la scène précédente (accueil)
-					HomePage homepage = new HomePage(app, stage);
-					stage.setScene(homepage.getScene());
-	            } else {
+				// Vérification pour le champ firstnameTextfield
+				if (passwordField.getText().isEmpty()) {
+					passwordField.getStyleClass().add("text-field-error");
+					isValid = false;
+				} else {
+					passwordField.getStyleClass().remove("text-field-error");
+				}
 
-	                Alert alert = new Alert(Alert.AlertType.NONE, "Nom d'utilisateur ou mot de passe invalide", ButtonType.OK);
-	                
-	                // Appliquer le fichier CSS
-	                DialogPane dialogPane = alert.getDialogPane();
-	                dialogPane.getStylesheets().add(
-	                    getClass().getResource("/css/style.css").toExternalForm()
-	                );
-	                dialogPane.getStyleClass().add("alert");
+				// Si tous les champs sont valides
+				if (isValid) {
+					// Récupérer les valeurs des champs
+					String username = usernameField.getText();
+					String password = passwordField.getText();
+					app.currentUser = app.userManager.authenticate(username, password);
+					if (app.currentUser != null) {
+						System.out.println("utilisateur : " + app.currentUser.getUsername() + " connecté en tant que : "
+								+ app.currentUser.getRole());
+						// Revenir à la scène précédente (accueil)
+						HomePage homepage = new HomePage(app, stage);
+						stage.setScene(homepage.getScene());
+					} else {
+						Dialog<String> dialog = new Dialog<>();
+						dialog.setTitle("");
+						dialog.setHeaderText(null);
 
-	                alert.show();
-	            }
-		        }
+						VBox vbox = new VBox(10);
+						vbox.setAlignment(Pos.CENTER);
+
+						Label messageLabel = new Label("Nom d'utilisateur ou mot de passe invalide");
+						messageLabel.getStyleClass().add("alert");
+						VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); // Marges haut, droite, bas, gauche
+						
+						Button okButton = new Button("OK");
+						okButton.setOnAction(e -> dialog.setResult("OK")); // Ferme le dialogue en définissant un résultat
+						// Ajouter des marges autour du bouton OK
+						VBox.setMargin(okButton, new Insets(5, 10, 20, 10)); // Marges haut, droite, bas, gauche
+					
+						vbox.getChildren().addAll(messageLabel, okButton);
+
+						DialogPane dialogPane = dialog.getDialogPane();
+						dialogPane.setContent(vbox);
+						dialogPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+						dialogPane.getStyleClass().add("alert");
+
+						dialog.showAndWait(); // Cela attend jusqu'à ce que l'utilisateur clique sur OK
+					}
+				}
 			}
 		});
-		
+
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
