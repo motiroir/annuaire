@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import isika.cda27.projet1.group4.annuaire.exceptions.*;
 
 public class UserManager {
@@ -18,7 +19,14 @@ public class UserManager {
         loadUsers();
     }
 
-    // Créer un nouvel utilisateur
+    public List<User> getUsers() {
+    	this.loadUsers();
+		return users;
+	}
+
+	
+
+	// Créer un nouvel utilisateur
     public boolean createUser(String username, String password, Role role) throws UserAlreadyExistsException {
         if (getUserByUsername(username) != null) {
             throw new UserAlreadyExistsException("L'utilisateur " + username + " existe déjà.");
@@ -39,27 +47,7 @@ public class UserManager {
         }
         return null;
     }
-
-    // Mettre à jour les informations d'un utilisateur
-    public boolean updateUser(String username, String newPassword, Role newRole) throws UserNotFoundException {
-        User user = getUserByUsername(username);
-        if (user == null) {
-            throw new UserNotFoundException("Utilisateur non trouvé : " + username);
-        }
-        if (newPassword != null && !newPassword.isEmpty()) {
-            user.setPasswordHash(hashPassword(newPassword));
-        }
-        if (newRole != null) {
-            user.setRole(newRole);
-        }
-        saveUsers();
-        return true;
-    }
     
-    public List<User> getAllUsers() {
-        return new ArrayList<>(users); 
-    }
-
     // Supprimer un utilisateur
     public boolean deleteUser(String username) throws UserNotFoundException {
         User user = getUserByUsername(username);

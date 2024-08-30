@@ -51,6 +51,14 @@ public class HomePage extends BorderPane {
 		HBox hboxBottom = new HBox();
 		this.setBottom(hboxBottom);
 		
+		
+		 // >>>>> Ajouter le bouton de gestion des utilisateurs ici <<<<<
+        Button manageUsersButton = new Button("Gérer les utilisateurs");
+        manageUsersButton.setOnAction(e -> openManageUsersScene());
+        leftBox.getChildren().add(manageUsersButton);
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		
+		
 //>>>>>>>>>>>>>>>>>>Bouton importer à modifier<<<<<<<<<<<<<<<<<<<<<<<<
 		 Button importButton = new Button("Importer un fichier texte");
 	        importButton.setOnAction(e -> {
@@ -85,5 +93,10 @@ public class HomePage extends BorderPane {
 	    Header header = (Header) this.getTop();
 	    header.getSearchBox().setVisible(visible);
 	}
-
+	// >>>>> Méthode pour ouvrir la scène ManageUsers <<<<<
+    private void openManageUsersScene() {
+        ManageUsers manageUsers = new ManageUsers(app, stage);
+        stage.setScene(manageUsers.getScene());
+    }
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 }
