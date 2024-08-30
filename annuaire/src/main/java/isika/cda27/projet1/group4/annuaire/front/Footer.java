@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
+import isika.cda27.projet1.group4.annuaire.back.FileExporter;
+import isika.cda27.projet1.group4.annuaire.back.FileImporter;
 import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.collections.ObservableList;
@@ -19,46 +22,73 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class Footer extends HBox {
+public class Footer extends StackPane {
 
 	private HomePage homePage;
 
 	public Footer(App app, Stage stage, ObservableList<Stagiaire> myObservableArrayList, HomePage homePage) {
 
+		HBox buttonsBox = new HBox();
+		buttonsBox.setAlignment(Pos.CENTER_LEFT);
+		buttonsBox.setMaxSize(1000, 60);
+		
 		Button buttonUpdate = new Button("Modifier");
-		this.getChildren().add(buttonUpdate);
 		buttonUpdate.setVisible(false);
-		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER || app.currentUser.getRole() == Role.STUDENT) {
+		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER
+				|| app.currentUser.getRole() == Role.STUDENT) {
 			buttonUpdate.setVisible(true);
-			this.setMargin(buttonUpdate, new Insets(20, 0, 20, 80));
+			buttonsBox.setMargin(buttonUpdate, new Insets(20, 0, 20, 40));
 			buttonUpdate.setDisable(true);
 		}
 
 		Button buttonDelete = new Button("Supprimer");
-		this.getChildren().add(buttonDelete);
 		buttonDelete.setVisible(false);
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER) {
 			buttonDelete.setVisible(true);
-			this.setMargin(buttonDelete, new Insets(20, 0, 20, 80));
+			buttonsBox.setMargin(buttonDelete, new Insets(20, 0, 20, 40));
 			buttonDelete.setDisable(true);
 		}
 
 		Button buttonAdd = new Button(" Ajouter");
-		this.getChildren().add(buttonAdd);
 		buttonAdd.setVisible(false);
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER) {
 			buttonAdd.setVisible(true);
-			this.setMargin(buttonAdd, new Insets(20, 0, 20, 80));
+			buttonsBox.setMargin(buttonAdd, new Insets(20, 0, 20, 40));
 		}
 
+		Button importButton = new Button("Remplacer l'annuaire");
+		importButton.setVisible(false);
+		if (app.currentUser.getRole() == Role.ADMIN) {
+			importButton.setVisible(true);
+			buttonsBox.setMargin(importButton, new Insets(20, 0, 20, 40));
+		}
+		
+		Button exportButton = new Button("Exporter");
+		exportButton.setVisible(false);
+		if (app.currentUser.getRole() == Role.ADMIN) {
+			exportButton.setVisible(true);
+			buttonsBox.setMargin(exportButton, new Insets(20, 0, 20, 40));
+		}
+		
+
+
+		buttonsBox.getChildren().addAll(buttonUpdate, buttonAdd, buttonDelete, importButton, exportButton);
+		
+		HBox impressionBox = new HBox();
+		impressionBox.setMaxSize(280, 100);
+		impressionBox.setAlignment(Pos.CENTER_RIGHT);
 		Button buttonImpression = new Button("Imprimer");
-		this.getChildren().add(buttonImpression);
-		this.setMargin(buttonImpression, new Insets(20, 60, 20, 530));
-		this.setAlignment(Pos.CENTER_RIGHT);
+		impressionBox.getChildren().add(buttonImpression);
+		impressionBox.setMargin(buttonImpression, new Insets(20, 40, 20, 00));
+		
+		this.getChildren().addAll(buttonsBox, impressionBox);
+		StackPane.setAlignment(impressionBox, Pos.CENTER_RIGHT);
+		StackPane.setAlignment(buttonsBox, Pos.CENTER_LEFT);
 
 		// Utiliser la méthode pour obtenir TableViewStagiaires
 		TableViewStagiaires tableView = homePage.getTableView();
@@ -107,11 +137,10 @@ public class Footer extends HBox {
 		            messageLabel.getStyleClass().add("alert");
 		            VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); // Marges haut, droite, bas, gauche
 		            
-		            
-		            
 		            Button okButton = new Button("OK");
 		            okButton.setOnAction(e -> { app.myDAO.removeStagiaire(selectedStagiaire);
-	                myObservableArrayList.setAll(app.myDAO.getStagiaires());}
+	                myObservableArrayList.setAll(app.myDAO.getStagiaires());
+	                dialog.setResult("ok");}
 		            ); // Ferme le dialogue en définissant un résultat
 		            VBox.setMargin(okButton, new Insets(5, 10, 20, 10)); // Marges haut, droite, bas, gauche
 		            
@@ -152,7 +181,28 @@ public class Footer extends HBox {
 
 			}
 		});
+		
+		importButton.setOnAction(e -> {
+			FileImporter importer = new FileImporter();
+			String fileContent = importer.importer(stage, app);
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Importation d'un nouvel annuaire");
+			alert.setHeaderText(null);
+			alert.setContentText(fileContent);
+			alert.showAndWait();
+		});
 
+		exportButton.setOnAction(e -> {
+			FileExporter exporter = new FileExporter();
+			String exportResult = exporter.exporterAnnuaire(stage, app.myObservableArrayList);
+
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Exportation de l'annuaire");
+			alert.setHeaderText(null);
+			alert.setContentText(exportResult);
+			alert.showAndWait();
+		});
+		
 		// Gestion de l'impression en PDF
 		buttonImpression.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -188,6 +238,7 @@ public class Footer extends HBox {
 
 			}
 		});
+
 
 	}
 

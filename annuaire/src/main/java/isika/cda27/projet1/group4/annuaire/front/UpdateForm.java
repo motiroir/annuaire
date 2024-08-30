@@ -1,6 +1,7 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,9 +31,10 @@ public class UpdateForm extends BorderPane {
 		this.selectedStagiaire = selectedStagiaire;
 
 		// ajout du header
-		this.setTop(new Header(app, stage, "Modifier un stagiaire"));
+		Header header = new Header(app, stage, "Modifier un stagiaire");
+		this.setTop(header);
 		// Masquer le champ de recherche
-		this.setSearchVisible(false);
+		header.getSearchBox().setVisible(false);
 
 		// marges sur les côtés
 		VBox leftBox = new VBox();
@@ -273,12 +275,6 @@ public class UpdateForm extends BorderPane {
 			}
 		});
 
-	}
-
-	public void setSearchVisible(boolean visible) {
-		// Trouver le Header et modifier la visibilité du champ de recherche
-		Header header = (Header) this.getTop();
-		header.getSearchBox().setVisible(visible);
 	}
 
 }

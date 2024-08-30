@@ -1,6 +1,7 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,9 +29,10 @@ public class AddForm extends BorderPane {
 		this.stage = stage;
 
 		// ajout du header
-		this.setTop(new Header(app, stage, "Ajouter un stagiaire"));
+		Header header = new Header(app, stage, "Modifier un stagiaire");
+		this.setTop(header);
 		// Masquer le champ de recherche
-		this.setSearchVisible(false);
+		header.getSearchBox().setVisible(false);
 
 		// marges sur les côtés
 		VBox leftBox = new VBox();
@@ -96,7 +98,6 @@ public class AddForm extends BorderPane {
 		gridpane.add(yearLabel, 0, 4); // (colonne/ligne)
 		gridpane.add(yearTextfield, 1, 4);
 
-
 		// Ajouter un ChangeListener pour restreindre l'entrée du champ nom
 		nameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
 			// vérifie si newValue ne contient que des lettres alphabétiques, majuscules ou
@@ -111,7 +112,7 @@ public class AddForm extends BorderPane {
 				nameTextfield.setText(oldValue);
 			}
 		});
-		
+
 		// Ajouter un ChangeListener pour restreindre l'entrée du champ firstName
 		firstnameTextfield.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("[a-zA-ZÀ-ÿ ]*")) {
@@ -168,7 +169,7 @@ public class AddForm extends BorderPane {
 
 		HBox buttons = new HBox();
 		formBox.getChildren().add(buttons);
-		
+
 		// création des boutons
 		Button cancelButton = new Button("Annuler");
 		Button validateButton = new Button("Valider");
@@ -263,12 +264,6 @@ public class AddForm extends BorderPane {
 			}
 		});
 
-	}
-
-	public void setSearchVisible(boolean visible) {
-		// Trouver le Header et modifier la visibilité du champ de recherche
-		Header header = (Header) this.getTop();
-		header.getSearchBox().setVisible(visible);
 	}
 
 }

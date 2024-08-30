@@ -3,15 +3,18 @@ package isika.cda27.projet1.group4.annuaire.front;
 import java.util.List;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.StagiaireFilter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class FilteredSearch extends HBox {
 
@@ -27,28 +30,13 @@ public class FilteredSearch extends HBox {
 	public FilteredSearch(App app) {
 		this.app = app;
 
-		// Initialisation des champs de texte pour chaque critère
-		nameField = new TextField();
-		nameField.setPromptText("Nom");
-
-		firstNameField = new TextField();
-		firstNameField.setPromptText("Prénom...");
-
-		departmentField = new TextField();
-		departmentField.setPromptText("Département...");
-
-		promotionField = new TextField();
-		promotionField.setPromptText("Promotion...");
-
-		yearField = new TextField();
-		yearField.setPromptText("Année...");
-
 		// Créer le bouton avec l'icône de recherche
 		Image searchIcon = new Image(getClass().getResourceAsStream("/icons/__search-icon.png"));
 		ImageView buttonImageView = new ImageView(searchIcon);
 		buttonImageView.setFitHeight(20);
 		buttonImageView.setFitWidth(20);
 		toggleButton = new Button("", buttonImageView);
+		toggleButton.setVisible(false);
 
 		// Créer le bouton pour accéder à la recherche avancée
 		Image filterIcon = new Image(getClass().getResourceAsStream("/icons/__filterOff-icon.png"));
@@ -56,19 +44,50 @@ public class FilteredSearch extends HBox {
 		filterImageView.setFitHeight(20);
 		filterImageView.setFitWidth(20);
 		filterButton = new Button("", filterImageView);
-
-		// Ajouter les champs au HBox avec les boutons
-		this.getChildren().addAll(nameField, firstNameField, departmentField, promotionField, yearField, toggleButton,
-				filterButton);
-		this.setSpacing(10);
+		filterButton.setVisible(false);
 
 		// Ajouter style css
 		toggleButton.getStyleClass().add("button-search");
 		filterButton.getStyleClass().add("button-search");
 
+		if (!app.fileChecker.isDataBaseBinPresent()) {
+			// Initialisation des champs de texte pour chaque critère
+			nameField = new TextField();
+			nameField.setPromptText("Nom");
+
+			firstNameField = new TextField();
+			firstNameField.setPromptText("Prénom...");
+
+			departmentField = new TextField();
+			departmentField.setPromptText("Département...");
+
+			promotionField = new TextField();
+			promotionField.setPromptText("Promotion...");
+
+			yearField = new TextField();
+			yearField.setPromptText("Année...");
+
+			// Ajouter les champs au HBox avec les boutons
+			this.getChildren().addAll(nameField, firstNameField, departmentField, promotionField, yearField,
+					toggleButton, filterButton);
+			this.setSpacing(10);
+
+			toggleButton.setVisible(true);
+			filterButton.setVisible(true);
+
+		} else {
+			VBox welcomeMessage = new VBox();
+
+			Label welcomeLbl = new Label("Bienvenue sur l'annuaire d'Isika");
+			Label importerLbl = new Label(
+					"Il n'y a pas d'annuaire disponible actuellement. \nPour commencer veuillez en importer.");
+			welcomeLbl.getStyleClass().add("title");
+			importerLbl.getStyleClass().add("sub-title");
+		}
+
 		// Gestion de l'action des boutons
 		toggleButton.setOnAction(event -> {
-			
+
 			StagiaireFilter stagiairefilter = new StagiaireFilter(app.myDAO);
 
 			String name = nameField.getText();
@@ -77,7 +96,8 @@ public class FilteredSearch extends HBox {
 			String promo = promotionField.getText();
 			String year = yearField.getText();
 
-			List<Stagiaire> filteredStagiaires = stagiairefilter.filterStagiaires(name, firstName, postalCode, promo, year);
+			List<Stagiaire> filteredStagiaires = stagiairefilter.filterStagiaires(name, firstName, postalCode, promo,
+					year);
 			app.myObservableArrayList.setAll(filteredStagiaires);
 		});
 
