@@ -32,8 +32,8 @@ public class HomePage extends BorderPane {
 		// création de la Hbox header
 		Header header = new Header(app, stage, "Liste des Stagiaires");
 		this.setTop(header);
-		// Afficher le champ de recherche
-		this.setSearchVisible(true);
+		// Affichage du champ de recherche
+		header.getSearchBox().setVisible(true);
 
 		// marges
 		VBox leftBox = new VBox();
@@ -84,12 +84,6 @@ public class HomePage extends BorderPane {
 	// Méthode pour obtenir TableViewStagiaires
 	public TableViewStagiaires getTableView() {
 		return tableView;
-	}
-
-	public void setSearchVisible(boolean visible) {
-		// Trouver le Header et modifier la visibilité du champ de recherche
-		Header header = (Header) this.getTop();
-		header.getSearchBox().setVisible(visible);
 	}
 
 }

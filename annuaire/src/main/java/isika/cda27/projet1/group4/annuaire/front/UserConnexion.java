@@ -36,7 +36,10 @@ public class UserConnexion extends BorderPane {
 		this.stage = stage;
 
 		// ajout du header
-		this.setTop(new Header(app, stage, "Connexion"));
+		Header header = new Header(app, stage, "Connexion");
+		this.setTop(header);
+		// Affichage du champ de recherche
+		header.getSearchBox().setVisible(false);
 
 		// marges sur les côtés
 		VBox leftBox = new VBox();
@@ -154,12 +157,12 @@ public class UserConnexion extends BorderPane {
 
 						Label messageLabel = new Label("Nom d'utilisateur ou mot de passe invalide");
 						messageLabel.getStyleClass().add("alert");
-						VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); 
-						
+						VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15));
+
 						Button okButton = new Button("OK");
-						okButton.setOnAction(e -> dialog.setResult("OK")); 
-						VBox.setMargin(okButton, new Insets(5, 10, 20, 10)); 
-					
+						okButton.setOnAction(e -> dialog.setResult("OK"));
+						VBox.setMargin(okButton, new Insets(5, 10, 20, 10));
+
 						vbox.getChildren().addAll(messageLabel, okButton);
 
 						DialogPane dialogPane = dialog.getDialogPane();

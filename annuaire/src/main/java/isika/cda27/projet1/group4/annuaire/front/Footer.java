@@ -137,11 +137,10 @@ public class Footer extends StackPane {
 		            messageLabel.getStyleClass().add("alert");
 		            VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); // Marges haut, droite, bas, gauche
 		            
-		            
-		            
 		            Button okButton = new Button("OK");
 		            okButton.setOnAction(e -> { app.myDAO.removeStagiaire(selectedStagiaire);
-	                myObservableArrayList.setAll(app.myDAO.getStagiaires());}
+	                myObservableArrayList.setAll(app.myDAO.getStagiaires());
+	                dialog.setResult("ok");}
 		            ); // Ferme le dialogue en définissant un résultat
 		            VBox.setMargin(okButton, new Insets(5, 10, 20, 10)); // Marges haut, droite, bas, gauche
 		            

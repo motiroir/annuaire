@@ -86,7 +86,7 @@ public class Header extends StackPane {
 		this.searchBox = new HBox(10, searchField, toggleButton, filterButton);
 		searchBox.setAlignment(Pos.CENTER_LEFT);
 		searchBox.setMaxWidth(300);
-
+		
 		// Créer la FilteredSearch mais la rendre invisible au départ
 		filteredSearch = new FilteredSearch(app);
 		filteredSearch.setVisible(false);
@@ -121,7 +121,7 @@ public class Header extends StackPane {
 		if (app.currentUser.getRole() == Role.STUDENT) {
 			connexionZone.getChildren().add(studentImageView);
 		}
-		
+
 		// Créer le bouton de connexion
 		Button buttonConnexion = new Button("Connexion");
 
@@ -222,11 +222,12 @@ public class Header extends StackPane {
 				}
 			}
 		});
-		
+
 	}
 
 	public HBox getSearchBox() {
 		return searchBox;
 	}
+
 
 }
