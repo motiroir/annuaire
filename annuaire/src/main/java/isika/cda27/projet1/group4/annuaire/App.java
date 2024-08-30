@@ -47,8 +47,13 @@ public class App extends Application {
 	public ObservableList<Stagiaire> myObservableArrayList;
 	public UserManager userManager;
 	public User currentUser;
+
+    public ObservableList<User> usersDAO;
+    
+
 	public FileChecker fileChecker;
 	public boolean firstConnexion;
+
 
 	// methode dediée a l'initialisation
 	@Override
@@ -60,6 +65,10 @@ public class App extends Application {
 		myDAO = new AnnuaireDAO();
 		userManager = new UserManager();
 		currentUser = new User();
+
+		usersDAO = FXCollections.observableArrayList(userManager.getUsers());
+		
+
 	}
 
 	@Override

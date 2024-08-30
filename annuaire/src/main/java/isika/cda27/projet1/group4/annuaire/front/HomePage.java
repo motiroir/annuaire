@@ -71,6 +71,15 @@ public class HomePage extends BorderPane {
 		this.setBottom(hboxBottom);
 		
 		
+
+		 // >>>>> Ajouter le bouton de gestion des utilisateurs ici <<<<<
+        Button manageUsersButton = new Button("Gérer les utilisateurs");
+        manageUsersButton.setOnAction(e -> openManageUsersScene());
+        leftBox.getChildren().add(manageUsersButton);
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		
+
+
 		Footer footer = new Footer(app, stage, app.myObservableArrayList, this);
 		this.setBottom(footer);
 
@@ -85,5 +94,11 @@ public class HomePage extends BorderPane {
 	public TableViewStagiaires getTableView() {
 		return tableView;
 	}
-
+	
+	// >>>>> Méthode pour ouvrir la scène ManageUsers <<<<<
+    private void openManageUsersScene() {
+        ManageUsers manageUsers = new ManageUsers(app, stage);
+        stage.setScene(manageUsers.getScene());
+    }
+  
 }
