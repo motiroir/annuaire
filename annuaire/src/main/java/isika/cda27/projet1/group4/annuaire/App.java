@@ -10,11 +10,9 @@ import isika.cda27.projet1.group4.annuaire.back.Annuaire;
 import isika.cda27.projet1.group4.annuaire.back.BinarySearchTree;
 import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Node;
-import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
 import isika.cda27.projet1.group4.annuaire.back.UserManager;
-import isika.cda27.projet1.group4.annuaire.exceptions.UserAlreadyExistsException;
 import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
 import isika.cda27.projet1.group4.annuaire.front.Header;
 import isika.cda27.projet1.group4.annuaire.front.HomePage;
@@ -49,37 +47,29 @@ public class App extends Application {
 	public ObservableList<Stagiaire> myObservableArrayList;
 	public UserManager userManager;
 	public User currentUser;
+	public FileChecker fileChecker;
+	public boolean firstConnexion;
 
 	// methode dediée a l'initialisation
 	@Override
 	public void init() {
-		
-		// Initialisation des DAO et des UserManager
-		FileChecker fileChecker = new FileChecker();
-		if (!fileChecker.isDataBaseBinPresent()){
-			// construction de l'arbre depuis un fichier texte
-			Annuaire annuaire = new Annuaire();
-			annuaire.lireFichier("src/main/resources/STAGIAIRES.DON");
-			BinarySearchTree searchTree = new BinarySearchTree();
-			for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
-				searchTree.ajouter(annuaire.getStagiaires().get(i));
-			}
-		}
 
+		// Initialisation des DAO et des UserManager
+		fileChecker = new FileChecker();
+		firstConnexion = fileChecker.isDataBaseBinPresent();
 		myDAO = new AnnuaireDAO();
 		userManager = new UserManager();
 		currentUser = new User();
-		
 	}
 
 	@Override
 	public void start(Stage stage) {
-		
 
 		myObservableArrayList = FXCollections.observableArrayList(this.myDAO.getStagiaires());
 
 		// Création de la première scène
 		HomePage root = new HomePage(this, stage);
+
 		// Lien avec le css
 		root.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
@@ -12,15 +13,18 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.MenuItem;
 
 public class Header extends StackPane {
 
@@ -52,7 +56,7 @@ public class Header extends StackPane {
 		Label lblSubtitle = new Label(subtitle);
 
 		lblTitle.getStyleClass().add("title");
-		lblSubtitle.getStyleClass().add("sub-title"); // Assurez-vous que le sous-titre utilise la bonne classe CSS
+		lblSubtitle.getStyleClass().add("sub-title");
 
 		titles.getChildren().addAll(lblTitle, lblSubtitle);
 
@@ -82,52 +86,52 @@ public class Header extends StackPane {
 		this.searchBox = new HBox(10, searchField, toggleButton, filterButton);
 		searchBox.setAlignment(Pos.CENTER_LEFT);
 		searchBox.setMaxWidth(300);
-
+		
 		// Créer la FilteredSearch mais la rendre invisible au départ
 		filteredSearch = new FilteredSearch(app);
 		filteredSearch.setVisible(false);
 		filteredSearch.setAlignment(Pos.CENTER_LEFT);
 
-		//Zone de connexion
+		// Zone de connexion
 		HBox connexionZone = new HBox();
-		connexionZone.setMaxWidth(300);
+		connexionZone.setMaxWidth(250);
 		connexionZone.setAlignment(Pos.CENTER_RIGHT);
-		connexionZone.setPadding(new Insets(0, 40, 0, 0));
-		
-		if (app.currentUser.getRole()==Role.ADMIN) {
-			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__admin-icon.png"));
-			ImageView adminImageView = new ImageView(adminIcon);
-			adminImageView.setFitHeight(40);
-			adminImageView.setFitWidth(40);
+		connexionZone.setPadding(new Insets(0, 20, 0, 0));
+
+		Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__admin-icon.png"));
+		ImageView adminImageView = new ImageView(adminIcon);
+		adminImageView.setFitHeight(40);
+		adminImageView.setFitWidth(40);
+		if (app.currentUser.getRole() == Role.ADMIN) {
 			connexionZone.getChildren().add(adminImageView);
 		}
-		
-		if (app.currentUser.getRole()==Role.TEACHER) {
-			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__teacher-icon.png"));
-			ImageView adminImageView = new ImageView(adminIcon);
-			adminImageView.setFitHeight(40);
-			adminImageView.setFitWidth(40);
-			connexionZone.getChildren().add(adminImageView);
+
+		Image teacherIcon = new Image(getClass().getResourceAsStream("/icons/__teacher-icon.png"));
+		ImageView teacherImageView = new ImageView(teacherIcon);
+		teacherImageView.setFitHeight(40);
+		teacherImageView.setFitWidth(40);
+		if (app.currentUser.getRole() == Role.TEACHER) {
+			connexionZone.getChildren().add(teacherImageView);
 		}
-		
-		if (app.currentUser.getRole()==Role.STUDENT) {
-			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__student-icon.png"));
-			ImageView adminImageView = new ImageView(adminIcon);
-			adminImageView.setFitHeight(40);
-			adminImageView.setFitWidth(40);
-			connexionZone.getChildren().add(adminImageView);
+
+		Image studentIcon = new Image(getClass().getResourceAsStream("/icons/__student-icon.png"));
+		ImageView studentImageView = new ImageView(studentIcon);
+		studentImageView.setFitHeight(40);
+		studentImageView.setFitWidth(40);
+		if (app.currentUser.getRole() == Role.STUDENT) {
+			connexionZone.getChildren().add(studentImageView);
 		}
-		
+
 		// Créer le bouton de connexion
 		Button buttonConnexion = new Button("Connexion");
-		
+
 		if (app.currentUser.getRole() != null) {
 			buttonConnexion.setText("Déconnexion");
-		} else buttonConnexion.setText("Connexion");
-		connexionZone.setMargin(buttonConnexion, new Insets (20));
+		} else
+			buttonConnexion.setText("Connexion");
+		connexionZone.setMargin(buttonConnexion, new Insets(20));
 		connexionZone.getChildren().add(buttonConnexion);
-		
-		
+
 		// Créer un separator pour le bas
 		Separator bottomSeparator = new Separator();
 		bottomSeparator.setPrefHeight(1); // Hauteur du trait
@@ -137,15 +141,15 @@ public class Header extends StackPane {
 
 		// Aligner des elements du stackpane
 		StackPane.setAlignment(titles, Pos.CENTER);
-		StackPane.setAlignment(connexionZone, Pos.CENTER_RIGHT);
 		StackPane.setAlignment(searchBox, Pos.CENTER_LEFT);
 		StackPane.setAlignment(filteredSearch, Pos.CENTER_LEFT);
+		StackPane.setAlignment(connexionZone, Pos.CENTER_RIGHT);
 		StackPane.setAlignment(bottomSeparator, Pos.BOTTOM_CENTER);
 
 		// Ajouter des marges
-		StackPane.setMargin(buttonConnexion, new Insets(5, 40, 5, 0));
 		StackPane.setMargin(searchBox, new Insets(5, 0, 5, 40));
 		StackPane.setMargin(filteredSearch, new Insets(5, 0, 5, 40));
+		StackPane.setMargin(buttonConnexion, new Insets(5, 40, 5, 0));
 
 		// Gestion de l'action du bouton
 		toggleButton.setOnAction(event -> {
@@ -198,29 +202,32 @@ public class Header extends StackPane {
 			searchBox.setVisible(!isSearchBoxVisible);
 			filteredSearch.setVisible(isSearchBoxVisible);
 			titles.setVisible(!isSearchBoxVisible);
+			app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
 		});
 
-//		filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
-//		filteredSearch.getFilterButton().setOnAction(filterButton.getOnAction());
+		// filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
+		filteredSearch.getFilterButton().setOnAction(filterButton.getOnAction());
 
 		buttonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
+
 				if (app.currentUser.getRole() != null) {
 					app.currentUser = new User();
 					HomePage homepage = new HomePage(app, stage);
 					stage.setScene(homepage.getScene());
 				} else {
-				UserConnexion userConnexion = new UserConnexion(app, stage);
-				stage.setScene(userConnexion.getScene());
+					UserConnexion userConnexion = new UserConnexion(app, stage);
+					stage.setScene(userConnexion.getScene());
 				}
 			}
 		});
+
 	}
 
 	public HBox getSearchBox() {
 		return searchBox;
 	}
+
 
 }

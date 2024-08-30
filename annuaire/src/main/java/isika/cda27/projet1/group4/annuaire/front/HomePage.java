@@ -1,6 +1,8 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
+import isika.cda27.projet1.group4.annuaire.back.FileExporter;
 import isika.cda27.projet1.group4.annuaire.back.FileImporter;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.geometry.Insets;
@@ -30,9 +32,8 @@ public class HomePage extends BorderPane {
 		// création de la Hbox header
 		Header header = new Header(app, stage, "Liste des Stagiaires");
 		this.setTop(header);
-		// Afficher le champ de recherche
-	    this.setSearchVisible(true); 
-	    
+		// Affichage du champ de recherche
+		header.getSearchBox().setVisible(true);
 
 		// marges
 		VBox leftBox = new VBox();
@@ -46,25 +47,30 @@ public class HomePage extends BorderPane {
 		this.tableView = new TableViewStagiaires(app.myObservableArrayList);
 		this.setCenter(tableView);
 		this.setAlignment(tableView, Pos.CENTER);
+		tableView.setVisible(false);
 
+		if (app.firstConnexion == true) {
+			tableView.setVisible(true);
+		} else {
+			VBox welcomeMessage = new VBox();
+			welcomeMessage.setAlignment(Pos.CENTER);
+
+			Label welcomeLbl = new Label("Bienvenue sur l'annuaire d'Isika");
+			Label importerLbl = new Label(
+					"Il n'y a pas d'annuaire disponible actuellement. \nPour commencer veuillez en importer un.");
+			welcomeLbl.getStyleClass().add("title");
+			importerLbl.getStyleClass().add("sub-title");
+
+			welcomeMessage.getChildren().addAll(welcomeLbl, importerLbl);
+			this.setCenter(welcomeMessage);
+		}
+
+		
 		// création de la Hbox Bottom
 		HBox hboxBottom = new HBox();
 		this.setBottom(hboxBottom);
 		
-//>>>>>>>>>>>>>>>>>>Bouton importer à modifier<<<<<<<<<<<<<<<<<<<<<<<<
-		 Button importButton = new Button("Importer un fichier texte");
-	        importButton.setOnAction(e -> {
-	            FileImporter importer = new FileImporter();
-	            String fileContent = importer.importer(stage, app);
-	            Alert alert = new Alert(AlertType.INFORMATION);
-	            alert.setTitle("Importation d'un nouvel annuaire");
-	            alert.setHeaderText(null);
-	            alert.setContentText(fileContent);
-	            alert.showAndWait();
-	        });
-	    leftBox.getChildren().add(importButton);
-//>>>>>>>>>>>>>>>>>>Bouton importer à modifier/déplacer<<<<<<<<<<<<<<<<<<<<<<<<
-	    
+		
 		Footer footer = new Footer(app, stage, app.myObservableArrayList, this);
 		this.setBottom(footer);
 
@@ -78,12 +84,6 @@ public class HomePage extends BorderPane {
 	// Méthode pour obtenir TableViewStagiaires
 	public TableViewStagiaires getTableView() {
 		return tableView;
-	}
-	
-	public void setSearchVisible(boolean visible) {
-	    // Trouver le Header et modifier la visibilité du champ de recherche
-	    Header header = (Header) this.getTop();
-	    header.getSearchBox().setVisible(visible);
 	}
 
 }

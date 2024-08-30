@@ -33,12 +33,15 @@ public class FileImporter {
 					return structureTestResult;
 				}
 
-				// on ferme la lecture du fichier pour pouvoir le supprimer
-				app.myDAO.searchTree.raf.close();
-				// Suppression d'un autre fichier après vérification réussie
-				String deletionResult = deleteAnotherFile("src/main/resources/save/stagiairesDataBase.bin");
-				if (deletionResult != null) {
-					return deletionResult;
+				File dataBase = new File("src/main/resources/save/stagiairesDataBase.bin");
+				if (dataBase.exists()) {
+					// on ferme la lecture du fichier pour pouvoir le supprimer
+					app.myDAO.searchTree.raf.close();
+					// Suppression d'un autre fichier après vérification réussie
+					String deletionResult = deleteAnotherFile(dataBase.toString());
+					if (deletionResult != null) {
+						return deletionResult;
+					}
 				}
 
 				// Construction du nouvel annuaire
@@ -48,7 +51,7 @@ public class FileImporter {
 				for (int i = 0; i < annuaire.getStagiaires().size(); i++) {
 					app.myDAO.searchTree.ajouter(annuaire.getStagiaires().get(i));
 				}
-				
+
 				app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -78,16 +81,16 @@ public class FileImporter {
 	private String deleteAnotherFile(String filePath) {
 
 		File fileToDelete = new File(filePath);
-		
+
 		if (fileToDelete.exists()) {
-			
+
 			try {
 				// on essaye de renommer le fichier avant la suppression pour vérifier s'il est
 				// verrouillé
 				File tempFile = new File(fileToDelete.getAbsolutePath() + ".tmp");
 				boolean renamed = fileToDelete.renameTo(tempFile);
 				if (renamed) {
-					tempFile.delete(); 
+					tempFile.delete();
 					return null; // Suppression réussie
 				} else {
 					return "Erreur : Le fichier est peut-être utilisé par un autre processus.";
