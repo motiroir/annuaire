@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 
 import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.FileChecker;
+import isika.cda27.projet1.group4.annuaire.back.FileExporter;
 import isika.cda27.projet1.group4.annuaire.back.FileImporter;
 import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
@@ -66,8 +67,17 @@ public class Footer extends StackPane {
 			importButton.setVisible(true);
 			buttonsBox.setMargin(importButton, new Insets(20, 0, 20, 40));
 		}
+		
+		Button exportButton = new Button("Exporter");
+		exportButton.setVisible(false);
+		if (app.currentUser.getRole() == Role.ADMIN) {
+			exportButton.setVisible(true);
+			buttonsBox.setMargin(exportButton, new Insets(20, 0, 20, 40));
+		}
+		
 
-		buttonsBox.getChildren().addAll(buttonUpdate, buttonAdd, buttonDelete, importButton);
+
+		buttonsBox.getChildren().addAll(buttonUpdate, buttonAdd, buttonDelete, importButton, exportButton);
 		
 		HBox impressionBox = new HBox();
 		impressionBox.setMaxSize(280, 100);
@@ -183,6 +193,17 @@ public class Footer extends StackPane {
 			alert.showAndWait();
 		});
 
+		exportButton.setOnAction(e -> {
+			FileExporter exporter = new FileExporter();
+			String exportResult = exporter.exporterAnnuaire(stage, app.myObservableArrayList);
+
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Exportation de l'annuaire");
+			alert.setHeaderText(null);
+			alert.setContentText(exportResult);
+			alert.showAndWait();
+		});
+		
 		// Gestion de l'impression en PDF
 		buttonImpression.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -218,6 +239,7 @@ public class Footer extends StackPane {
 
 			}
 		});
+
 
 	}
 

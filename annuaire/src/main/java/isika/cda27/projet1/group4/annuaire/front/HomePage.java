@@ -48,8 +48,8 @@ public class HomePage extends BorderPane {
 		this.setCenter(tableView);
 		this.setAlignment(tableView, Pos.CENTER);
 		tableView.setVisible(false);
-		
-		if (app.firstConnexion== true) {
+
+		if (app.firstConnexion == true) {
 			tableView.setVisible(true);
 		} else {
 			VBox welcomeMessage = new VBox();
@@ -65,37 +65,12 @@ public class HomePage extends BorderPane {
 			this.setCenter(welcomeMessage);
 		}
 
+		
 		// création de la Hbox Bottom
 		HBox hboxBottom = new HBox();
 		this.setBottom(hboxBottom);
-
-//>>>>>>>>>>>>>>>>>>Bouton importer à modifier<<<<<<<<<<<<<<<<<<<<<<<<
-		Button importButton = new Button("Importer un fichier texte");
-		importButton.setOnAction(e -> {
-			FileImporter importer = new FileImporter();
-			String fileContent = importer.importer(stage, app);
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Importation d'un nouvel annuaire");
-			alert.setHeaderText(null);
-			alert.setContentText(fileContent);
-			alert.showAndWait();
-		});
-		leftBox.getChildren().add(importButton);
-//>>>>>>>>>>>>>>>>>>Bouton importer à modifier/déplacer<<<<<<<<<<<<<<<<<<<<<<<<
-
-	    Button exportButton = new Button("Exporter");
-	       
-		exportButton.setOnAction(e -> {
-		    FileExporter exporter = new FileExporter();
-		    String exportResult = exporter.exporterAnnuaire(stage, app.myObservableArrayList);
 		
-		    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-		    alert.setTitle("Exportation de l'annuaire");
-		    alert.setHeaderText(null);
-		    alert.setContentText(exportResult);
-		    alert.showAndWait();
-		});
-		leftBox.getChildren().add(exportButton);
+		
 		Footer footer = new Footer(app, stage, app.myObservableArrayList, this);
 		this.setBottom(footer);
 

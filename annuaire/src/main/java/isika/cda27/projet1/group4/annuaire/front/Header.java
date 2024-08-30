@@ -13,15 +13,18 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.MenuItem;
 
 public class Header extends StackPane {
 
@@ -95,30 +98,30 @@ public class Header extends StackPane {
 		connexionZone.setAlignment(Pos.CENTER_RIGHT);
 		connexionZone.setPadding(new Insets(0, 20, 0, 0));
 
+		Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__admin-icon.png"));
+		ImageView adminImageView = new ImageView(adminIcon);
+		adminImageView.setFitHeight(40);
+		adminImageView.setFitWidth(40);
 		if (app.currentUser.getRole() == Role.ADMIN) {
-			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__admin-icon.png"));
-			ImageView adminImageView = new ImageView(adminIcon);
-			adminImageView.setFitHeight(40);
-			adminImageView.setFitWidth(40);
 			connexionZone.getChildren().add(adminImageView);
 		}
 
+		Image teacherIcon = new Image(getClass().getResourceAsStream("/icons/__teacher-icon.png"));
+		ImageView teacherImageView = new ImageView(teacherIcon);
+		teacherImageView.setFitHeight(40);
+		teacherImageView.setFitWidth(40);
 		if (app.currentUser.getRole() == Role.TEACHER) {
-			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__teacher-icon.png"));
-			ImageView adminImageView = new ImageView(adminIcon);
-			adminImageView.setFitHeight(40);
-			adminImageView.setFitWidth(40);
-			connexionZone.getChildren().add(adminImageView);
+			connexionZone.getChildren().add(teacherImageView);
 		}
 
+		Image studentIcon = new Image(getClass().getResourceAsStream("/icons/__student-icon.png"));
+		ImageView studentImageView = new ImageView(studentIcon);
+		studentImageView.setFitHeight(40);
+		studentImageView.setFitWidth(40);
 		if (app.currentUser.getRole() == Role.STUDENT) {
-			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__student-icon.png"));
-			ImageView adminImageView = new ImageView(adminIcon);
-			adminImageView.setFitHeight(40);
-			adminImageView.setFitWidth(40);
-			connexionZone.getChildren().add(adminImageView);
+			connexionZone.getChildren().add(studentImageView);
 		}
-
+		
 		// Créer le bouton de connexion
 		Button buttonConnexion = new Button("Connexion");
 
@@ -219,6 +222,7 @@ public class Header extends StackPane {
 				}
 			}
 		});
+		
 	}
 
 	public HBox getSearchBox() {

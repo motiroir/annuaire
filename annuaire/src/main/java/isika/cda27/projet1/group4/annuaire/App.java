@@ -53,7 +53,7 @@ public class App extends Application {
 	// methode dediée a l'initialisation
 	@Override
 	public void init() {
-		
+
 		// Initialisation des DAO et des UserManager
 		fileChecker = new FileChecker();
 		firstConnexion = fileChecker.isDataBaseBinPresent();
@@ -69,8 +69,7 @@ public class App extends Application {
 
 		// Création de la première scène
 		HomePage root = new HomePage(this, stage);
-		// Creation de la scene de premiere ajout
-		
+
 		// Lien avec le css
 		root.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 
