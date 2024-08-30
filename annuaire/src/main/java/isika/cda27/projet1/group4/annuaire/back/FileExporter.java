@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FileExporter {
 
-    public void exporterAnnuaire(Stage stage, List<Stagiaire> annuaire) {
+    public String exporterAnnuaire(Stage stage, List<Stagiaire> annuaire) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Enregistrer l'annuaire sous un fichier texte");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers Texte", "*.txt"));
@@ -29,28 +29,13 @@ public class FileExporter {
                     writer.write(stagiaire.getYear() + "\n");
                     writer.write("*\n");  // Séparateur entre les stagiaires
                 }
-                // Afficher une alerte après l'exportation réussie
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Exportation réussie");
-                alert.setHeaderText(null);
-                alert.setContentText("Le fichier texte a été exporté avec succès !");
-                alert.showAndWait();
+                return "Le fichier texte a été exporté avec succès !";
             } catch (IOException e) {
                 e.printStackTrace();
-                // Gérer l'erreur d'écriture dans le fichier
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur d'exportation");
-                alert.setHeaderText(null);
-                alert.setContentText("Une erreur est survenue lors de l'exportation du fichier texte.");
-                alert.showAndWait();
+                return "Une erreur est survenue lors de l'exportation du fichier texte.";
             }
         } else {
-            // Gestion du cas où l'utilisateur annule l'exportation
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Exportation annulée");
-            alert.setHeaderText(null);
-            alert.setContentText("L'exportation du fichier texte a été annulée.");
-            alert.showAndWait();
+            return "L'exportation du fichier texte a été annulée.";
         }
     }
 }
