@@ -84,7 +84,6 @@ public class App extends Application {
 		stage.setTitle("Annuaire");
 		stage.show();
 
-
 	}
 
 	public static void main(String[] args) {
