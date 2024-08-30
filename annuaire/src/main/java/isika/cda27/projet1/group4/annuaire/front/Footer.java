@@ -178,7 +178,6 @@ public class Footer extends StackPane {
 				Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
 				UpdateForm updateForm = new UpdateForm(app, stage, selectedStagiaire);
 				stage.setScene(updateForm.getScene());
-
 			}
 		});
 		

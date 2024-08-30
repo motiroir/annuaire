@@ -133,13 +133,13 @@ public class UpdateForm extends BorderPane {
 			if (!newValue.matches("[a-zA-Z0-9 ]*")) {
 				// Filtre les caractères non alphabétiques et non numériques
 				postalCodeTextfield.setText(newValue.replaceAll("[^a-zA-Z0-9 ]", ""));
-
 			}
+
 			// Limiter la longueur
 			if (newValue.length() > 10) {
 				postalCodeTextfield.setText(oldValue);
-
 			}
+
 		});
 
 		// Ajouter un ChangeListener pour restreindre l'entrée du champ promoTextfield
