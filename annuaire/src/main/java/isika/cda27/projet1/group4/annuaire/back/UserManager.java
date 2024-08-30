@@ -27,5 +27,9 @@ public class UserManager {
     public void addUser(String username, String password, Role role) {
         users.add(new User(username, password, role));
     }
+    
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users); 
+    }
 
 }
