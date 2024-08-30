@@ -52,7 +52,7 @@ public class Header extends StackPane {
 		Label lblSubtitle = new Label(subtitle);
 
 		lblTitle.getStyleClass().add("title");
-		lblSubtitle.getStyleClass().add("sub-title"); // Assurez-vous que le sous-titre utilise la bonne classe CSS
+		lblSubtitle.getStyleClass().add("sub-title"); 
 
 		titles.getChildren().addAll(lblTitle, lblSubtitle);
 
@@ -90,9 +90,9 @@ public class Header extends StackPane {
 
 		//Zone de connexion
 		HBox connexionZone = new HBox();
-		connexionZone.setMaxWidth(300);
+		connexionZone.setMaxWidth(250);
 		connexionZone.setAlignment(Pos.CENTER_RIGHT);
-		connexionZone.setPadding(new Insets(0, 40, 0, 0));
+		connexionZone.setPadding(new Insets(0, 20, 0, 0));
 		
 		if (app.currentUser.getRole()==Role.ADMIN) {
 			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__admin-icon.png"));
@@ -137,15 +137,15 @@ public class Header extends StackPane {
 
 		// Aligner des elements du stackpane
 		StackPane.setAlignment(titles, Pos.CENTER);
-		StackPane.setAlignment(connexionZone, Pos.CENTER_RIGHT);
 		StackPane.setAlignment(searchBox, Pos.CENTER_LEFT);
 		StackPane.setAlignment(filteredSearch, Pos.CENTER_LEFT);
+		StackPane.setAlignment(connexionZone, Pos.CENTER_RIGHT);
 		StackPane.setAlignment(bottomSeparator, Pos.BOTTOM_CENTER);
 
 		// Ajouter des marges
-		StackPane.setMargin(buttonConnexion, new Insets(5, 40, 5, 0));
 		StackPane.setMargin(searchBox, new Insets(5, 0, 5, 40));
 		StackPane.setMargin(filteredSearch, new Insets(5, 0, 5, 40));
+		StackPane.setMargin(buttonConnexion, new Insets(5, 40, 5, 0));
 
 		// Gestion de l'action du bouton
 		toggleButton.setOnAction(event -> {
@@ -198,10 +198,11 @@ public class Header extends StackPane {
 			searchBox.setVisible(!isSearchBoxVisible);
 			filteredSearch.setVisible(isSearchBoxVisible);
 			titles.setVisible(!isSearchBoxVisible);
+			app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
 		});
 
-//		filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
-//		filteredSearch.getFilterButton().setOnAction(filterButton.getOnAction());
+		//filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
+		filteredSearch.getFilterButton().setOnAction(filterButton.getOnAction());
 
 		buttonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

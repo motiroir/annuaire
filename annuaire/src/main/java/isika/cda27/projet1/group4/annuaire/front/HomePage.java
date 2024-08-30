@@ -1,6 +1,7 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.FileImporter;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.geometry.Insets;
@@ -22,8 +23,9 @@ public class HomePage extends BorderPane {
 	private App app;
 	private Stage stage;
 	private TableViewStagiaires tableView;
+	private FileChecker fileChecker;
 
-	public HomePage(App app, Stage stage) {
+	public HomePage(App app, Stage stage, FileChecker fileChecker) {
 		this.app = app;
 		this.stage = stage;
 
@@ -43,7 +45,7 @@ public class HomePage extends BorderPane {
 		this.setRight(rightBox);
 
 		// Ajouter le TableView au BorderPane
-		this.tableView = new TableViewStagiaires(app.myObservableArrayList);
+		this.tableView = new TableViewStagiaires(app.myObservableArrayList, fileChecker);
 		this.setCenter(tableView);
 		this.setAlignment(tableView, Pos.CENTER);
 
