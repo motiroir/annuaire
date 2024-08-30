@@ -1,6 +1,7 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
 import isika.cda27.projet1.group4.annuaire.back.UserManager;
@@ -153,12 +154,11 @@ public class UserConnexion extends BorderPane {
 
 						Label messageLabel = new Label("Nom d'utilisateur ou mot de passe invalide");
 						messageLabel.getStyleClass().add("alert");
-						VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); // Marges haut, droite, bas, gauche
+						VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); 
 						
 						Button okButton = new Button("OK");
-						okButton.setOnAction(e -> dialog.setResult("OK")); // Ferme le dialogue en définissant un résultat
-						// Ajouter des marges autour du bouton OK
-						VBox.setMargin(okButton, new Insets(5, 10, 20, 10)); // Marges haut, droite, bas, gauche
+						okButton.setOnAction(e -> dialog.setResult("OK")); 
+						VBox.setMargin(okButton, new Insets(5, 10, 20, 10)); 
 					
 						vbox.getChildren().addAll(messageLabel, okButton);
 

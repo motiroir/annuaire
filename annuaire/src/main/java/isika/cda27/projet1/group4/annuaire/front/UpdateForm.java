@@ -1,6 +1,7 @@
 package isika.cda27.projet1.group4.annuaire.front;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

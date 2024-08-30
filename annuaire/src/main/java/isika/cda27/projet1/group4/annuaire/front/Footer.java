@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.FileImporter;
 import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
@@ -20,11 +21,8 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-<<<<<<< HEAD
 import javafx.scene.layout.StackPane;
-=======
 import javafx.scene.layout.VBox;
->>>>>>> master
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 

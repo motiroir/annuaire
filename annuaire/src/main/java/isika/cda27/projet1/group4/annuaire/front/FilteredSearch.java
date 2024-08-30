@@ -30,8 +30,27 @@ public class FilteredSearch extends HBox {
 	public FilteredSearch(App app) {
 		this.app = app;
 
-		
+		// Créer le bouton avec l'icône de recherche
+		Image searchIcon = new Image(getClass().getResourceAsStream("/icons/__search-icon.png"));
+		ImageView buttonImageView = new ImageView(searchIcon);
+		buttonImageView.setFitHeight(20);
+		buttonImageView.setFitWidth(20);
+		toggleButton = new Button("", buttonImageView);
+		toggleButton.setVisible(false);
 
+		// Créer le bouton pour accéder à la recherche avancée
+		Image filterIcon = new Image(getClass().getResourceAsStream("/icons/__filterOff-icon.png"));
+		ImageView filterImageView = new ImageView(filterIcon);
+		filterImageView.setFitHeight(20);
+		filterImageView.setFitWidth(20);
+		filterButton = new Button("", filterImageView);
+		filterButton.setVisible(false);
+
+		// Ajouter style css
+		toggleButton.getStyleClass().add("button-search");
+		filterButton.getStyleClass().add("button-search");
+
+		if (!app.fileChecker.isDataBaseBinPresent()) {
 			// Initialisation des champs de texte pour chaque critère
 			nameField = new TextField();
 			nameField.setPromptText("Nom");
@@ -48,50 +67,43 @@ public class FilteredSearch extends HBox {
 			yearField = new TextField();
 			yearField.setPromptText("Année...");
 
-			// Créer le bouton avec l'icône de recherche
-			Image searchIcon = new Image(getClass().getResourceAsStream("/icons/__search-icon.png"));
-			ImageView buttonImageView = new ImageView(searchIcon);
-			buttonImageView.setFitHeight(20);
-			buttonImageView.setFitWidth(20);
-			toggleButton = new Button("", buttonImageView);
-
-			// Créer le bouton pour accéder à la recherche avancée
-			Image filterIcon = new Image(getClass().getResourceAsStream("/icons/__filterOff-icon.png"));
-			ImageView filterImageView = new ImageView(filterIcon);
-			filterImageView.setFitHeight(20);
-			filterImageView.setFitWidth(20);
-			filterButton = new Button("", filterImageView);
-
 			// Ajouter les champs au HBox avec les boutons
 			this.getChildren().addAll(nameField, firstNameField, departmentField, promotionField, yearField,
 					toggleButton, filterButton);
 			this.setSpacing(10);
 
-			// Ajouter style css
-			toggleButton.getStyleClass().add("button-search");
-			filterButton.getStyleClass().add("button-search");
+			toggleButton.setVisible(true);
+			filterButton.setVisible(true);
 
-			// Gestion de l'action des boutons
-			toggleButton.setOnAction(event -> {
+		} else {
+			VBox welcomeMessage = new VBox();
 
-				StagiaireFilter stagiairefilter = new StagiaireFilter(app.myDAO);
+			Label welcomeLbl = new Label("Bienvenue sur l'annuaire d'Isika");
+			Label importerLbl = new Label(
+					"Il n'y a pas d'annuaire disponible actuellement. \nPour commencer veuillez en importer.");
+			welcomeLbl.getStyleClass().add("title");
+			importerLbl.getStyleClass().add("sub-title");
+		}
 
-				String name = nameField.getText();
-				String firstName = firstNameField.getText();
-				String postalCode = departmentField.getText();
-				String promo = promotionField.getText();
-				String year = yearField.getText();
+		// Gestion de l'action des boutons
+		toggleButton.setOnAction(event -> {
 
-				List<Stagiaire> filteredStagiaires = stagiairefilter.filterStagiaires(name, firstName, postalCode,
-						promo, year);
-				app.myObservableArrayList.setAll(filteredStagiaires);
-			});
+			StagiaireFilter stagiairefilter = new StagiaireFilter(app.myDAO);
 
-			filterButton.setOnAction(event -> {
+			String name = nameField.getText();
+			String firstName = firstNameField.getText();
+			String postalCode = departmentField.getText();
+			String promo = promotionField.getText();
+			String year = yearField.getText();
 
-			});
+			List<Stagiaire> filteredStagiaires = stagiairefilter.filterStagiaires(name, firstName, postalCode, promo,
+					year);
+			app.myObservableArrayList.setAll(filteredStagiaires);
+		});
 
-		
+		filterButton.setOnAction(event -> {
+
+		});
 
 	}
 

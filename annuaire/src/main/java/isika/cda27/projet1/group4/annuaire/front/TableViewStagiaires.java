@@ -13,14 +13,11 @@ import javafx.scene.layout.VBox;
 public class TableViewStagiaires extends TableView<Stagiaire> {
 
 	public ObservableList<Stagiaire> myObservableArrayList;
-	private FileChecker fileChecker;
 
-	public TableViewStagiaires(ObservableList<Stagiaire> myObservableArrayList, FileChecker fileChecker) {
+	public TableViewStagiaires(ObservableList<Stagiaire> myObservableArrayList) {
 		super();
 		this.myObservableArrayList = myObservableArrayList;
-
-		if (!fileChecker.isDataBaseBinPresent()) {
-
+		
 			// Définir la politique de redimensionnement des colonnes pour qu'elles
 			// s'ajustent
 			this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -46,26 +43,10 @@ public class TableViewStagiaires extends TableView<Stagiaire> {
 
 			// Lier la liste observable au TableView
 			this.setItems(this.myObservableArrayList);
-			
-		} else {
-			VBox welcomeMessage = new VBox();
 
-			Label welcomeLbl = new Label("Bienvenue sur l'annuaire d'Isika");
-			Label importerLbl = new Label(
-					"Il n'y a pas d'annuaire disponible actuellement. \nPour commencer veuillez en importer.");
-			welcomeLbl.getStyleClass().add("title");
-			importerLbl.getStyleClass().add("sub-title");
-
-			welcomeMessage.getChildren().addAll(welcomeLbl, importerLbl);
-		}
+		
 
 	}
 
-//	public TableViewStagiaires(ObservableList<Stagiaire> myObservableArrayList){
-//		super();
-//		
-//		
-//		
-//	}
 
 }

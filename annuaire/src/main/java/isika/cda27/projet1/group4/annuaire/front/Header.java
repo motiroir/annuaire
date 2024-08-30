@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import isika.cda27.projet1.group4.annuaire.App;
+import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
@@ -52,7 +53,7 @@ public class Header extends StackPane {
 		Label lblSubtitle = new Label(subtitle);
 
 		lblTitle.getStyleClass().add("title");
-		lblSubtitle.getStyleClass().add("sub-title"); 
+		lblSubtitle.getStyleClass().add("sub-title");
 
 		titles.getChildren().addAll(lblTitle, lblSubtitle);
 
@@ -88,46 +89,46 @@ public class Header extends StackPane {
 		filteredSearch.setVisible(false);
 		filteredSearch.setAlignment(Pos.CENTER_LEFT);
 
-		//Zone de connexion
+		// Zone de connexion
 		HBox connexionZone = new HBox();
 		connexionZone.setMaxWidth(250);
 		connexionZone.setAlignment(Pos.CENTER_RIGHT);
 		connexionZone.setPadding(new Insets(0, 20, 0, 0));
-		
-		if (app.currentUser.getRole()==Role.ADMIN) {
+
+		if (app.currentUser.getRole() == Role.ADMIN) {
 			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__admin-icon.png"));
 			ImageView adminImageView = new ImageView(adminIcon);
 			adminImageView.setFitHeight(40);
 			adminImageView.setFitWidth(40);
 			connexionZone.getChildren().add(adminImageView);
 		}
-		
-		if (app.currentUser.getRole()==Role.TEACHER) {
+
+		if (app.currentUser.getRole() == Role.TEACHER) {
 			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__teacher-icon.png"));
 			ImageView adminImageView = new ImageView(adminIcon);
 			adminImageView.setFitHeight(40);
 			adminImageView.setFitWidth(40);
 			connexionZone.getChildren().add(adminImageView);
 		}
-		
-		if (app.currentUser.getRole()==Role.STUDENT) {
+
+		if (app.currentUser.getRole() == Role.STUDENT) {
 			Image adminIcon = new Image(getClass().getResourceAsStream("/icons/__student-icon.png"));
 			ImageView adminImageView = new ImageView(adminIcon);
 			adminImageView.setFitHeight(40);
 			adminImageView.setFitWidth(40);
 			connexionZone.getChildren().add(adminImageView);
 		}
-		
+
 		// Créer le bouton de connexion
 		Button buttonConnexion = new Button("Connexion");
-		
+
 		if (app.currentUser.getRole() != null) {
 			buttonConnexion.setText("Déconnexion");
-		} else buttonConnexion.setText("Connexion");
-		connexionZone.setMargin(buttonConnexion, new Insets (20));
+		} else
+			buttonConnexion.setText("Connexion");
+		connexionZone.setMargin(buttonConnexion, new Insets(20));
 		connexionZone.getChildren().add(buttonConnexion);
-		
-		
+
 		// Créer un separator pour le bas
 		Separator bottomSeparator = new Separator();
 		bottomSeparator.setPrefHeight(1); // Hauteur du trait
@@ -201,20 +202,20 @@ public class Header extends StackPane {
 			app.myObservableArrayList.setAll(app.myDAO.getStagiaires());
 		});
 
-		//filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
+		// filteredSearch.getToggleButton().setOnAction(toggleButton.getOnAction());
 		filteredSearch.getFilterButton().setOnAction(filterButton.getOnAction());
 
 		buttonConnexion.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				
+
 				if (app.currentUser.getRole() != null) {
 					app.currentUser = new User();
 					HomePage homepage = new HomePage(app, stage);
 					stage.setScene(homepage.getScene());
 				} else {
-				UserConnexion userConnexion = new UserConnexion(app, stage);
-				stage.setScene(userConnexion.getScene());
+					UserConnexion userConnexion = new UserConnexion(app, stage);
+					stage.setScene(userConnexion.getScene());
 				}
 			}
 		});
