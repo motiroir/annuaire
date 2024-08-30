@@ -185,20 +185,20 @@
 /* style.css */
 
 /* Cible la fenêtre de dialogue */
-.buttonBar{
-    -fx-font-size: 16px; /* Taille du texte */
+.alert{
+    -fx-font-size: 14px; /* Taille du texte */
     -fx-text-fill:#ffa500; /* Couleur du texte */
-    -fx-padding: 10px; /* Ajouter du padding pour plus de visibilité */
+    -fx-padding: 0px; /* Ajouter du padding pour plus de visibilité */
 }
 
 /* Cible le contenu du message d'alerte spécifiquement */
 .alert .content {
-    -fx-font-size: 16px; /* Taille du texte */
+    -fx-font-size: 14px; /* Taille du texte */
     -fx-text-fill: #ffa500; /* Couleur du texte */
     -fx-font-weight: bold; /* Texte en gras */
     -fx-alignment: center; /* Aligner le texte au centre */
     -fx-text-alignment: center; /* Aligner le texte au centre */
-    -fx-padding: 10px; /* Ajouter du padding pour plus de visibilité */
+    -fx-padding: 0px; /* Ajouter du padding pour plus de visibilité */
     
 }
 .alert .container {
@@ -206,6 +206,6 @@
     -fx-border-color: #ddd; /* Light gray */
     -fx-border-width: 2.0px;
     -fx-border-radius: 5.0px;
-    -fx-padding: 10.0px;
+    -fx-padding: 0px;
 }
 

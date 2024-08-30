@@ -15,8 +15,16 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+<<<<<<< HEAD
 import javafx.scene.layout.StackPane;
+=======
+import javafx.scene.layout.VBox;
+>>>>>>> master
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -104,16 +112,56 @@ public class Footer extends StackPane {
 			@Override
 			public void handle(ActionEvent event) {
 				// Utiliser la méthode pour obtenir TableViewStagiaires
-				TableViewStagiaires tableView = homePage.getTableView();
-				// Récupérer le stagiaire sélectionné
-				Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
-				if (selectedStagiaire != null) {
-					// Supprimer le stagiaire
-					app.myDAO.removeStagiaire(selectedStagiaire);
-					myObservableArrayList.setAll(app.myDAO.getStagiaires());
-				}
-			}
+		        TableViewStagiaires tableView = homePage.getTableView();
+		        // Récupérer le stagiaire sélectionné
+		        Stagiaire selectedStagiaire = tableView.getSelectionModel().getSelectedItem();
+		        if (selectedStagiaire != null) {
+		            
+		            // Créer un dialogue
+		            Dialog<String> dialog = new Dialog<>();
+		            dialog.setTitle("");
+		            dialog.setHeaderText(null);
 
+		            VBox vbox = new VBox(10);
+		            vbox.setAlignment(Pos.CENTER);
+
+		            Label messageLabel = new Label("Êtes-vous sûr de vouloir supprimer ce stagiaire ?");
+		            messageLabel.getStyleClass().add("alert");
+		            VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); // Marges haut, droite, bas, gauche
+		            
+		            
+		            
+		            Button okButton = new Button("OK");
+		            okButton.setOnAction(e -> { app.myDAO.removeStagiaire(selectedStagiaire);
+	                myObservableArrayList.setAll(app.myDAO.getStagiaires());}
+		            ); // Ferme le dialogue en définissant un résultat
+		            VBox.setMargin(okButton, new Insets(5, 10, 20, 10)); // Marges haut, droite, bas, gauche
+		            
+		            Button cancelButton = new Button("Annuler");
+		            cancelButton.setOnAction(e -> dialog.setResult("annuler")); // Fermer le dialogue en définissant un résultat Cancel
+		            VBox.setMargin(cancelButton, new Insets(5, 10, 20, 10)); // Marges haut, droite, bas, gauche
+		            
+		            HBox buttonHbox = new HBox ();
+		            buttonHbox.getChildren().addAll( cancelButton,okButton);
+		            HBox.setMargin(okButton, new Insets(0, 10, 0, 0)); // Marges haut, droite, bas, gauche
+		            HBox.setMargin(cancelButton, new Insets(0, 0, 0, 10)); // Marges haut, droite, bas, gauche
+		            vbox.getChildren().addAll(messageLabel, buttonHbox );
+
+		            DialogPane dialogPane = dialog.getDialogPane();
+		            dialogPane.setContent(vbox);
+		            dialogPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		            dialogPane.getStyleClass().add("alert");
+
+		            dialog.showAndWait(); // Attendre la réponse de l'utilisateur
+
+//		            // Vérifier le résultat du dialogue
+//		            if ("OK".equals(dialog.getResult())) { 
+//		                // Supprimer le stagiaire si l'utilisateur a confirmé
+//		                app.myDAO.removeStagiaire(selectedStagiaire);
+//		                myObservableArrayList.setAll(app.myDAO.getStagiaires());
+//		            }
+		        }
+		    }
 		});
 
 		buttonUpdate.setOnAction(new EventHandler<ActionEvent>() {

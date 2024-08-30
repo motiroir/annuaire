@@ -10,9 +10,11 @@ import isika.cda27.projet1.group4.annuaire.back.Annuaire;
 import isika.cda27.projet1.group4.annuaire.back.BinarySearchTree;
 import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Node;
+import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
 import isika.cda27.projet1.group4.annuaire.back.UserManager;
+import isika.cda27.projet1.group4.annuaire.exceptions.UserAlreadyExistsException;
 import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
 import isika.cda27.projet1.group4.annuaire.front.Header;
 import isika.cda27.projet1.group4.annuaire.front.HomePage;
@@ -67,10 +69,12 @@ public class App extends Application {
 		myDAO = new AnnuaireDAO();
 		userManager = new UserManager();
 		currentUser = new User();
+		
 	}
 
 	@Override
 	public void start(Stage stage) {
+		
 
 		myObservableArrayList = FXCollections.observableArrayList(this.myDAO.getStagiaires());
 

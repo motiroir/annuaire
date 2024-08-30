@@ -1,30 +1,38 @@
 package isika.cda27.projet1.group4.annuaire.back;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
+    private String username;
+    private String passwordHash; // Stockage du hash du mot de passe
+    private Role role; // Attribut pour le rôle de l'utilisateur
 
-	private String username;
-	private String password;
-	private Role role;
+    public User(String username, String passwordHash, Role role) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.role = role;
+    }
+    
+    public User() {
+        
+    }
 
-	public User(String username, String password, Role role) {
-		this.username = username;
-		this.password = password;
-		this.role = role;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public User() {
-		
-	}
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public Role getRole() {
+        return role;
+    }
 
-	public Role getRole() {
-		return role;
-	}
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
