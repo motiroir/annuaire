@@ -22,27 +22,36 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ManageUsers extends VBox {
+public class ManageUsers extends VBox{
 	
 	
 	private Scene scene;
     private App app;
     private Stage stage;
+    private Scene previousScene; 
     
     TableView<User> tableView;
 
     public ManageUsers(App app, Stage stage) {
         this.app = app;
         this.stage = stage;
-
+        this.previousScene = previousScene;
+        
+        
+        Header header = new Header(app, stage, "Gestion des utilisateurs");
+        this.getChildren().add(header);
+        
+        
         // Tableau des utilisateurs
         TableView<User> tableView = new TableView<>();
         app.usersDAO = FXCollections.observableArrayList(app.userManager.getUsers());
         tableView.setItems(app.usersDAO);
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Colonnes du tableau
         TableColumn<User, String> usernameCol = new TableColumn<>("Nom d'utilisateur");
@@ -59,10 +68,10 @@ public class ManageUsers extends VBox {
         buttonBox.setPadding(new Insets(10));
 
         Button addButton = new Button("Ajouter");
-        
         Button deleteButton = new Button("Supprimer");
+        Button returnButton = new Button(" Retour ");
 
-        buttonBox.getChildren().addAll(addButton, deleteButton);
+        buttonBox.getChildren().addAll(addButton, deleteButton,returnButton);
 
         this.getChildren().addAll(tableView, buttonBox);
 	
@@ -141,6 +150,11 @@ public class ManageUsers extends VBox {
 		        
 		    }
 		});
+ 		   returnButton.setOnAction(e -> {
+ 			   
+ 			  HomePage homePage = new HomePage(app, stage); 
+ 	            stage.setScene(homePage.getScene()); 
+         });
 
     }
     

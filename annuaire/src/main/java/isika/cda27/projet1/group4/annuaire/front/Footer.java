@@ -42,7 +42,7 @@ public class Footer extends StackPane {
 		buttonsBox.setAlignment(Pos.CENTER_LEFT);
 		buttonsBox.setMaxSize(1000, 60);
 		
-		Button buttonUpdate = new Button(" Modifier ");
+		Button buttonUpdate = new Button("Modifier ");
 		buttonUpdate.setVisible(false);
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER
 				|| app.currentUser.getRole() == Role.STUDENT) {
@@ -59,7 +59,7 @@ public class Footer extends StackPane {
 			buttonDelete.setDisable(true);
 		}
 
-		Button buttonAdd = new Button("  Ajouter ");
+		Button buttonAdd = new Button(" Ajouter ");
 		buttonAdd.setVisible(false);
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER) {
 			buttonAdd.setVisible(true);

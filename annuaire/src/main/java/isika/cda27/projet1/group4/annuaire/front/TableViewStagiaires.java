@@ -17,36 +17,33 @@ public class TableViewStagiaires extends TableView<Stagiaire> {
 	public TableViewStagiaires(ObservableList<Stagiaire> myObservableArrayList) {
 		super();
 		this.myObservableArrayList = myObservableArrayList;
-		
-			// Définir la politique de redimensionnement des colonnes pour qu'elles
-			// s'ajustent
-			this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-			// Créer les colonnes
-			TableColumn<Stagiaire, String> nameColumn = new TableColumn<Stagiaire, String>(" Nom");
-			nameColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
+		// Définir la politique de redimensionnement des colonnes pour qu'elles
+		// s'ajustent
+		this.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-			TableColumn<Stagiaire, String> firstNameColumn = new TableColumn<Stagiaire, String>(" Prénom");
-			firstNameColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("firstName"));
+		// Créer les colonnes
+		TableColumn<Stagiaire, String> nameColumn = new TableColumn<Stagiaire, String>(" Nom");
+		nameColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("name"));
 
-			TableColumn<Stagiaire, String> postalCodeColumn = new TableColumn<Stagiaire, String>(" Département");
-			postalCodeColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("postalCode"));
+		TableColumn<Stagiaire, String> firstNameColumn = new TableColumn<Stagiaire, String>(" Prénom");
+		firstNameColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("firstName"));
 
-			TableColumn<Stagiaire, String> promoColumn = new TableColumn<Stagiaire, String>(" Promotion");
-			promoColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
+		TableColumn<Stagiaire, String> postalCodeColumn = new TableColumn<Stagiaire, String>(" Département");
+		postalCodeColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("postalCode"));
 
-			TableColumn<Stagiaire, String> yearColumn = new TableColumn<Stagiaire, String>(" Année");
-			yearColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("year"));
+		TableColumn<Stagiaire, String> promoColumn = new TableColumn<Stagiaire, String>(" Promotion");
+		promoColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("promo"));
 
-			// Ajouter les colonnes au TableView
-			this.getColumns().addAll(nameColumn, firstNameColumn, postalCodeColumn, promoColumn, yearColumn);
+		TableColumn<Stagiaire, String> yearColumn = new TableColumn<Stagiaire, String>(" Année");
+		yearColumn.setCellValueFactory(new PropertyValueFactory<Stagiaire, String>("year"));
 
-			// Lier la liste observable au TableView
-			this.setItems(this.myObservableArrayList);
+		// Ajouter les colonnes au TableView
+		this.getColumns().addAll(nameColumn, firstNameColumn, postalCodeColumn, promoColumn, yearColumn);
 
-		
+		// Lier la liste observable au TableView
+		this.setItems(this.myObservableArrayList);
 
 	}
-
 
 }
