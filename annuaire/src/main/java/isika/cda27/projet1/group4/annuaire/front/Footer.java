@@ -30,8 +30,13 @@ import javafx.stage.Stage;
 public class Footer extends StackPane {
 
 	private HomePage homePage;
+	private App app;
+	private Stage stage;
 
 	public Footer(App app, Stage stage, ObservableList<Stagiaire> myObservableArrayList, HomePage homePage) {
+		
+		this.app=app;
+		this.stage=stage;
 
 		HBox buttonsBox = new HBox();
 		buttonsBox.setAlignment(Pos.CENTER_LEFT);
@@ -75,9 +80,14 @@ public class Footer extends StackPane {
 			buttonsBox.setMargin(exportButton, new Insets(20, 0, 20, 40));
 		}
 		
+		Button manageUsersButton = new Button("Gérer les utilisateurs");
+		manageUsersButton.setVisible(false);
+		if (app.currentUser.getRole() == Role.ADMIN) {
+			manageUsersButton.setVisible(true);
+			buttonsBox.setMargin(manageUsersButton, new Insets(20, 0, 20, 40));
+		}
 
-
-		buttonsBox.getChildren().addAll(buttonUpdate, buttonAdd, buttonDelete, importButton, exportButton);
+		buttonsBox.getChildren().addAll(buttonUpdate, buttonAdd, buttonDelete, importButton, exportButton, manageUsersButton);
 		
 		HBox impressionBox = new HBox();
 		impressionBox.setMaxSize(280, 100);
@@ -237,8 +247,18 @@ public class Footer extends StackPane {
 
 			}
 		});
+		
+		manageUsersButton.setOnAction(e -> openManageUsersScene());
+
+		
 
 
 	}
+	// >>>>> Méthode pour ouvrir la scène ManageUsers <<<<<
+	private void openManageUsersScene() {
+		ManageUsers manageUsers = new ManageUsers(app, stage);
+		stage.setScene(manageUsers.getScene());
+	}
 
 }
+

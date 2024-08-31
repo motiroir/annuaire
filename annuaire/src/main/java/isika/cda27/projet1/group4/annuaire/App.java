@@ -36,7 +36,7 @@ public class App extends Application {
 
 		// Initialisation des DAO et des UserManager
 		fileChecker = new FileChecker();
-		firstConnexion = fileChecker.isDataBaseBinPresent();
+		firstConnexion = !fileChecker.isDataBaseBinPresent();
 		myDAO = new AnnuaireDAO();
 		userManager = new UserManager();
 		currentUser = new User();
@@ -49,7 +49,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage stage) {
 		
-		stage.getIcons().setAll(new Image(getClass().getResource("/icons/contacter-le-carnet.png").toExternalForm()));
+		stage.getIcons().setAll(new Image(getClass().getResource("/icons/__search-icon.png").toExternalForm()));
 		myObservableArrayList = FXCollections.observableArrayList(this.myDAO.getStagiaires());
 
 		// Création de la première scène
