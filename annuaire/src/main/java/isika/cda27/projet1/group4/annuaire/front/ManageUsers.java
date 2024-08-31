@@ -110,7 +110,7 @@ public class ManageUsers extends VBox {
 		            
 		            
 		            
-		            Button okButton = new Button("OK");
+		            Button okButton = new Button("   OK    ");
 		            okButton.setOnAction(e -> { try {
 						app.userManager.deleteUser(selectedUser.getUsername()) ; dialog.setResult(" ok ");
 					} catch (UserNotFoundException e1) {
@@ -119,16 +119,16 @@ public class ManageUsers extends VBox {
 					}
 		            app.usersDAO.setAll(app.userManager.getUsers());} 
 		            ); // Ferme le dialogue en définissant un résultat
-		            VBox.setMargin(okButton, new Insets(5, 10, 20, 80)); // Marges haut, droite, bas, gauche
+		            
 		            
 		            Button cancelButton = new Button("Annuler");
 		            cancelButton.setOnAction(e -> dialog.setResult("annuler")); // Fermer le dialogue en définissant un résultat Cancel
-		            VBox.setMargin(cancelButton, new Insets(5, 20, 20, 10)); // Marges haut, droite, bas, gauche
+		           
 		            
 		            HBox buttonHbox = new HBox ();
 		            buttonHbox.getChildren().addAll( cancelButton,okButton);
-		            HBox.setMargin(okButton, new Insets(0, 10, 0, 0)); // Marges haut, droite, bas, gauche
-		            HBox.setMargin(cancelButton, new Insets(0, 0, 0, 10)); // Marges haut, droite, bas, gauche
+		            HBox.setMargin(okButton, new Insets(0, 18, 10, 100)); // Marges haut, droite, bas, gauche
+		            HBox.setMargin(cancelButton, new Insets(0, 30, 10, 18)); // Marges haut, droite, bas, gauche
 		            vbox.getChildren().addAll(messageLabel, buttonHbox );
 
 		            DialogPane dialogPane = dialog.getDialogPane();

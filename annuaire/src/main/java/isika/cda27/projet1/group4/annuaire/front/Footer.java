@@ -42,7 +42,7 @@ public class Footer extends StackPane {
 		buttonsBox.setAlignment(Pos.CENTER_LEFT);
 		buttonsBox.setMaxSize(1000, 60);
 		
-		Button buttonUpdate = new Button("Modifier");
+		Button buttonUpdate = new Button(" Modifier ");
 		buttonUpdate.setVisible(false);
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER
 				|| app.currentUser.getRole() == Role.STUDENT) {
@@ -59,7 +59,7 @@ public class Footer extends StackPane {
 			buttonDelete.setDisable(true);
 		}
 
-		Button buttonAdd = new Button(" Ajouter");
+		Button buttonAdd = new Button("  Ajouter ");
 		buttonAdd.setVisible(false);
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER) {
 			buttonAdd.setVisible(true);
@@ -73,7 +73,7 @@ public class Footer extends StackPane {
 			buttonsBox.setMargin(importButton, new Insets(20, 0, 20, 40));
 		}
 		
-		Button exportButton = new Button("Exporter");
+		Button exportButton = new Button(" Exporter ");
 		exportButton.setVisible(false);
 		if (app.currentUser.getRole() == Role.ADMIN) {
 			exportButton.setVisible(true);
@@ -92,7 +92,7 @@ public class Footer extends StackPane {
 		HBox impressionBox = new HBox();
 		impressionBox.setMaxSize(280, 100);
 		impressionBox.setAlignment(Pos.CENTER_RIGHT);
-		Button buttonImpression = new Button("Imprimer");
+		Button buttonImpression = new Button(" Imprimer ");
 		impressionBox.getChildren().add(buttonImpression);
 		impressionBox.setMargin(buttonImpression, new Insets(20, 40, 20, 00));
 		
@@ -147,21 +147,21 @@ public class Footer extends StackPane {
 		            messageLabel.getStyleClass().add("alert");
 		            VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); // Marges haut, droite, bas, gauche
 		            
-		            Button okButton = new Button("OK");
+		            Button okButton = new Button("   OK    ");
 		            okButton.setOnAction(e -> { app.myDAO.removeStagiaire(selectedStagiaire);
 	                myObservableArrayList.setAll(app.myDAO.getStagiaires());
 	                dialog.setResult("ok");}
 		            ); // Ferme le dialogue en définissant un résultat
-		            VBox.setMargin(okButton, new Insets(5, 10, 20, 10)); // Marges haut, droite, bas, gauche
+		           
 		            
 		            Button cancelButton = new Button("Annuler");
 		            cancelButton.setOnAction(e -> dialog.setResult("annuler")); // Fermer le dialogue en définissant un résultat Cancel
-		            VBox.setMargin(cancelButton, new Insets(5, 10, 20, 10)); // Marges haut, droite, bas, gauche
+		            
 		            
 		            HBox buttonHbox = new HBox ();
 		            buttonHbox.getChildren().addAll( cancelButton,okButton);
-		            HBox.setMargin(okButton, new Insets(0, 10, 0, 0)); // Marges haut, droite, bas, gauche
-		            HBox.setMargin(cancelButton, new Insets(0, 0, 0, 10)); // Marges haut, droite, bas, gauche
+		            HBox.setMargin(okButton, new Insets(0, 18, 10, 100)); // Marges haut, droite, bas, gauche
+		            HBox.setMargin(cancelButton, new Insets(0, 40, 10, 18)); // Marges haut, droite, bas, gauche
 		            vbox.getChildren().addAll(messageLabel, buttonHbox );
 
 		            DialogPane dialogPane = dialog.getDialogPane();
@@ -171,12 +171,6 @@ public class Footer extends StackPane {
 
 		            dialog.showAndWait(); // Attendre la réponse de l'utilisateur
 
-//		            // Vérifier le résultat du dialogue
-//		            if ("OK".equals(dialog.getResult())) { 
-//		                // Supprimer le stagiaire si l'utilisateur a confirmé
-//		                app.myDAO.removeStagiaire(selectedStagiaire);
-//		                myObservableArrayList.setAll(app.myDAO.getStagiaires());
-//		            }
 		        }
 		    }
 		});
@@ -194,22 +188,74 @@ public class Footer extends StackPane {
 		importButton.setOnAction(e -> {
 			FileImporter importer = new FileImporter();
 			String fileContent = importer.importer(stage, app);
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Importation d'un nouvel annuaire");
-			alert.setHeaderText(null);
-			alert.setContentText(fileContent);
-			alert.showAndWait();
+//			Alert alert = new Alert(AlertType.INFORMATION);
+//			alert.setTitle("Importation d'un nouvel annuaire");
+//			alert.setHeaderText(null);
+//			alert.setContentText(fileContent);
+//			alert.showAndWait();
+			
+			Dialog<String> dialog = new Dialog<>();
+			dialog.setTitle("");
+			dialog.setHeaderText(null);
+
+			VBox vbox = new VBox(10);
+			vbox.setAlignment(Pos.CENTER);
+
+			Label messageLabel = new Label("   Importation d'un nouvel annuaire   ");
+			messageLabel.getStyleClass().add("alert");
+			VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15));// Marges haut, droite, bas, gauche
+
+			Button okButton = new Button("OK ");
+			okButton.setOnAction(event -> dialog.setResult("OK"));
+			VBox.setMargin(okButton, new Insets(5, 10, 20, 10));// Marges haut, droite, bas, gauche
+
+			vbox.getChildren().addAll(messageLabel, okButton);
+
+			DialogPane dialogPane = dialog.getDialogPane();
+			dialogPane.setContent(vbox);
+			dialogPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+			dialogPane.getStyleClass().add("alert");
+
+			dialog.showAndWait(); // Cela attend jusqu'à ce que l'utilisateur clique sur OK
+		
 		});
 
 		exportButton.setOnAction(e -> {
 			FileExporter exporter = new FileExporter();
 			String exportResult = exporter.exporterAnnuaire(stage, app.myObservableArrayList);
 
-			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle("Exportation de l'annuaire");
-			alert.setHeaderText(null);
-			alert.setContentText(exportResult);
-			alert.showAndWait();
+//			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//			alert.setTitle("Exportation de l'annuaire");
+//			alert.setHeaderText(null);
+//			alert.setContentText(exportResult);
+//			alert.showAndWait();
+//			
+//			
+			Dialog<String> dialog = new Dialog<>();
+			dialog.setTitle("");
+			dialog.setHeaderText(null);
+
+			VBox vbox = new VBox(10);
+			vbox.setAlignment(Pos.CENTER);
+
+			Label messageLabel = new Label("            Exportation de l'annuaire            ");
+			messageLabel.getStyleClass().add("alert");
+			VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15));// Marges haut, droite, bas, gauche
+
+			Button okButton = new Button("OK ");
+			okButton.setOnAction(event -> dialog.setResult("OK"));
+			VBox.setMargin(okButton, new Insets(5, 10, 20, 10));// Marges haut, droite, bas, gauche
+
+			vbox.getChildren().addAll(messageLabel, okButton);
+
+			DialogPane dialogPane = dialog.getDialogPane();
+			dialogPane.setContent(vbox);
+			dialogPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+			dialogPane.getStyleClass().add("alert");
+
+			dialog.showAndWait(); // Cela attend jusqu'à ce que l'utilisateur clique sur OK
+			
+		
 		});
 		
 		// Gestion de l'impression en PDF
@@ -239,11 +285,37 @@ public class Footer extends StackPane {
 			}
 
 			private void showConfirmationDialog(String message) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Confirmation");
-				alert.setHeaderText(null);
-				alert.setContentText(message);
-				alert.showAndWait();
+//				Alert alert = new Alert(AlertType.INFORMATION);
+//				alert.setTitle("Confirmation");
+//				alert.setHeaderText(null);
+//				alert.setContentText(message);
+//				alert.showAndWait();
+				
+				
+
+				Dialog<String> dialog = new Dialog<>();
+				dialog.setTitle("");
+				dialog.setHeaderText(null);
+
+				VBox vbox = new VBox(10);
+				vbox.setAlignment(Pos.CENTER);
+
+				Label messageLabel = new Label( message );
+				messageLabel.getStyleClass().add("alert");
+				VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15));
+
+				Button okButton = new Button("OK ");
+				okButton.setOnAction(event -> dialog.setResult("OK"));
+				VBox.setMargin(okButton, new Insets(5, 10, 20, 10));
+
+				vbox.getChildren().addAll(messageLabel, okButton);
+
+				DialogPane dialogPane = dialog.getDialogPane();
+				dialogPane.setContent(vbox);
+				dialogPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+				dialogPane.getStyleClass().add("alert");
+
+				dialog.showAndWait(); // Cela attend jusqu'à ce que l'utilisateur clique sur OK
 
 			}
 		});
