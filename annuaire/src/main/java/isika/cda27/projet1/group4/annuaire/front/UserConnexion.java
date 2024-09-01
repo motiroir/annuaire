@@ -109,73 +109,72 @@ public class UserConnexion extends BorderPane {
 		this.scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
 
 		validateButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
+		    @Override
+		    public void handle(ActionEvent event) {
+		        boolean isValid = true;
 
-				boolean isValid = true;
+		        // Vérification pour le champ usernameField
+		        if (usernameField.getText().isEmpty()) {
+		            usernameField.getStyleClass().add("text-field-error");
+		            isValid = false;
+		        } else {
+		            usernameField.getStyleClass().remove("text-field-error");
+		        }
 
-				// Vérification pour le champ nameTextfield
-				if (usernameField.getText().isEmpty()) {
-					usernameField.getStyleClass().add("text-field-error");
-					isValid = false;
-				} else {
-					usernameField.getStyleClass().remove("text-field-error");
-				}
+		        // Vérification pour le champ passwordField
+		        if (passwordField.getText().isEmpty()) {
+		            passwordField.getStyleClass().add("text-field-error");
+		            isValid = false;
+		        } else {
+		            passwordField.getStyleClass().remove("text-field-error");
+		        }
 
-				// Vérification pour le champ firstnameTextfield
-				if (passwordField.getText().isEmpty()) {
-					passwordField.getStyleClass().add("text-field-error");
-					isValid = false;
-				} else {
-					passwordField.getStyleClass().remove("text-field-error");
-				}
+		        // Si tous les champs sont valides
+		        if (isValid) {
+		            // Récupérer les valeurs des champs
+		            String username = usernameField.getText();
+		            String password = passwordField.getText();
+		            try {
+		                // Tentative de connexion
+		                app.currentUser = app.userManager.login(username, password);
 
-				// Si tous les champs sont valides
-				if (isValid) {
-					// Récupérer les valeurs des champs
-					String username = usernameField.getText();
-					String password = passwordField.getText();
-					try {
-						app.currentUser = app.userManager.login(username, password);
-					} catch (AuthenticationFailedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					if (app.currentUser != null) {
-						System.out.println("utilisateur : " + app.currentUser.getUsername() + " connecté en tant que : "
-								+ app.currentUser.getRole());
-						// Revenir à la scène précédente (accueil)
-						HomePage homepage = new HomePage(app, stage);
-						stage.setScene(homepage.getScene());
-					} else {
-						Dialog<String> dialog = new Dialog<>();
-						dialog.setTitle("");
-						dialog.setHeaderText(null);
+		                // Connexion réussie
+		                System.out.println("Utilisateur : " + app.currentUser.getUsername() + " connecté en tant que : " + app.currentUser.getRole());
+		                
+		                // Revenir à la scène précédente (accueil)
+		                HomePage homepage = new HomePage(app, stage);
+		                stage.setScene(homepage.getScene());
 
-						VBox vbox = new VBox(10);
-						vbox.setAlignment(Pos.CENTER);
+		            } catch (AuthenticationFailedException e) {
+		                // Afficher un message d'erreur en cas d'exception
+		                Dialog<String> dialog = new Dialog<>();
+		                dialog.setTitle("Erreur de connexion");
+		                dialog.setHeaderText(null);
 
-						Label messageLabel = new Label("Nom d'utilisateur ou mot de passe invalide");
-						messageLabel.getStyleClass().add("alert");
-						VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15));
+		                VBox vbox = new VBox(10);
+		                vbox.setAlignment(Pos.CENTER);
 
-						Button okButton = new Button("OK");
-						okButton.setOnAction(e -> dialog.setResult("OK"));
-						VBox.setMargin(okButton, new Insets(5, 10, 20, 10));
+		                Label messageLabel = new Label("Nom d'utilisateur ou mot de passe invalide");
+		                messageLabel.getStyleClass().add("alert");
+		                VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15));
 
-						vbox.getChildren().addAll(messageLabel, okButton);
+		                Button okButton = new Button("OK");
+		                okButton.setOnAction(event1 -> dialog.setResult("ok"));
+		                
+		                VBox.setMargin(okButton, new Insets(5, 10, 20, 10));
 
-						DialogPane dialogPane = dialog.getDialogPane();
-						dialogPane.setContent(vbox);
-						dialogPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-						dialogPane.getStyleClass().add("alert");
+		                vbox.getChildren().addAll(messageLabel, okButton);
 
-						dialog.showAndWait(); // Cela attend jusqu'à ce que l'utilisateur clique sur OK
-					}
-				}
-			}
+		                DialogPane dialogPane = dialog.getDialogPane();
+		                dialogPane.setContent(vbox);
+		                dialogPane.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+		                dialogPane.getStyleClass().add("alert");
+
+		                dialog.showAndWait(); // Attendre que l'utilisateur clique sur OK
+		            }
+		        }
+		    }
 		});
-
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
