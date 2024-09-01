@@ -24,10 +24,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ManageUsers extends VBox{
+public class ManageUsers extends BorderPane{
 	
 	
 	private Scene scene;
@@ -44,7 +46,7 @@ public class ManageUsers extends VBox{
         
         
         Header header = new Header(app, stage, "Gestion des utilisateurs");
-        this.getChildren().add(header);
+        this.setTop(header);
         
         
         // Tableau des utilisateurs
@@ -61,19 +63,28 @@ public class ManageUsers extends VBox{
         roleCol.setCellValueFactory(new PropertyValueFactory<>("role"));
 
         tableView.getColumns().addAll(usernameCol, roleCol);
+        this.setCenter(tableView);
+        BorderPane.setMargin(tableView, new Insets(0, 150, 0, 150)); // Marges haut, droite, bas, gauche
 
         // Boutons d'action
-        HBox buttonBox = new HBox(10);
+        HBox buttonBox = new HBox(20);
         buttonBox.setAlignment(Pos.CENTER);
-        buttonBox.setPadding(new Insets(10));
+        buttonBox.setPadding(new Insets(20));
 
-        Button addButton = new Button("Ajouter");
+        Button addButton = new Button(" Ajouter ");
         Button deleteButton = new Button("Supprimer");
-        Button returnButton = new Button(" Retour ");
+        Button returnButton = new Button("  Retour  ");
 
-        buttonBox.getChildren().addAll(addButton, deleteButton,returnButton);
+        HBox.setMargin(returnButton, new Insets(0, 20, 0, 0)); // Marges haut, droite, bas, gauche
+        HBox.setMargin(addButton, new Insets(0, 20, 0, 20)); // Marges haut, droite, bas, gauche
 
-        this.getChildren().addAll(tableView, buttonBox);
+        this.setBottom(buttonBox);
+        
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        // Ajout des boutons à gauche et à droite avec le spacer entre eux
+        buttonBox.getChildren().addAll(addButton, deleteButton, spacer, returnButton);
 	
 	
         // Création de la scène

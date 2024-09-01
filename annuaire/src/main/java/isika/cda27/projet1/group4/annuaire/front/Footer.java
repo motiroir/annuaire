@@ -324,7 +324,6 @@ public class Footer extends StackPane {
 
 		
 
-
 	}
 	// >>>>> Méthode pour ouvrir la scène ManageUsers <<<<<
 	private void openManageUsersScene() {
