@@ -29,7 +29,7 @@ public class AddForm extends BorderPane {
 		this.stage = stage;
 
 		// ajout du header
-		Header header = new Header(app, stage, "Modifier un stagiaire");
+		Header header = new Header(app, stage, "Ajouter un stagiaire");
 		this.setTop(header);
 		// Masquer le champ de recherche
 		header.getSearchBox().setVisible(false);
