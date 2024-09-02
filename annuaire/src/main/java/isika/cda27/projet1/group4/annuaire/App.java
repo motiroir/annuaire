@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * JavaFX App
@@ -60,12 +61,20 @@ public class App extends Application {
 
 		stage.setScene(root.getScene());
 		stage.setTitle("Annuaire");
+		stage.setOnCloseRequest(event -> handleCloseEvent(event));
 		stage.show();
-
 	}
+	
+    private void handleCloseEvent(WindowEvent event) {
+        // Code pour trier l'arbre binaire avant la fermeture
+        myDAO.searchTree.balanceTree();
+
+        System.out.println("Application fermée. Arbre binaire trié.");
+    }
 
 	public static void main(String[] args) {
 		launch();
 	}
+
 
 }

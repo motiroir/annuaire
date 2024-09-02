@@ -1,6 +1,7 @@
 package isika.cda27.projet1.group4.annuaire.back;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
@@ -115,4 +116,42 @@ public class BinarySearchTree {
 		}
 
 	}
+	//fonction équilibrage de l'arbre
+	public void balanceTree() {
+		List<Stagiaire> balancedList = this.balancedList();
+		 try {
+			new FileOutputStream("src/main/resources/save/stagiairesDataBase.bin").close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for(Stagiaire stag: balancedList) {
+	        System.out.println("Adding: " + stag);  // Ajoute ceci pour vérifier l'ajout
+			ajouter(stag);
+		};
+	}
+	
+	//Création d'une liste équilibrée
+	//renvoie une liste dans un ordre d'insertion équilibré
+	private List<Stagiaire> balancedList() {
+		List<Stagiaire> originalList = this.affichage();
+		System.out.println("Original list: " + originalList);
+		List<Stagiaire> balancedList = new ArrayList<>();
+		addBalanced(originalList, balancedList, 0, originalList.size() - 1);
+        System.out.println("Balanced List: " + balancedList);  // Ajoute ceci pour vérifier le contenu
+        return balancedList;
+	}
+	
+	//Ajout d'un element dans une liste équilibrée
+	private void addBalanced(List<Stagiaire> originalList, List<Stagiaire> balancedList, int start, int end) {
+			if (start > end) {
+            return;
+        }
+        
+        int mid = (start + end) / 2;
+        balancedList.add(originalList.get(mid));
+        
+        addBalanced(originalList, balancedList, start, mid - 1);
+        addBalanced(originalList, balancedList, mid + 1, end);
+	}
 }
+
