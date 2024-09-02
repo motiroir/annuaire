@@ -49,7 +49,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage stage) {
 		
-		stage.getIcons().setAll(new Image(getClass().getResource("/icons/__search-icon.png").toExternalForm()));
+		stage.getIcons().setAll(new Image(getClass().getResource("/icons/annuaire.png").toExternalForm()));
 		myObservableArrayList = FXCollections.observableArrayList(this.myDAO.getStagiaires());
 
 		// Création de la première scène

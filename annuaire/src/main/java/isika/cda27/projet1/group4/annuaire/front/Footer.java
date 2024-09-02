@@ -195,13 +195,14 @@ public class Footer extends StackPane {
 //			alert.showAndWait();
 			
 			Dialog<String> dialog = new Dialog<>();
-			dialog.setTitle("");
+			dialog.setTitle("Importation d'un nouvel annuaire");
 			dialog.setHeaderText(null);
 
 			VBox vbox = new VBox(10);
 			vbox.setAlignment(Pos.CENTER);
+			vbox.setMinSize(350,150);
 
-			Label messageLabel = new Label("   Importation d'un nouvel annuaire   ");
+			Label messageLabel = new Label("   "+fileContent+"   ");
 			messageLabel.getStyleClass().add("alert");
 			VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15));// Marges haut, droite, bas, gauche
 
@@ -232,13 +233,15 @@ public class Footer extends StackPane {
 //			
 //			
 			Dialog<String> dialog = new Dialog<>();
-			dialog.setTitle("");
+			dialog.setTitle("Exportation de l'annuaire");
 			dialog.setHeaderText(null);
 
 			VBox vbox = new VBox(10);
 			vbox.setAlignment(Pos.CENTER);
+			vbox.setMinSize(350,150);
 
-			Label messageLabel = new Label("            Exportation de l'annuaire            ");
+
+			Label messageLabel = new Label("   "+exportResult+"   ");
 			messageLabel.getStyleClass().add("alert");
 			VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15));// Marges haut, droite, bas, gauche
 
@@ -294,11 +297,12 @@ public class Footer extends StackPane {
 				
 
 				Dialog<String> dialog = new Dialog<>();
-				dialog.setTitle("");
+				dialog.setTitle("Confirmation");
 				dialog.setHeaderText(null);
 
 				VBox vbox = new VBox(10);
 				vbox.setAlignment(Pos.CENTER);
+				vbox.setMinSize(350, 150);
 
 				Label messageLabel = new Label( message );
 				messageLabel.getStyleClass().add("alert");

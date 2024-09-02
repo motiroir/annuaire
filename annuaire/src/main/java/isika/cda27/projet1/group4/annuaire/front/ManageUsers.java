@@ -124,10 +124,10 @@ public class ManageUsers extends BorderPane{
 		            VBox vbox = new VBox(10);
 		            vbox.setAlignment(Pos.CENTER);
 
-		            Label messageLabel = new Label("Êtes-vous sûr de vouloir supprimer ce stagiaire ?");
+		            Label messageLabel = new Label("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
 		            messageLabel.getStyleClass().add("alert");
 		            VBox.setMargin(messageLabel, new Insets(15, 15, 0, 15)); // Marges haut, droite, bas, gauche
-		            
+		            vbox.setMinSize(350,150);
 		            
 		            
 		            Button okButton = new Button("   OK    ");
