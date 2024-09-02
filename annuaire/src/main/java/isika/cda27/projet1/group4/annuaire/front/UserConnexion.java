@@ -139,7 +139,7 @@ public class UserConnexion extends BorderPane {
 		                app.currentUser = app.userManager.login(username, password);
 
 		                // Connexion réussie
-		                System.out.println("Utilisateur : " + app.currentUser.getUsername() + " connecté en tant que : " + app.currentUser.getRole());
+		                //System.out.println("Utilisateur : " + app.currentUser.getUsername() + " connecté en tant que : " + app.currentUser.getRole());
 		                
 		                // Revenir à la scène précédente (accueil)
 		                HomePage homepage = new HomePage(app, stage);
@@ -153,6 +153,7 @@ public class UserConnexion extends BorderPane {
 
 		                VBox vbox = new VBox(10);
 		                vbox.setAlignment(Pos.CENTER);
+		                vbox.setMinSize(350,150);
 
 		                Label messageLabel = new Label("Nom d'utilisateur ou mot de passe invalide");
 		                messageLabel.getStyleClass().add("alert");

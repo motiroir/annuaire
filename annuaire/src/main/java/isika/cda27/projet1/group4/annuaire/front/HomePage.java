@@ -107,6 +107,7 @@ public class HomePage extends BorderPane {
 
 				VBox vbox = new VBox(10);
 				vbox.setAlignment(Pos.CENTER);
+				vbox.setMinSize(350,150);
 
 				Label messageLabel = new Label(fileContent);
 				messageLabel.getStyleClass().add("alert");
