@@ -54,6 +54,8 @@ public class HomePage extends BorderPane {
 		tableView.setVisible(false);
 
 		if (app.firstConnexion == true) {
+			header.getSearchBox().setVisible(false);
+			
 			VBox welcomeMessage = new VBox();
 			welcomeMessage.setAlignment(Pos.CENTER);
 			

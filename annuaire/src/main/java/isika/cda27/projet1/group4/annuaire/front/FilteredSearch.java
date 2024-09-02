@@ -36,7 +36,7 @@ public class FilteredSearch extends HBox {
 		buttonImageView.setFitHeight(20);
 		buttonImageView.setFitWidth(20);
 		toggleButton = new Button("", buttonImageView);
-		toggleButton.setVisible(false);
+		// toggleButton.setVisible(false);
 
 		// Créer le bouton pour accéder à la recherche avancée
 		Image filterIcon = new Image(getClass().getResourceAsStream("/icons/__filterOff-icon.png"));
@@ -44,46 +44,35 @@ public class FilteredSearch extends HBox {
 		filterImageView.setFitHeight(20);
 		filterImageView.setFitWidth(20);
 		filterButton = new Button("", filterImageView);
-		filterButton.setVisible(false);
+		// filterButton.setVisible(false);
 
 		// Ajouter style css
 		toggleButton.getStyleClass().add("button-search");
 		filterButton.getStyleClass().add("button-search");
 
-		if (!app.fileChecker.isDataBaseBinPresent()) {
-			// Initialisation des champs de texte pour chaque critère
-			nameField = new TextField();
-			nameField.setPromptText("Nom");
+		// Initialisation des champs de texte pour chaque critère
+		nameField = new TextField();
+		nameField.setPromptText("Nom");
 
-			firstNameField = new TextField();
-			firstNameField.setPromptText("Prénom...");
+		firstNameField = new TextField();
+		firstNameField.setPromptText("Prénom...");
 
-			departmentField = new TextField();
-			departmentField.setPromptText("Département...");
+		departmentField = new TextField();
+		departmentField.setPromptText("Département...");
 
-			promotionField = new TextField();
-			promotionField.setPromptText("Promotion...");
+		promotionField = new TextField();
+		promotionField.setPromptText("Promotion...");
 
-			yearField = new TextField();
-			yearField.setPromptText("Année...");
+		yearField = new TextField();
+		yearField.setPromptText("Année...");
 
-			// Ajouter les champs au HBox avec les boutons
-			this.getChildren().addAll(nameField, firstNameField, departmentField, promotionField, yearField,
-					toggleButton, filterButton);
-			this.setSpacing(10);
+		// Ajouter les champs au HBox avec les boutons
+		this.getChildren().addAll(nameField, firstNameField, departmentField, promotionField, yearField, toggleButton,
+				filterButton);
+		this.setSpacing(10);
 
-			toggleButton.setVisible(true);
-			filterButton.setVisible(true);
-
-		} else {
-			VBox welcomeMessage = new VBox();
-
-			Label welcomeLbl = new Label("Bienvenue sur l'annuaire d'Isika");
-			Label importerLbl = new Label(
-					"Il n'y a pas d'annuaire disponible actuellement. \nPour commencer veuillez en importer.");
-			welcomeLbl.getStyleClass().add("title");
-			importerLbl.getStyleClass().add("sub-title");
-		}
+		toggleButton.setVisible(true);
+		filterButton.setVisible(true);
 
 		// Gestion de l'action des boutons
 		toggleButton.setOnAction(event -> {

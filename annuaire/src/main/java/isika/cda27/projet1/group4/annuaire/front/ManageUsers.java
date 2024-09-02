@@ -47,7 +47,7 @@ public class ManageUsers extends BorderPane{
         
         Header header = new Header(app, stage, "Gestion des utilisateurs");
         this.setTop(header);
-        
+        header.getSearchBox().setVisible(false);
         
         // Tableau des utilisateurs
         TableView<User> tableView = new TableView<>();
