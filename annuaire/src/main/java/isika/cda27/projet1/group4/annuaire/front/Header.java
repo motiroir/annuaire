@@ -176,8 +176,6 @@ public class Header extends StackPane {
 						isSearchMode = false;
 					}
 				} else {
-					// Simplification pour vérification
-					System.out.println("Entré dans le bloc else");
 
 					// Réinitialiser la liste complète
 					app.myObservableArrayList.setAll(app.myDAO.getStagiaires());

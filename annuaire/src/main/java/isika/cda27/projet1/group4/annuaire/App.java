@@ -2,9 +2,11 @@ package isika.cda27.projet1.group4.annuaire;
 
 
 import isika.cda27.projet1.group4.annuaire.back.FileChecker;
+import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
 import isika.cda27.projet1.group4.annuaire.back.UserManager;
+import isika.cda27.projet1.group4.annuaire.back.exceptions.UserAlreadyExistsException;
 import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
 import isika.cda27.projet1.group4.annuaire.front.HomePage;
 import javafx.application.Application;
