@@ -7,6 +7,7 @@ import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.FileExporter;
 import isika.cda27.projet1.group4.annuaire.back.FileImporter;
+import isika.cda27.projet1.group4.annuaire.back.PdfPrint;
 import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import javafx.collections.ObservableList;

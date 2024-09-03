@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BinarySearchTree {
-	Node root;
-	RandomAccessFile raf;
+	public Node root;
+	public RandomAccessFile raf;
 
 	public BinarySearchTree() {
 		root = new Node(null);
@@ -125,7 +125,6 @@ public class BinarySearchTree {
 			e.printStackTrace();
 		}
 		for(Stagiaire stag: balancedList) {
-	        System.out.println("Adding: " + stag);  // Ajoute ceci pour vérifier l'ajout
 			ajouter(stag);
 		};
 	}
@@ -134,10 +133,8 @@ public class BinarySearchTree {
 	//renvoie une liste dans un ordre d'insertion équilibré
 	private List<Stagiaire> balancedList() {
 		List<Stagiaire> originalList = this.affichage();
-		System.out.println("Original list: " + originalList);
 		List<Stagiaire> balancedList = new ArrayList<>();
 		addBalanced(originalList, balancedList, 0, originalList.size() - 1);
-        System.out.println("Balanced List: " + balancedList);  // Ajoute ceci pour vérifier le contenu
         return balancedList;
 	}
 	

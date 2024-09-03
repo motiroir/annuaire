@@ -1,4 +1,4 @@
-package isika.cda27.projet1.group4.annuaire.front;
+package isika.cda27.projet1.group4.annuaire.back;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;

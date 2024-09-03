@@ -5,7 +5,7 @@ import isika.cda27.projet1.group4.annuaire.back.FileChecker;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
 import isika.cda27.projet1.group4.annuaire.back.UserManager;
-import isika.cda27.projet1.group4.annuaire.exceptions.AuthenticationFailedException;
+import isika.cda27.projet1.group4.annuaire.back.exceptions.AuthenticationFailedException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

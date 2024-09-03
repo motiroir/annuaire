@@ -5,8 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import isika.cda27.projet1.group4.annuaire.exceptions.*;
+import isika.cda27.projet1.group4.annuaire.back.exceptions.*;
 
 public class UserManager {
     private List<User> users;

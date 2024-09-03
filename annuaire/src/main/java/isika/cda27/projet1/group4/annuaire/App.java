@@ -41,9 +41,7 @@ public class App extends Application {
 		myDAO = new AnnuaireDAO();
 		userManager = new UserManager();
 		currentUser = new User();
-
 		usersDAO = FXCollections.observableArrayList(userManager.getUsers());
-		
 
 	}
 
@@ -66,10 +64,7 @@ public class App extends Application {
 	}
 	
     private void handleCloseEvent(WindowEvent event) {
-        // Code pour trier l'arbre binaire avant la fermeture
         myDAO.searchTree.balanceTree();
-
-        System.out.println("Application fermée. Arbre binaire trié.");
     }
 
 	public static void main(String[] args) {
