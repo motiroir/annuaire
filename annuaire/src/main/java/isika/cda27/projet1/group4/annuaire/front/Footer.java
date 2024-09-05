@@ -33,6 +33,16 @@ public class Footer extends StackPane {
 	private HomePage homePage;
 	private App app;
 	private Stage stage;
+	
+	 /**
+     * Constructeur de la classe Footer.
+     * Initialise les boutons du pied de page selon le rôle de l'utilisateur actuel.
+     * 
+     * @param app                 L'application principale
+     * @param stage               La fenêtre principale
+     * @param myObservableArrayList La liste observable des stagiaires
+     * @param homePage            La page d'accueil associée
+     */
 
 	public Footer(App app, Stage stage, ObservableList<Stagiaire> myObservableArrayList, HomePage homePage) {
 		
@@ -189,11 +199,7 @@ public class Footer extends StackPane {
 		importButton.setOnAction(e -> {
 			FileImporter importer = new FileImporter();
 			String fileContent = importer.importer(stage, app);
-//			Alert alert = new Alert(AlertType.INFORMATION);
-//			alert.setTitle("Importation d'un nouvel annuaire");
-//			alert.setHeaderText(null);
-//			alert.setContentText(fileContent);
-//			alert.showAndWait();
+
 			
 			Dialog<String> dialog = new Dialog<>();
 			dialog.setTitle("Importation d'un nouvel annuaire");
@@ -226,13 +232,8 @@ public class Footer extends StackPane {
 			FileExporter exporter = new FileExporter();
 			String exportResult = exporter.exporterAnnuaire(stage, app.myObservableArrayList);
 
-//			Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//			alert.setTitle("Exportation de l'annuaire");
-//			alert.setHeaderText(null);
-//			alert.setContentText(exportResult);
-//			alert.showAndWait();
-//			
-//			
+
+		
 			Dialog<String> dialog = new Dialog<>();
 			dialog.setTitle("Exportation de l'annuaire");
 			dialog.setHeaderText(null);
@@ -289,13 +290,6 @@ public class Footer extends StackPane {
 			}
 
 			private void showConfirmationDialog(String message) {
-//				Alert alert = new Alert(AlertType.INFORMATION);
-//				alert.setTitle("Confirmation");
-//				alert.setHeaderText(null);
-//				alert.setContentText(message);
-//				alert.showAndWait();
-				
-				
 
 				Dialog<String> dialog = new Dialog<>();
 				dialog.setTitle("Confirmation");
@@ -330,7 +324,7 @@ public class Footer extends StackPane {
 		
 
 	}
-	// >>>>> Méthode pour ouvrir la scène ManageUsers <<<<<
+	// Méthode pour ouvrir la scène ManageUsers 
 	private void openManageUsersScene() {
 		ManageUsers manageUsers = new ManageUsers(app, stage);
 		stage.setScene(manageUsers.getScene());

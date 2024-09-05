@@ -24,10 +24,22 @@ import javafx.stage.Stage;
 public class CreateUser extends BorderPane {
 	
 	
-	
-	private Scene scene;
-	private App app;
-	private Stage stage;
+	 /** Scène actuelle de l'interface utilisateur. */
+    private Scene scene;
+
+    /** Référence à l'application principale. */
+    private App app;
+
+    /** Fenêtre dans laquelle le formulaire est affiché. */
+    private Stage stage;
+
+    /**
+     * Constructeur de la classe CreateUser.
+     * Ce constructeur initialise l'interface utilisateur pour ajouter un utilisateur.
+     *
+     * @param app   L'instance de l'application principale.
+     * @param stage La fenêtre dans laquelle le formulaire est affiché.
+     */
 
 	public CreateUser(App app, Stage stage) {
 		super();
@@ -179,6 +191,11 @@ public class CreateUser extends BorderPane {
 		});
 
 	}
+	  /**
+     * Définit la visibilité du champ de recherche dans le header.
+     *
+     * @param visible true pour rendre le champ visible, false pour le masquer.
+     */
 	public void setSearchVisible(boolean visible) {
 		// Trouver le Header et modifier la visibilité du champ de recherche
 		Header header = (Header) this.getTop();
