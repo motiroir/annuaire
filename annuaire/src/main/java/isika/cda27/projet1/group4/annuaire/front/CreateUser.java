@@ -4,7 +4,7 @@ import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
-import isika.cda27.projet1.group4.annuaire.exceptions.UserAlreadyExistsException;
+import isika.cda27.projet1.group4.annuaire.back.exceptions.UserAlreadyExistsException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

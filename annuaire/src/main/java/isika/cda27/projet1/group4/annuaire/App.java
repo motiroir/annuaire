@@ -2,9 +2,11 @@ package isika.cda27.projet1.group4.annuaire;
 
 
 import isika.cda27.projet1.group4.annuaire.back.FileChecker;
+import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
 import isika.cda27.projet1.group4.annuaire.back.UserManager;
+import isika.cda27.projet1.group4.annuaire.back.exceptions.UserAlreadyExistsException;
 import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
 import isika.cda27.projet1.group4.annuaire.front.HomePage;
 import javafx.application.Application;
@@ -41,9 +43,7 @@ public class App extends Application {
 		myDAO = new AnnuaireDAO();
 		userManager = new UserManager();
 		currentUser = new User();
-
 		usersDAO = FXCollections.observableArrayList(userManager.getUsers());
-		
 
 	}
 
@@ -66,10 +66,7 @@ public class App extends Application {
 	}
 	
     private void handleCloseEvent(WindowEvent event) {
-        // Code pour trier l'arbre binaire avant la fermeture
         myDAO.searchTree.balanceTree();
-
-        System.out.println("Application fermée. Arbre binaire trié.");
     }
 
 	public static void main(String[] args) {

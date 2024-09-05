@@ -3,7 +3,7 @@ import isika.cda27.projet1.group4.annuaire.App;
 import isika.cda27.projet1.group4.annuaire.back.Role;
 import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 import isika.cda27.projet1.group4.annuaire.back.User;
-import isika.cda27.projet1.group4.annuaire.exceptions.UserNotFoundException;
+import isika.cda27.projet1.group4.annuaire.back.exceptions.UserNotFoundException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

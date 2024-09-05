@@ -1,9 +1,9 @@
-package isika.cda27.projet1.group4.annuaire.back;
+package isika.cda27.projet1.group4.annuaire.front;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import isika.cda27.projet1.group4.annuaire.front.AnnuaireDAO;
+import isika.cda27.projet1.group4.annuaire.back.Stagiaire;
 
 public class StagiaireFilter {
 
