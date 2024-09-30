@@ -46,6 +46,8 @@ public class Footer extends StackPane {
 
 	public Footer(App app, Stage stage, ObservableList<Stagiaire> myObservableArrayList, HomePage homePage) {
 		
+		// Initialisation des composants graphiques du pied de page
+		
 		this.app=app;
 		this.stage=stage;
 
@@ -53,8 +55,10 @@ public class Footer extends StackPane {
 		buttonsBox.setAlignment(Pos.CENTER_LEFT);
 		buttonsBox.setMaxSize(1000, 60);
 		
+		// Bouton de modification
 		Button buttonUpdate = new Button("Modifier ");
 		buttonUpdate.setVisible(false);
+		// Configuration des boutons selon le rôle de l'utilisateur
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER
 				|| app.currentUser.getRole() == Role.STUDENT) {
 			buttonUpdate.setVisible(true);
@@ -62,37 +66,47 @@ public class Footer extends StackPane {
 			buttonUpdate.setDisable(true);
 		}
 
+		// Bouton de suppression
 		Button buttonDelete = new Button("Supprimer");
 		buttonDelete.setVisible(false);
+		// Configuration des boutons selon le rôle de l'utilisateur
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER) {
 			buttonDelete.setVisible(true);
 			buttonsBox.setMargin(buttonDelete, new Insets(20, 0, 20, 40));
 			buttonDelete.setDisable(true);
 		}
 
+		// Bouton d'ajout
 		Button buttonAdd = new Button(" Ajouter ");
 		buttonAdd.setVisible(false);
+		// Configuration des boutons selon le rôle de l'utilisateur
 		if (app.currentUser.getRole() == Role.ADMIN || app.currentUser.getRole() == Role.TEACHER) {
 			buttonAdd.setVisible(true);
 			buttonsBox.setMargin(buttonAdd, new Insets(20, 0, 20, 40));
 		}
-
+		
+		// Bouton d'importation
 		Button importButton = new Button("Remplacer l'annuaire");
 		importButton.setVisible(false);
+		// Configuration des boutons selon le rôle de l'utilisateur
 		if (app.currentUser.getRole() == Role.ADMIN) {
 			importButton.setVisible(true);
 			buttonsBox.setMargin(importButton, new Insets(20, 0, 20, 40));
 		}
 		
+		// Bouton d'exportation
 		Button exportButton = new Button(" Exporter ");
 		exportButton.setVisible(false);
+		// Configuration des boutons selon le rôle de l'utilisateur
 		if (app.currentUser.getRole() == Role.ADMIN) {
 			exportButton.setVisible(true);
 			buttonsBox.setMargin(exportButton, new Insets(20, 0, 20, 40));
 		}
 		
+		// Bouton de gestion des utilisateurs
 		Button manageUsersButton = new Button("Gérer les utilisateurs");
 		manageUsersButton.setVisible(false);
+		// Configuration des boutons selon le rôle de l'utilisateur
 		if (app.currentUser.getRole() == Role.ADMIN) {
 			manageUsersButton.setVisible(true);
 			buttonsBox.setMargin(manageUsersButton, new Insets(20, 0, 20, 40));
@@ -100,6 +114,7 @@ public class Footer extends StackPane {
 
 		buttonsBox.getChildren().addAll(buttonUpdate, buttonAdd, buttonDelete, importButton, exportButton, manageUsersButton);
 		
+		// Bouton d'impression
 		HBox impressionBox = new HBox();
 		impressionBox.setMaxSize(280, 100);
 		impressionBox.setAlignment(Pos.CENTER_RIGHT);
@@ -127,7 +142,7 @@ public class Footer extends StackPane {
 			}
 		});
 
-		// Méthode du bouton add
+		// Méthode associée à l'ajout d'un stagiaire
 		buttonAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -136,7 +151,7 @@ public class Footer extends StackPane {
 			}
 		});
 
-		// Méthode du bouton delete
+		// Méthode associée à la suppression d'un stagiaire
 		buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -186,6 +201,7 @@ public class Footer extends StackPane {
 		    }
 		});
 
+		// Méthode associée à la modification d'un stagiaire
 		buttonUpdate.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -196,6 +212,7 @@ public class Footer extends StackPane {
 			}
 		});
 		
+		// Méthode associée à l'importation de l'annuaire
 		importButton.setOnAction(e -> {
 			FileImporter importer = new FileImporter();
 			String fileContent = importer.importer(stage, app);
@@ -228,6 +245,7 @@ public class Footer extends StackPane {
 		
 		});
 
+		// Méthode associée à l'exportation de l'annuaire
 		exportButton.setOnAction(e -> {
 			FileExporter exporter = new FileExporter();
 			String exportResult = exporter.exporterAnnuaire(stage, app.myObservableArrayList);
@@ -263,7 +281,7 @@ public class Footer extends StackPane {
 		
 		});
 		
-		// Gestion de l'impression en PDF
+		// Méthode associée à l'impression du tableau
 		buttonImpression.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -319,6 +337,7 @@ public class Footer extends StackPane {
 			}
 		});
 		
+		// Méthode associée à la gestion des utilisateurs
 		manageUsersButton.setOnAction(e -> openManageUsersScene());
 
 		
